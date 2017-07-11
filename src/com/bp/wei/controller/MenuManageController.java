@@ -82,8 +82,7 @@ public class MenuManageController {
 			}
 			ComboButton btn = new ComboButton();
 			btn.setName(bname);		
-			btn.setKey(a + "");
-			btn.setType("click");
+
 			List<Button> subButtons = new ArrayList<Button>();
 			
 			for(int b = i,c = 0; c < 5; b ++, c ++){

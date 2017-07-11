@@ -9,8 +9,18 @@ import java.util.Arrays;
  * @author liyanc
  * @date 2017-07-01
  */
-public class ComboButton extends Button {
-	private Button[] subButton;
+public class ComboButton {
+	private String name;
+	
+	private Button[] subButton;	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public Button[] getSubButton() {
 		return subButton;
@@ -22,7 +32,7 @@ public class ComboButton extends Button {
 
 	@Override
 	public String toString() {
-		return "ComboButton [key=" + getKey() + ", name=" + this.getName() + ", type=" + this.getKey() + ", [subButton=" + Arrays.toString(subButton) + "]";
+		return "ComboButton [name=" + this.getName() + ", [subButton=" + Arrays.toString(subButton) + "]";
 	}	
 	
 }
