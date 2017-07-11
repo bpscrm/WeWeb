@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:b="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- 配置无误验证地址 -->
+	<http pattern="/view/**" security="none" />	
+	<http pattern="/error.html" security="none" />	
+	<http pattern="/images/**" security="none" />
+	<http pattern="/css/**" security="none" />
+	<http pattern="/js/**" security="none" />	
+	
+	<!-- <http use-expressions="true" auto-config="true"
+		entry-point-ref="brmAuthenticationEntryPoint">
+		<intercept-url pattern="/**" access="isAuthenticated()" /> -->
+
+		<!-- 会话管理 -->
+	<!-- 	<session-management invalid-session-url="/login.jsp"
+			session-fixation-protection="none">
+			<concurrency-control max-sessions="1"
+				error-if-maximum-exceeded="true" />
+		</session-management> -->
+		<!-- 过滤器配置 -->
+	<!-- 	<custom-filter ref="brmSecurityFilter" before="FILTER_SECURITY_INTERCEPTOR" />
+	</http>  -->
+
+	<!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
+	<!-- <b:bean id="brmAccessDecisionManager" class="com.apt.brm.security.BrmAccessDecisionManager" />  -->
+
+	<!-- 未登录的切入点 -->
+	<!-- <b:bean id="brmAuthenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<b:property name="loginFormUrl" value="/login.jsp"></b:property>
+	</b:bean>  -->
+
+	<!-- 资源源数据定义，加载所有权限，进行用户访问地址路由 -->
+	<!-- <b:bean id="brmSecurityMetadataSource" class="com.apt.brm.security.BrmSecurityMetadataSource">
+	</b:bean> -->
+
+
+	<!-- 资源源数据定义，即定义某一资源可以被哪些角色访问 -->
+	<!-- <authentication-manager alias="brmAuthenticationManager">
+		<authentication-provider ref="authenticationProvider" />
+	</authentication-manager>  
+
+	<b:bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider"> 
+	    <b:property name="userDetailsService" ref="brmUserDetailService" /> 
+	    <b:property name="hideUserNotFoundExceptions" value="false" /> 
+	</b:bean>
+	
+	<b:bean id="brmUserDetailService" class="com.apt.brm.security.BrmUserDetailService">
+	</b:bean>  -->
+
+	<!-- 过滤器配置 -->
+	<!--  <b:bean id="brmSecurityFilter" class="com.apt.brm.security.BrmSecurityFilter">
+		<b:property name="brmSecurityMetadataSource" ref="brmSecurityMetadataSource" />
+		<b:property name="brmAccessDecisionManager" ref="brmAccessDecisionManager" />
+		<b:property name="brmAuthenticationManager" ref="brmAuthenticationManager" />
+	</b:bean>  -->
+</b:beans>

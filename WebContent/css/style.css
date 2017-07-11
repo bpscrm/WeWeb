@@ -1,0 +1,279 @@
+html {
+	color: #000;
+	background: #FFF;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+input,
+textarea,
+p,
+blockquote,
+th,
+td {
+	margin: 0;
+	padding: 0;
+}
+
+.ui-page-login,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+a:link {
+	text-decoration: none;
+}
+
+a:visited {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+a:active {
+	text-decoration: none;
+}
+/*.mui-content{height: 100%;}*/
+img-wrapper{
+	position:absolute;
+	left:0px;
+	width:100%;
+}
+ul{
+	position:relative;
+	left:0px;
+	width: 100%;
+}
+.img-wrapper li{
+	float:left;
+	position:relative;
+	list-style-type: none;
+	width: 100%;
+}
+.img-wrapper li span.uui-welcome{
+	position:absolute;
+	left:0px;
+	bottom:0px;
+	height:30px;
+	background:#000;
+	display:block;
+	zoom:1;
+	filter:alpha(opacity=40);
+	opacity:0.6;
+	width:100%;
+	color:#FFFFFF;
+	line-height:30px;
+	font-size: small;
+}
+.mem-nav{
+	position:relative;   
+	float: left;
+	clear: left;
+	width: 100%;
+}
+.mem-grid__label{
+	margin-top:1px;
+}
+.mem-grid__icon{
+ 	width:28px;
+	height:28px;
+	margin:0 auto;
+}
+.mem-grid__icon img{
+	display:block;
+	width:100%;
+	height:100%;
+}
+.mem-grid__icon + .mem-grid__label{
+	margin-top:4px;
+}
+.mem-grid__label{
+	display:block;
+	text-align:center;
+	color:#8F8F94;
+	font-size:12px;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	overflow:hidden;
+}
+.mem-menu{
+  	position:relative;
+  	float:left;
+  	padding:20px 10px;
+  	width:25%;
+  	box-sizing:border-box;
+}
+.mem-panels{
+	position: relative;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	width: 100%;
+}
+.mem-media-box {
+	padding: 10px;
+	position: relative;
+	float: left;
+	clear: left;
+	width: 100%;
+}
+a .mem-media-box {
+	color: #000000;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	width: 100%;
+}
+.mem-media-box__hd {
+	margin-right: 20px;
+	line-height: 40px;
+	text-align: center;
+	float: left;
+	width: 20%;
+}
+.mem-media-box__title {
+	font-size: 12px;
+	color: #8F8F94;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}.mem-media-box__hd img{
+	width: 20px;
+	height: 20px;
+}
+.mem-media-box__bd {
+    flex: 1;  
+    float:left; 
+    line-height:40px; 
+}
+.mem-footer {
+	color: #999999;
+	font-size: 14px;
+	text-align: center;
+}
+.mem-footer a{
+	color: #8F8F94;
+}
+.mem-footer__links{
+	font-size: 10px;
+	color: #999999;
+}
+.mem-footer__text{
+	font-size: 10px;
+	color: #8F8F94;
+}
+.page-hd{
+	padding: 20px;
+	width: 100%;
+}
+.page-title{
+	text-align: left;
+    font-size: 16px;
+    font-weight: 400;
+    width: 100%;
+}
+.page-cells-form{
+	width:100%;
+}
+.page-cell{
+	padding: 10px 15px;
+    position: relative;  
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.page-cell-hd{
+	width: 20%;
+}
+.page-cell-label{
+	display: block;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.page-cell-bd{	
+    flex: 1;
+}
+.page-input{	
+    border: 0;
+    outline: 0;   
+    background-color: transparent;
+    font-size: inherit;
+    color: inherit;
+    height: 1.47058824em;
+    line-height: 1.47058824;
+}
+.page-btn-area{
+	    margin: 1.17647059em 15px 0.3em;
+}
+.page-btn{
+  position:relative;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:14px;
+  padding-right:14px;
+  box-sizing:border-box;
+  font-size:18px;
+  text-align:center;
+  text-decoration:none;
+  color:#FFFFFF;
+  line-height:2.55555556;
+  border-radius:5px;
+  -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+  overflow:hidden;
+}
+.page-btn:after{
+  content:" ";
+  width:200%;
+  height:200%;
+  position:absolute;
+  top:0;
+  left:0;
+  border:1px solid rgba(0, 0, 0, 0.2);
+  -webkit-transform:scale(0.5);
+          transform:scale(0.5);
+  -webkit-transform-origin:0 0;
+          transform-origin:0 0;
+  box-sizing:border-box;
+  border-radius:10px;
+}
+.page-btn_inline{
+  display:inline-block;
+}
+.page-btn_default{
+  color:#000000;
+  background-color:#F8F8F8;
+}
+.page-btn_default:not(.page-btn_disabled):visited{
+  color:#000000;
+}
+.page-btn_default:not(.page-btn_disabled):active{
+  color:rgba(0, 0, 0, 0.6);
+  background-color:#DEDEDE;
+}
+.page-btn_primary{
+  background-color:#1AAD19;
+}
+.page-btn_primary:not(.page-btn_disabled):visited{
+  color:#FFFFFF;
+}
+.page-btn_primary:not(.page-btn_disabled):active{
+  color:rgba(255, 255, 255, 0.6);
+  background-color:#179B16;
+}
