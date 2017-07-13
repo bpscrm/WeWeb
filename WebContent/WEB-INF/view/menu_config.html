@@ -9,10 +9,10 @@
 	</head>
 	<body>
 		<div class="page-hd">
-			<p class="page-title">菜单输入</p>
+			<p class="page-title">菜单修改</p>
 		</div>
 		<form id="menuform">
-			<div class="page-cell">
+<!-- 			<div class="page-cell">
 				<div class="page-cell-hd">
 					<label class="page-cell-label">菜单一</label>
 				</div>
@@ -155,38 +155,21 @@
 				<div class="page-cell-bd">
 					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单五名称"/>
 				</div>
-			</div>
+			</div>-->
 			<div class="page-btn-area">
 				<a class="page-btn page-btn_primary" href="javascript:updatemenu();">确定</a>
 			</div>
 		</form>
 		<script type="text/javascript">
-		$.fn.serializeObject = function()    
-		{  	   
-		   var o = {};    
-		   var a = this.serializeArray();    
-		   $.each(a, function() {    
-		       if (o[this.name]) {    
-		           if (!o[this.name].push) {    
-		               o[this.name] = [o[this.name]];    
-		           }    
-		           o[this.name].push(this.value || '');    
-		       } else {    
-		           o[this.name] = this.value || '';    
-		       }    
-		   });    
-		   return o;    
-		}; 
-		function updatemenu(){			
-			var jsonmenu = $('#menuform').serializeObject();           
+
+		function updatemenu(){
 			$.ajax({  
                 type: 'post',  
                 url: 'setMenu',
                 dataType : 'json',
-      　　　　　　　　 	contentType : 'application/json',  
-                data: JSON.stringify(jsonmenu),               
-                success: function (data) {  
-					alert("menu created successfully!")
+      　　　　　　　　 	contentType : 'application/json',        
+                success: function (data) { 
+                	alert("Result code: " + data);
                 },  
                 error: function (data) {  
                 	alert(data.msg);
