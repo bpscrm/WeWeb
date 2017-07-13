@@ -30,6 +30,10 @@
 			classpath:applicationContext.xml				
 	</param-value>
   </context-param>
+  <context-param>
+  	<param-name>menuConfig</param-name>
+  	<param-value>classpath:menu.xml</param-value>
+  </context-param>
   <filter>
     <filter-name>characterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
