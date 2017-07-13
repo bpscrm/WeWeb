@@ -9,30 +9,21 @@ import java.util.Arrays;
  * @author liyanc
  * @date 2017-07-01
  */
-public class ComboButton {
-	private String name;
+public class ComboButton extends Button{
 	
-	private Button[] subButton;	
+	private Button[] sub_button;	
 
-	public String getName() {
-		return name;
+	public Button[] getSub_button() {
+		return sub_button;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Button[] getSubButton() {
-		return subButton;
-	}
-
-	public void setSubButton(Button[] subButton) {
-		this.subButton = subButton;
+	public void setSub_button(Button[] sub_Button) {
+		this.sub_button = sub_Button;
 	}
 
 	@Override
 	public String toString() {
-		return "ComboButton [name=" + this.getName() + ", [subButton=" + Arrays.toString(subButton) + "]";
+		return "ComboButton [name=" + this.getName() + ", [subButton=" + Arrays.toString(sub_button) + "]";
 	}	
 	
 }

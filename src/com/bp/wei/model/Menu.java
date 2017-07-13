@@ -11,13 +11,13 @@ import java.util.Arrays;
  */
 
 public class Menu {
-	private ComboButton[] button;
+	private Button[] button;
 
-	public ComboButton[] getButton() {
+	public Button[] getButton() {
 		return button;
 	}
 
-	public void setButton(ComboButton[] button) {
+	public void setButton(Button[] button) {
 		this.button = button;
 	}
 
