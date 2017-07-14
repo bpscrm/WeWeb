@@ -2,7 +2,7 @@
 <menu>
 <button>
 	<button>
-		<name>体验活动</name>
+		<name>体验课程</name>
 		<sub_button>
 			<name>课程试听</name>
 			<type>click</type>
@@ -10,14 +10,14 @@
 		</sub_button>
 		<sub_button>
 			<key>1_2</key>
-			<name>英语角</name>
+			<name>你问我答</name>
 			<type>click</type>
 		</sub_button>
 	</button>
 	<button>
 		<name>测试菜单</name>
 		<type>click</type>
-		<key>2</key>
+		<key>2_0</key>
 	</button>
 	<button>
 		<name>更多信息</name>
@@ -32,5 +32,5 @@
 			<type>click</type>
 		</sub_button>
 	</button>
-	</button>
+</button>
 </menu>
