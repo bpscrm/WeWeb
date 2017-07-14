@@ -17,7 +17,7 @@
 	<button>
 		<name>测试菜单</name>
 		<type>click</type>
-		<key>2_0</key>
+		<key>2</key>
 	</button>
 	<button>
 		<name>更多信息</name>
