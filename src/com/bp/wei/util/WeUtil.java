@@ -20,7 +20,7 @@ import com.bp.wei.service.impl.X509TrustManagerImpl;
 import net.sf.json.JSONObject;
 
 public class WeUtil {
-	public final static String APPID = "wx50c7fecf06ffdd0b";
+	public final static String APPID = "wx50c7fecf06ffdd0b1";
 	public final static String APPSECRET = "69cb967254a95951ca67dcc665fcb190";
 	public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	
