@@ -16,6 +16,7 @@ public class MenuUtil {
 		if (!rs.exists()) {
 			log.error("Menu definition file not found!");
 			return null;
+			
 		}
 		XMLSerializer xmlSerializer = new XMLSerializer();
 		
