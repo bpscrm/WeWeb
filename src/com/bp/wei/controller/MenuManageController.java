@@ -32,6 +32,7 @@ import net.sf.json.JSONObject;
 public class MenuManageController {
 	public static Logger log = LoggerFactory.getLogger(MenuManageController.class);
 	
+	
 	@Autowired
 	private MenuManager menuMgt;
 	
