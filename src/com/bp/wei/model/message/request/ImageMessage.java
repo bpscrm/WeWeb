@@ -13,20 +13,25 @@ public class ImageMessage extends BaseMessage {
 	private String MediaId;
 	
 	public String getPicUrl() {
+		System.out.println( "[request][ImageMessage][getPicUrl]" + PicUrl);
 		return PicUrl;
 	}
 	public void setPicUrl(String picUrl) {
+		System.out.println( "[request][ImageMessage][setPicUrl]" + picUrl);
 		PicUrl = picUrl;
 	}
 	public String getMediaId() {
+		System.out.println( "[request][ImageMessage][getMediaId]" + MediaId);
 		return MediaId;
 	}
 	public void setMediaId(String mediaId) {
+		System.out.println( "[request][ImageMessage][setMediaId]" + MediaId);
 		MediaId = mediaId;
 	}
 	
 	@Override
 	public String toString() {
+		System.out.println( "[request][ImageMessage][toString]");
 		return "ImageMessage [PicUrl=" + PicUrl + ", MediaId=" + MediaId + ", toString()=" + super.toString() + "]";
 	}		
 	

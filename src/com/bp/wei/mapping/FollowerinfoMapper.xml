@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bp.wei.dao.FollowerinfoDao">
+  <resultMap id="BaseResultMap" type="com.bp.wei.crm.model.Followerinfo">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="date_entered" jdbcType="TIMESTAMP" property="dateEntered" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="modified_user_id" jdbcType="CHAR" property="modifiedUserId" />
+    <result column="created_by" jdbcType="CHAR" property="createdBy" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="assigned_user_id" jdbcType="CHAR" property="assignedUserId" />
+    <result column="follow_dt" jdbcType="TIMESTAMP" property="followDt" />
+    <result column="wechat_userid" jdbcType="VARCHAR" property="wechatUserid" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bp.wei.crm.model.Followerinfo">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  
+  <!-- start -->
+  <resultMap id="ResultMapWithMyFollower" type="com.bp.wei.crm.model.Followerinfo">
+  	<id property="id" column="flid"/>
+  	<result property="name" column="flname"/>
+  	<collection property="follower" javaType="java.util.List" ofType="com.bp.wei.crm.model.Followerinfo">
+  		<id property="id" column="myflid"/>
+  		<result property="name" column="myflname"/>
+  		<result property="followDt" column="myflfldt"/>
+  	</collection>
+  </resultMap>
+  <!-- end -->
+  
+  <sql id="Base_Column_List">
+    id, name, date_entered, date_modified, modified_user_id, created_by, deleted, assigned_user_id, 
+    follow_dt, wechat_userid
+  </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <select id="selectByPrimaryOpenid" parameterType="java.lang.String" resultType="String">
+    select 
+     id
+    from ec1_follower
+    where name = #{name,jdbcType=CHAR}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_follower
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  
+  <!-- start-->
+  <select id="selectMyFollowerListByKey" parameterType="java.lang.String" resultMap="ResultMapWithMyFollower">
+	SELECT fl.id flid, fl.name flname, myfl.id myflid, myfl.name myflname, myfl.follow_dt myflfldt
+      FROM ec1_follower fl, ec1_follower myfl, ec1_follower_ec1_follower_c fltomyfl
+     WHERE fl.id = fltomyfl.ec1_follower_ec1_followerec1_follower_idb
+       AND myfl.id = fltomyfl.ec1_follower_ec1_followerec1_follower_ida
+       AND fl.id = #{id,jdbcType=CHAR}
+  </select>
+  <!-- end-->
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ec1_follower
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bp.wei.crm.model.Followerinfo">
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+        select  uuid()   from dual  
+    </selectKey>
+    insert into ec1_follower (id, name, date_entered, date_modified, modified_user_id, created_by, deleted, 
+      assigned_user_id, follow_dt, wechat_userid, description)
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR},now(), now(), "1", "1", "0",
+      #{assignedUserId,jdbcType=CHAR}, now(),"test data", #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bp.wei.crm.model.Followerinfo">
+    insert into ec1_follower
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="dateEntered != null">
+        date_entered,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id,
+      </if>
+      <if test="followDt != null">
+        follow_dt,
+      </if>
+      <if test="wechatUserid != null">
+        wechat_userid,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="followDt != null">
+        #{followDt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wechatUserid != null">
+        #{wechatUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bp.wei.crm.model.Followerinfo">
+    update ec1_follower
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="followDt != null">
+        follow_dt = #{followDt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wechatUserid != null">
+        wechat_userid = #{wechatUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bp.wei.crm.model.Followerinfo">
+    update ec1_follower
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      follow_dt = #{followDt,jdbcType=TIMESTAMP},
+      wechat_userid = #{wechatUserid,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bp.wei.crm.model.Followerinfo">
+    update ec1_follower
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      follow_dt = #{followDt,jdbcType=TIMESTAMP},
+      wechat_userid = #{wechatUserid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

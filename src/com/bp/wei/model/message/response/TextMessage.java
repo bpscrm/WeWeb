@@ -17,15 +17,18 @@ public class TextMessage extends BaseMessage {
     private String Content;
 
 	public String getContent() {
+		System.out.println( "[response][TextMessage][getContent]");
 		return Content;
 	}
 
 	public void setContent(String content) {
+		System.out.println( "[response][TextMessage][setContent]");
 		Content = content;
 	}
 
 	@Override
 	public String toString() {
+		System.out.println( "[response][TextMessage][toString]");
 		return "TextMessage [Content=" + Content + ", toString()=" + super.toString() + "]";
 	}    
     

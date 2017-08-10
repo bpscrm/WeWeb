@@ -21,13 +21,15 @@ public class MenuManagerImpl implements MenuManager {
 	
 	@Override
 	public int createMenu(Menu menu) {
+		
+		System.err.print( "[MenuManagerImpl][createMenu]");
 		int result = 0;
 		AccessToken accessToken = WeUtil.getAccessToken();
 		if(accessToken == null){
 			log.error("Failed to get access token from WeChat");
 			return -1;
 		}
-		System.out.println(accessToken.getToken());
+		System.out.println("accessToken.getToken() " +accessToken.getToken());
 		String url = menu_create_url.replace("ACCESS_TOKEN", accessToken.getToken());
 		String jsonMenu = MenuUtil.getMenuDefinition();//JSONObject.fromObject(menu).toString();//
 		if(jsonMenu == null){
@@ -35,6 +37,7 @@ public class MenuManagerImpl implements MenuManager {
 			return -1;
 		}
 		log.debug("JSON menu object before sending: " + jsonMenu);
+		System.out.println("url " + url);
 		JSONObject jsonObject = WeUtil.httpRequest(url, "POST", jsonMenu); 
 		
 		if (null != jsonObject) {  
@@ -54,6 +57,7 @@ public class MenuManagerImpl implements MenuManager {
 	@Override
 	public JSONObject getMenu() {
 		
+		System.out.println( "[MenuManagerImpl][getMenu]");
 		CommonButton btn11 = new CommonButton();
 		btn11.setKey("m1_b1");
 		btn11.setName("测试一");
@@ -92,6 +96,8 @@ public class MenuManagerImpl implements MenuManager {
 	}
 	
 	public static void main(String[] args){
+		
+		System.out.println( "[MenuManagerImpl][main]");
 		MenuManagerImpl mm = new MenuManagerImpl();
 		JSONObject menu = mm.getMenu();
 		System.out.println(menu.toString());
