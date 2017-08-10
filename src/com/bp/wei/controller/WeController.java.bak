@@ -1,0 +1,95 @@
+package com.bp.wei.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.dom4j.DocumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.bp.wei.service.WeService;
+import com.bp.wei.util.MessageUtil;
+
+/**
+ * 
+ * @author liyanc
+ * @see WeChat interfaces access 
+ */
+
+@Controller
+@RequestMapping("wechat")
+public class WeController {
+	private static Logger log = LoggerFactory.getLogger(WeController.class);
+	
+	@Autowired
+	private WeService weService;
+	/**
+	 * Check if the request is from WeChat
+	 * @throws IOException 
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	public void validate(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		// 微信加密签名  
+        String signature = request.getParameter("signature");  
+        // 时间戳  
+        String timestamp = request.getParameter("timestamp");  
+        // 随机数  
+        String nonce = request.getParameter("nonce");  
+        // 随机字符串  
+        String echostr = request.getParameter("echostr");  
+        
+        System.out.println( "[WeController][validate]");
+        PrintWriter out = response.getWriter();
+        if(weService.valid(signature, timestamp, nonce)){
+        	log.info("Connect to WeChat server successfully.");
+        	System.out.println( "if [WeController][validate]");
+        	out.write(echostr); 
+        }else{
+        	log.info("Signature verification failed.");
+        }
+        out.close();
+        out = null;        
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	@ResponseBody
+	public void process(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		request.setCharacterEncoding("UTF-8");  
+        response.setCharacterEncoding("UTF-8");  
+        String signature = request.getParameter("signature");  
+        String timestamp = request.getParameter("timestamp");  
+        String nonce = request.getParameter("nonce");  
+
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+				LocalDate localDate = LocalDate.now();
+				System.out.println(dtf.format(localDate)); //2016/11/16
+				
+				String CONFIG_FILENAME = "c:\\10\\access.log";
+
+        System.out.println( "[WeController][process]request " + request);
+        System.out.println( "[WeController][process]" + signature+"' '"+timestamp);
+        PrintWriter out = response.getWriter(); 
+        if(weService.valid(signature, timestamp, nonce)){
+        	System.out.println( "[WeController][process]parsexml " + request);
+        	Map<String,String> requestMap = MessageUtil.parseXML(request);
+        	System.out.println( "[WeController][process]before process " + requestMap);
+        	//requestMap.put("EventKey", "http://121.122.87.90/mavenapp/index.zul?WECHATID=1234567890&OPENID=9876543210");
+        	//System.out.println( "[WeController][process]before process 1 " + requestMap);
+        	String respMsg = weService.process(requestMap);
+        	System.out.println( "[WeController][process][respmsg]" + respMsg);
+        	out.write(respMsg);
+        }
+        out.close();
+        out = null;        
+	}
+}

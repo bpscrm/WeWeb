@@ -18,39 +18,48 @@ public class Article {
 	private String Url;
 
 	public String getTitle() {
+		System.out.println( "[response][Article][getTitle]" + Title);
 		return Title;
 	}
 
 	public void setTitle(String title) {
+		System.out.println( "[response][Article][setTitle]" + Title);
 		Title = title;
 	}
 
 	public String getDescription() {
+		System.out.println( "[response][Article][getDescription]" + Description);
 		return Description;
 	}
 
 	public void setDescription(String description) {
+		System.out.println( "[response][Article][setDescription]" + description);
 		Description = description;
 	}
 
 	public String getPicUrl() {
+		System.out.println( "[response][Article][getPicUrl]" + PicUrl);
 		return PicUrl;
 	}
 
 	public void setPicUrl(String picUrl) {
+		System.out.println( "[response][Article][setPicUrl]" + picUrl);
 		PicUrl = picUrl;
 	}
 
 	public String getUrl() {
+		System.out.println( "[response][Article][getUrl]" + Url);
 		return Url;
 	}
 
 	public void setUrl(String url) {
+		System.out.println( "[response][Article][setUrl]" + url);
 		Url = url;
 	}
 
 	@Override
 	public String toString() {
+		System.out.println( "[response][Article][toString]");
 		return "Item [Title=" + Title + ", Description=" + Description + ", PicUrl=" + PicUrl + ", Url=" + Url + "]";
 	}	
 	

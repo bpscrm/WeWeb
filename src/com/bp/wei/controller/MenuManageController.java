@@ -32,13 +32,13 @@ import net.sf.json.JSONObject;
 public class MenuManageController {
 	public static Logger log = LoggerFactory.getLogger(MenuManageController.class);
 	
-	
 	@Autowired
 	private MenuManager menuMgt;
 	
 	@RequestMapping(value="menu", method = RequestMethod.GET)
 	public String redirectMenu(){
 		
+		System.out.println( "[MenuMangerController][redirectMenu]");
 		return "menu_config";
 	}
 	
@@ -46,6 +46,7 @@ public class MenuManageController {
 	public @ResponseBody JSONObject getMenu(){
 		JSONObject menu = null;
 		menu = menuMgt.getMenu();
+		System.out.println( "[MenuMangerController][getMenu]");
 		log.info("Fetched WeChat menu: " + menu.toString());
 		return menu;
 	}
@@ -56,6 +57,7 @@ public class MenuManageController {
 
 		int result = menuMgt.createMenu(null);
 		
+		System.out.println( "[MenuMangerController][setMenu]");
 		log.debug("WeChat menu updated " + (result == 0 ? "successfully":"failed"));
 		return result;
 	}
@@ -142,6 +144,7 @@ public class MenuManageController {
 //	
 	public static void main(String[] args){
 		int i =0;
+		System.out.println( "[MenuMangerController][main]");
 		System.out.println("[{\"code\":\"" + i  + "\"}]");
 	}
 }
