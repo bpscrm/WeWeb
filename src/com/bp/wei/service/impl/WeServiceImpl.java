@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 
 import com.bp.wei.model.AccessToken;
 import com.bp.wei.model.User;
-import com.bp.wei.model.message.response.IMessage;
 import com.bp.wei.model.message.response.TextMessage;
 import com.bp.wei.service.UserService;
 import com.bp.wei.service.WeService;
@@ -57,7 +56,7 @@ public class WeServiceImpl implements WeService {
 			}
 			text.setCreateTime(new Date().getTime());
             text.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-			respXML = MessageUtil.messageToXml((IMessage) text);
+			respXML = MessageUtil.messageToXml(text);
         } 
         // TODO 取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息
         else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
