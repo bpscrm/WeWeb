@@ -38,23 +38,28 @@ public class ArticleMessage extends BaseMessage {
 	private List<Article> articles;
 
 	public List<Article> getArticles() {
+		System.out.println( "[response][ArticleMessage][getArticles]" + articles);
 		return articles;
 	}
 
 	public void setArticles(List<Article> articles) {
+		System.out.println( "[response][ArticleMessage][setArticles]" + articles);
 		this.articles = articles;
 	}
 
 	public int getArticleCount() {
+		System.out.println( "[response][ArticleMessage][getArticleCount]" + ArticleCount);
 		return ArticleCount;
 	}
 
 	public void setArticleCount(int articleCount) {
+		System.out.println( "[response][ArticleMessage][setArticleCount]" + articleCount);
 		ArticleCount = articleCount;
 	}
 
 	@Override
 	public String toString() {
+		System.out.println( "[response][ArticleMessage][toString]");
 		return "ArticleMessage [ArticleCount=" + ArticleCount + ", articles=" + articles + ", toString()="
 				+ super.toString() + "]";
 	}		

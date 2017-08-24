@@ -17,6 +17,7 @@ public class SubscribeEvent extends BaseEvent {
 
 	@Override
 	public String toString() {
+		System.out.println( "[SubscribeEvent][toString]");
 		return "SubscribeEvent [toString()=" + super.toString() + "]";
 	}
 

@@ -21,23 +21,28 @@ public class QRCodeEvent extends BaseEvent {
     private String Ticket;
 
 	public String getEventKey() {
+		System.out.println( "[event][QRCodeEvent][getEventKey] " + EventKey);
 		return EventKey;
 	}
 
 	public void setEventKey(String eventKey) {
+		System.out.println( "[event][QRCodeEvent][setEventKey] " + eventKey);
 		EventKey = eventKey;
 	}
 
 	public String getTicket() {
+		System.out.println( "[event][QRCodeEvent][getTicket] " + Ticket);
 		return Ticket;
 	}
 
 	public void setTicket(String ticket) {
+		System.out.println( "[event][QRCodeEvent][setTicket] " + ticket);
 		Ticket = ticket;
 	}
 
 	@Override
 	public String toString() {
+		System.out.println( "[event][QRCodeEvent][toString] ");
 		return "QRCodeEvent [EventKey=" + EventKey + ", Ticket=" + Ticket + ", toString()=" + super.toString() + "]";
 	}    
     

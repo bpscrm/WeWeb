@@ -15,31 +15,38 @@ public class LinkMessage extends BaseMessage {
 	private String Url;
 
 	public String getTitle() {
+		System.out.println( "[LinkMessage][getTitle]");
 		return Title;
 	}
 
 	public void setTitle(String title) {
+		System.out.println( "[LinkMessage][setTitle]");
 		Title = title;
 	}
 
 	public String getDescription() {
+		System.out.println( "[LinkMessage][getDescription]");
 		return Description;
 	}
 
 	public void setDescription(String description) {
+		System.out.println( "[LinkMessage][getUrl]" + description);
 		Description = description;
 	}
 
 	public String getUrl() {
+		System.out.println( "[LinkMessage][getUrl]" + Url);
 		return Url;
 	}
 
 	public void setUrl(String url) {
+		System.out.println( "[LinkMessage][setUrl]" + url);
 		Url = url;
 	}
 
 	@Override
 	public String toString() {
+		System.out.println( "[LinkMessage][toString]");
 		return "LinkMessage [Title=" + Title + ", Description=" + Description + ", Url=" + Url + ", toString()="
 				+ super.toString() + "]";
 	}	

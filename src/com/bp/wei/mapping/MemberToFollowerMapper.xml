@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bp.wei.dao.MemberToFollowerDao">
+  <resultMap id="BaseResultMap" type="com.bp.wei.crm.model.MemberToFollower">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="ec1_member_ec1_followerec1_member_ida" jdbcType="VARCHAR" property="ec1MemberEc1Followerec1MemberIda" />
+    <result column="ec1_member_ec1_followerec1_follower_idb" jdbcType="VARCHAR" property="ec1MemberEc1Followerec1FollowerIdb" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, date_modified, deleted, ec1_member_ec1_followerec1_member_ida, ec1_member_ec1_followerec1_follower_idb
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ec1_member_ec1_follower_c
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ec1_member_ec1_follower_c
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bp.wei.crm.model.MemberToFollower">
+    insert into ec1_member_ec1_follower_c (id, date_modified,  
+      ec1_member_ec1_followerec1_member_ida, ec1_member_ec1_followerec1_follower_idb
+      )
+    values (uuid(), now(), 
+      #{ec1MemberEc1Followerec1MemberIda,jdbcType=VARCHAR}, #{ec1MemberEc1Followerec1FollowerIdb,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bp.wei.crm.model.MemberToFollower">
+    insert into ec1_member_ec1_follower_c
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="ec1MemberEc1Followerec1MemberIda != null">
+        ec1_member_ec1_followerec1_member_ida,
+      </if>
+      <if test="ec1MemberEc1Followerec1FollowerIdb != null">
+        ec1_member_ec1_followerec1_follower_idb,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="ec1MemberEc1Followerec1MemberIda != null">
+        #{ec1MemberEc1Followerec1MemberIda,jdbcType=VARCHAR},
+      </if>
+      <if test="ec1MemberEc1Followerec1FollowerIdb != null">
+        #{ec1MemberEc1Followerec1FollowerIdb,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bp.wei.crm.model.MemberToFollower">
+    update ec1_member_ec1_follower_c
+    <set>
+      <if test="dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="ec1MemberEc1Followerec1MemberIda != null">
+        ec1_member_ec1_followerec1_member_ida = #{ec1MemberEc1Followerec1MemberIda,jdbcType=VARCHAR},
+      </if>
+      <if test="ec1MemberEc1Followerec1FollowerIdb != null">
+        ec1_member_ec1_followerec1_follower_idb = #{ec1MemberEc1Followerec1FollowerIdb,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bp.wei.crm.model.MemberToFollower">
+    update ec1_member_ec1_follower_c
+    set date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=BIT},
+      ec1_member_ec1_followerec1_member_ida = #{ec1MemberEc1Followerec1MemberIda,jdbcType=VARCHAR},
+      ec1_member_ec1_followerec1_follower_idb = #{ec1MemberEc1Followerec1FollowerIdb,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

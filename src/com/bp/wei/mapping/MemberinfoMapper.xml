@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bp.wei.dao.MemberinfoDao">
+  <resultMap id="BaseResultMap" type="com.bp.wei.crm.model.Memberinfo">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="date_entered" jdbcType="TIMESTAMP" property="dateEntered" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="modified_user_id" jdbcType="CHAR" property="modifiedUserId" />
+    <result column="created_by" jdbcType="CHAR" property="createdBy" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="assigned_user_id" jdbcType="CHAR" property="assignedUserId" />
+    <result column="mb_password" jdbcType="VARCHAR" property="mbPassword" />
+    <result column="mb_title" jdbcType="VARCHAR" property="mbTitle" />
+    <result column="mb_name" jdbcType="VARCHAR" property="mbName" />
+    <result column="mb_birthday" jdbcType="DATE" property="mbBirthday" />
+    <result column="mb_child" jdbcType="VARCHAR" property="mbChild" />
+    <result column="mb_edu" jdbcType="VARCHAR" property="mbEdu" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bp.wei.crm.model.MemberinfoWithBLOBs">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    <result column="mb_addr" jdbcType="LONGVARCHAR" property="mbAddr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, date_entered, date_modified, modified_user_id, created_by, deleted, assigned_user_id, 
+    mb_password, mb_title, mb_name, mb_birthday, mb_child, mb_edu
+  </sql>
+  <sql id="Blob_Column_List">
+    description, mb_addr
+  </sql>
+  <select id="selectByMemberName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_member
+    where name = #{name,jdbcType=CHAR}
+  </select>
+  <select id="selectIDByMember" parameterType="java.lang.String" resultType="String">
+    select id 
+    from ec1_member
+    where name = #{name,jdbcType=CHAR}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_member
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ec1_member
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bp.wei.crm.model.MemberinfoWithBLOBs">
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+        select  uuid()   from dual  
+    </selectKey> 
+    insert into ec1_member (id, name, date_entered, date_modified, modified_user_id, created_by, deleted, 
+      assigned_user_id, mb_password, 
+      mb_title, mb_name, mb_birthday, 
+      mb_child, mb_edu, description, 
+      mb_addr)
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, now(), now(), "1", "1", "0",
+      #{assignedUserId,jdbcType=CHAR}, #{mbPassword,jdbcType=VARCHAR}, 
+      #{mbTitle,jdbcType=VARCHAR}, #{mbName,jdbcType=VARCHAR}, #{mbBirthday,jdbcType=DATE}, 
+      #{mbChild,jdbcType=VARCHAR}, #{mbEdu,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}, 
+      #{mbAddr,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bp.wei.crm.model.MemberinfoWithBLOBs">
+    insert into ec1_member
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="dateEntered != null">
+        date_entered,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id,
+      </if>
+      <if test="mbPassword != null">
+        mb_password,
+      </if>
+      <if test="mbTitle != null">
+        mb_title,
+      </if>
+      <if test="mbName != null">
+        mb_name,
+      </if>
+      <if test="mbBirthday != null">
+        mb_birthday,
+      </if>
+      <if test="mbChild != null">
+        mb_child,
+      </if>
+      <if test="mbEdu != null">
+        mb_edu,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="mbAddr != null">
+        mb_addr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="mbPassword != null">
+        #{mbPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="mbTitle != null">
+        #{mbTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="mbName != null">
+        #{mbName,jdbcType=VARCHAR},
+      </if>
+      <if test="mbBirthday != null">
+        #{mbBirthday,jdbcType=DATE},
+      </if>
+      <if test="mbChild != null">
+        #{mbChild,jdbcType=VARCHAR},
+      </if>
+      <if test="mbEdu != null">
+        #{mbEdu,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mbAddr != null">
+        #{mbAddr,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bp.wei.crm.model.MemberinfoWithBLOBs">
+    update ec1_member
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="mbPassword != null">
+        mb_password = #{mbPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="mbTitle != null">
+        mb_title = #{mbTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="mbName != null">
+        mb_name = #{mbName,jdbcType=VARCHAR},
+      </if>
+      <if test="mbBirthday != null">
+        mb_birthday = #{mbBirthday,jdbcType=DATE},
+      </if>
+      <if test="mbChild != null">
+        mb_child = #{mbChild,jdbcType=VARCHAR},
+      </if>
+      <if test="mbEdu != null">
+        mb_edu = #{mbEdu,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mbAddr != null">
+        mb_addr = #{mbAddr,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bp.wei.crm.model.MemberinfoWithBLOBs">
+    update ec1_member
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      mb_password = #{mbPassword,jdbcType=VARCHAR},
+      mb_title = #{mbTitle,jdbcType=VARCHAR},
+      mb_name = #{mbName,jdbcType=VARCHAR},
+      mb_birthday = #{mbBirthday,jdbcType=DATE},
+      mb_child = #{mbChild,jdbcType=VARCHAR},
+      mb_edu = #{mbEdu,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR},
+      mb_addr = #{mbAddr,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bp.wei.crm.model.Memberinfo">
+    update ec1_member
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      mb_password = #{mbPassword,jdbcType=VARCHAR},
+      mb_title = #{mbTitle,jdbcType=VARCHAR},
+      mb_name = #{mbName,jdbcType=VARCHAR},
+      mb_birthday = #{mbBirthday,jdbcType=DATE},
+      mb_child = #{mbChild,jdbcType=VARCHAR},
+      mb_edu = #{mbEdu,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

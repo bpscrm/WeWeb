@@ -16,8 +16,10 @@ import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bp.wei.model.message.request.TextMessage;
 import com.bp.wei.model.message.response.Article;
 import com.bp.wei.model.message.response.IMessage;
+import com.bp.wei.model.message.response.NewsMessage;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -30,8 +32,8 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
  * @desc Utility regarding to WeChat messages
  */
 
-public class MessageUtil {
-	
+public class MessageUtil 
+{	
 	// 请求消息类型：文本
     public static final String REQ_MESSAGE_TYPE_TEXT = "TEXT";
     // 请求消息类型：图片
@@ -73,14 +75,16 @@ public class MessageUtil {
     public static final String RESP_MESSAGE_TYPE_MUSIC = "MUSIC";
     // 响应消息类型：图文
     public static final String RESP_MESSAGE_TYPE_ARTICLE = "ARTICLE";
+	public static final String RESP_MESSAGE_TYPE_NEWS = "news";
 	
 	public static Logger log = LoggerFactory.getLogger(MessageUtil.class);
 	
 	@SuppressWarnings("unchecked")
-	public static Map<String,String> parseXML(HttpServletRequest request) throws IOException, DocumentException{
-		
+	public static Map<String,String> parseXML(HttpServletRequest request) throws IOException, DocumentException
+	{		
 		Map<String, String> map = new HashMap<String, String>();
 		
+		System.out.println( "[util][MessageUtil][parutilseXML]" + request);
 		InputStream inputStream = request.getInputStream();
 		SAXReader reader = new SAXReader();
         Document document = reader.read(inputStream);
@@ -88,7 +92,10 @@ public class MessageUtil {
         List<Element> elementList = root.elements();
         
         for (Element e : elementList)
+        {	
+        	System.out.println( "[util][MessageUtil][parutilseXML]for " + e.getName() + " " + e.getText());
             map.put(e.getName(), e.getText());
+        }
         
         inputStream.close();
         inputStream = null;
@@ -99,8 +106,11 @@ public class MessageUtil {
 	/**
 	 * To support CDATA
 	 */
-	private static XStream xstream = new XStream(new XppDriver() {
-        public HierarchicalStreamWriter createWriter(Writer out) {
+	private static XStream xstream = new XStream(new XppDriver() 
+	{
+        public HierarchicalStreamWriter createWriter(Writer out) 
+        {
+        	System.out.println( "[util][MessageUtil][createWriter]");
             return new PrettyPrintWriter(out) {
                 // Add CDATA tag
                 boolean cdata = true;
@@ -122,11 +132,33 @@ public class MessageUtil {
         }
     });
 	
+	public static  String textMessageToXml(com.bp.wei.model.message.response.TextMessage text) {  
+
+        xstream.alias("xml", text.getClass());  
+
+        return xstream.toXML(text);  
+
+    }  
+	
 	public static String messageToXml(IMessage message) {
         xstream.alias("xml", message.getClass());
+        System.out.println( "[util][MessageUtil][messageToXml]");
         if(message instanceof Article){
         	xstream.alias("item", new Article().getClass());
         }
         return xstream.toXML(message);
     }
+	
+	public static String newsMessageToXml(NewsMessage newsMessage) {
+		         xstream.alias("xml", newsMessage.getClass());
+		         xstream.alias("item", new Article().getClass());
+		         return xstream.toXML(newsMessage);
+	}
+	
+	/*
+	public static String musicMessageToXml(MusicMessage musicMessage) {
+		         xstream.alias("xml", musicMessage.getClass());
+		         return xstream.toXML(musicMessage);
+	}
+	*/
 }
