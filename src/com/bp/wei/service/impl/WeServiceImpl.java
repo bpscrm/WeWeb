@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 
 import com.bp.wei.model.AccessToken;
+import com.bp.wei.model.Oauth2AccessToken;
 import com.bp.wei.model.User;
 import com.bp.wei.model.message.response.TextMessage;
 import com.bp.wei.service.UserService;
@@ -40,10 +41,9 @@ public class WeServiceImpl implements WeService {
 		String respXML = null;
 		
 		log.info("Processing event :" + eventType + ", from user openid:" + fromUserName);
-		
-		if(MessageUtil.EVENT_TYPE_SUBSCRIBE.equalsIgnoreCase(eventType)){
-			AccessToken accessToken = WeUtil.getAccessToken();
-			User user = this.userSrv.getUser(accessToken.getToken(), fromUserName);
+		AccessToken accessToken = WeUtil.getAccessToken();
+		User user = this.userSrv.getUser(accessToken.getToken(), fromUserName);
+		if(MessageUtil.EVENT_TYPE_SUBSCRIBE.equalsIgnoreCase(eventType)){			
 			TextMessage text = new TextMessage();
 			if(user != null){				
 	            text.setContent("欢迎关注，" + user.getNickname());
@@ -60,7 +60,9 @@ public class WeServiceImpl implements WeService {
         } 
         // TODO 取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息
         else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
-        	// 取消订阅         
+        	respXML = "";         
+        }else if(eventType.equals(MessageUtil.EVENT_TYPE_CLICK)){
+        	
         }
 		
 		log.info("Message response: " + respXML);
@@ -81,6 +83,6 @@ public class WeServiceImpl implements WeService {
 			log.error(e.getMessage());
 		}
 		return tempSign != null && signature.equals(tempSign);
-	}
+	}	
 
 }

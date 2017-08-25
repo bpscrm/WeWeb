@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.bp.wei.model.Oauth2AccessToken;
 import com.bp.wei.model.User;
 import com.bp.wei.service.UserService;
 import com.bp.wei.util.WeUtil;
@@ -40,5 +41,23 @@ public class UserServiceImpl implements UserService {
 		
 		return user;
 	}
+
+	@Override
+	public User getUser(String code) {
+		User user = null;
+		Oauth2AccessToken accessToken = WeUtil.getOauth2AccessToken(code);
+		if(accessToken == null){
+			log.error("Cannot get valid Oauth2 access token for code:" + code);
+		}else if(accessToken.getAccessToken() == null){
+			log.error("Failed to get valid access token for code:" + code);
+		}else if(accessToken.getOpenId() == null){
+			log.error("Failed to get openid from code:" + code);
+		}else{
+			user = this.getUser(accessToken.getAccessToken(), accessToken.getOpenId());			
+		}
+		return user;
+	}
+	
+	
 
 }

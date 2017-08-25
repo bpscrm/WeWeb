@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bp.wei.model.AccessToken;
+import com.bp.wei.model.Oauth2AccessToken;
+import com.bp.wei.model.User;
 import com.bp.wei.service.impl.X509TrustManagerImpl;
 import net.sf.json.JSONObject;
 
@@ -23,6 +25,7 @@ public class WeUtil {
 	public final static String APPID = "wx4eabcc7676fe35b1";
 	public final static String APPSECRET = "6c763da4f3c974415308bb30c1f94b6e";
 	public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	public final static String oauth_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
 	
 	private static Logger log = LoggerFactory.getLogger(WeUtil.class);
 	
@@ -108,5 +111,27 @@ public class WeUtil {
 	    }  
 	    return accessToken;  
 	}  
+	
+	public static Oauth2AccessToken getOauth2AccessToken(String code){
+		Oauth2AccessToken accessToken = null;
+		String requestUrl = oauth_url.replace("APPID", APPID).replace("APPSECRET", APPSECRET).replace("CODE", code);
+		JSONObject jsonObject = httpRequest(requestUrl, "GET", null);  
+		// 如果请求成功  
+	    if (null != jsonObject) {  
+	        try {
+	        	accessToken = new Oauth2AccessToken();
+	        	accessToken.setAccessToken(jsonObject.getString("access_token"));  
+	            accessToken.setExpiresIn(jsonObject.getInt("expires_in")); 
+	            accessToken.setRefreshToken(jsonObject.getString("refresh_token"));
+	            accessToken.setOpenId(jsonObject.getString("openid"));
+	            accessToken.setScope(jsonObject.getString("scope"));
+	        }catch (Exception e) {  
+	            accessToken = null;  
+	            // 获取token失败  
+	            log.error("Get Oauth2AccessToken failed - errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+	        }  
+	    }  
+	    return accessToken;
+	}	
 
 }
