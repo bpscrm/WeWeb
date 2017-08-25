@@ -9,7 +9,7 @@ public interface FollowerinfoDao {
 
     int insertSelective(Followerinfo record);
 
-    String selectByPrimaryOpenid(String name);
+    String selectByPrimaryOpenid(String wechatUserid);
     
     Followerinfo selectByPrimaryKey(String id);
     
@@ -20,4 +20,6 @@ public interface FollowerinfoDao {
     int updateByPrimaryKeyWithBLOBs(Followerinfo record);
 
     int updateByPrimaryKey(Followerinfo record);
+    
+    int updateByFollowerID(Followerinfo record);
 }

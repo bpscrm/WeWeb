@@ -20,8 +20,10 @@ import com.bp.wei.service.impl.X509TrustManagerImpl;
 import net.sf.json.JSONObject;
 
 public class WeUtil {
-	public final static String APPID = "wx4eabcc7676fe35b1";
-	public final static String APPSECRET = "6c763da4f3c974415308bb30c1f94b6e";
+	//public final static String APPID = "wx4eabcc7676fe35b1";
+	//public final static String APPSECRET = "6c763da4f3c974415308bb30c1f94b6e";
+	public final static String APPID = "wx50c7fecf06ffdd0b";
+	public final static String APPSECRET = "69cb967254a95951ca67dcc665fcb190";	
 	public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	
 	private static Logger log = LoggerFactory.getLogger(WeUtil.class);
