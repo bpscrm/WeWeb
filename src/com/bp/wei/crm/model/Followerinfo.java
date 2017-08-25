@@ -23,6 +23,8 @@ public class Followerinfo {
     private String followDt;
 
     private String wechatUserid;
+    
+    private String followType; 
 
     private String description;
     
@@ -107,6 +109,14 @@ public class Followerinfo {
     public void setWechatUserid(String wechatUserid) {
         this.wechatUserid = wechatUserid == null ? null : wechatUserid.trim();
     }
+    
+    public String getFollowType() {
+        return followType;
+    }
+
+    public void setFollowType(String followType) {
+        this.followType = followType == null ? null : followType.trim();
+    }    
 
     public String getDescription() {
         return description;
