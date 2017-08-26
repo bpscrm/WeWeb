@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import com.bp.wei.model.AccessToken;
 import com.bp.wei.model.Oauth2AccessToken;
-import com.bp.wei.model.User;
 import com.bp.wei.service.impl.X509TrustManagerImpl;
 import net.sf.json.JSONObject;
 
@@ -25,9 +24,13 @@ public class WeUtil {
 	//public final static String APPID = "wx4eabcc7676fe35b1";
 	//public final static String APPSECRET = "6c763da4f3c974415308bb30c1f94b6e";
 	public final static String APPID = "wx50c7fecf06ffdd0b";
-	public final static String APPSECRET = "69cb967254a95951ca67dcc665fcb190";	
+	public final static String APPSECRET = "69cb967254a95951ca67dcc665fcb190";
+	
 	public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	public final static String oauth_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
 	public final static String oauth_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+	
+	public final static String redirect_url = "http://weweb.chinacloudapp.cn/WeWeb/oauth";
 	
 	private static Logger log = LoggerFactory.getLogger(WeUtil.class);
 	
@@ -116,7 +119,7 @@ public class WeUtil {
 	
 	public static Oauth2AccessToken getOauth2AccessToken(String code){
 		Oauth2AccessToken accessToken = null;
-		String requestUrl = oauth_url.replace("APPID", APPID).replace("APPSECRET", APPSECRET).replace("CODE", code);
+		String requestUrl = oauth_access_token_url.replace("APPID", APPID).replace("SECRET", APPSECRET).replace("CODE", code);
 		JSONObject jsonObject = httpRequest(requestUrl, "GET", null);  
 		// 如果请求成功  
 	    if (null != jsonObject) {  
@@ -133,7 +136,15 @@ public class WeUtil {
 	            log.error("Get Oauth2AccessToken failed - errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
 	        }  
 	    }  
+	    log.debug("Get Oauth2AccessToken: " + accessToken.toString());
 	    return accessToken;
 	}	
+	
+	public static String getRedirectUrl(){
+		String url = oauth_url.replace("APPID", APPID).replace("APPSECRET", APPSECRET);
+		url = url.replace("SCOPE", "snsapi_userinfo");
+		url = url.replace("STATE", "2001");
+		return url;
+	}
 
 }

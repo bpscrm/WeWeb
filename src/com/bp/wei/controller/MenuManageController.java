@@ -27,6 +27,7 @@ import com.bp.wei.model.Menu;
 import com.bp.wei.model.User;
 import com.bp.wei.service.MenuManager;
 import com.bp.wei.service.UserService;
+import com.bp.wei.util.WeUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -75,13 +76,21 @@ public class MenuManageController {
 	
 	@RequestMapping(value="redirectMember", method = RequestMethod.GET)
 	public void redirectMemberMgmt(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		String url = WeUtil.getRedirectUrl();
+		url = url.replace("REDIRECT_URI", WeUtil.redirect_url);
+		log.debug("Redirect to: " + url);
+		response.sendRedirect(url);
+	}
+	
+	@RequestMapping(value = "oauth", method = RequestMethod.GET)
+	public void authAndRedirect(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
 		request.setCharacterEncoding("UTF-8");  
         response.setCharacterEncoding("UTF-8"); 
         // 用户同意授权后，能获取到code
         String code = request.getParameter("code");
         String state = request.getParameter("state");
         log.info("Enter redirectMember and got the code as:" + code + ", state:" + state);
-        
+
         if(!"authdeny".equals(code)){
         	User user = userSrv.getUser(code);
         	
@@ -89,7 +98,7 @@ public class MenuManageController {
         		log.error("Failed to get User Info from wechat!");
         	}else{
         		log.info("Got user info:" + user.toString());
-        		String url = this.getRedirectUrl(user);
+        		String url = getRedirectUrl(user);
         		response.sendRedirect(url);
         	}
         }		

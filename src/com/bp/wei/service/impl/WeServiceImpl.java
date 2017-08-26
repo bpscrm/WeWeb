@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import com.bp.wei.crm.model.Followerinfo;
 import com.bp.wei.dao.FollowerinfoDao;
 import com.bp.wei.model.AccessToken;
-import com.bp.wei.model.Oauth2AccessToken;
 import com.bp.wei.model.User;
 import com.bp.wei.model.message.response.TextMessage;
 import com.bp.wei.service.UserService;
@@ -48,9 +47,10 @@ public class WeServiceImpl implements WeService {
 		String respXML = null;
 		
 		log.info("Processing event :" + eventType + ", from user openid:" + fromUserName);
-		AccessToken accessToken = WeUtil.getAccessToken();
-		User user = this.userSrv.getUser(accessToken.getToken(), fromUserName);
-		if(MessageUtil.EVENT_TYPE_SUBSCRIBE.equalsIgnoreCase(eventType)){			
+		
+		if(MessageUtil.EVENT_TYPE_SUBSCRIBE.equalsIgnoreCase(eventType)){	
+			AccessToken accessToken = WeUtil.getAccessToken();
+			User user = this.userSrv.getUser(accessToken.getToken(), fromUserName);
 			TextMessage text = new TextMessage();
 			String Nickname = "粉丝昵称";
 			if(user != null){				
@@ -100,6 +100,10 @@ public class WeServiceImpl implements WeService {
         	respXML = "";         
         }else if(eventType.equals(MessageUtil.EVENT_TYPE_CLICK)){
         	
+        }else if(eventType.equals(MessageUtil.EVENT_TYPE_VIEW)){
+        	String url = requestMap.get("EventKey");
+        	log.debug("########Got url callback request:" + url);
+        	respXML = "";
         }
 		
 		log.info("Message response: " + respXML);

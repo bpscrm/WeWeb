@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.bp.wei.model.AccessToken;
 import com.bp.wei.model.Oauth2AccessToken;
 import com.bp.wei.model.User;
 import com.bp.wei.service.UserService;
@@ -18,34 +19,29 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUser(String accessToken, String openId) {
-		String requestUrl = UserService.requestUrl.replace("ACCESS_TOKEN", accessToken).replace("OPENID", openId);
+		AccessToken token = WeUtil.getAccessToken();
+		String requestUrl = UserService.requestUrl.replace("ACCESS_TOKEN", token.getToken()).replace("OPENID", openId);
 		
 		JSONObject respJson = WeUtil.httpRequest(requestUrl, "GET", null);
 		
-		if(respJson == null){
+		if(respJson == null || respJson.has("errcode")){
 			log.error("Cannot get user info for OPENID: " + openId);
 			return null;
 		}
+		log.debug("Fetched user info from wechat:" + respJson.toString());
 		
-		User user = new User();
-		user.setOpenId(openId);
-		user.setNickname(respJson.getString("nickname"));
-		user.setCountry(respJson.getString("country"));
-		user.setProvince(respJson.getString("province"));
-		user.setCity(respJson.getString("city"));
-		user.setSex(respJson.getInt("sex"));
-		user.setSubscribe(respJson.getInt("subscribe"));
-		user.setSubscribeTime(respJson.getString("subscribe_time"));
-		user.setLanguage(respJson.getString("language"));
-		user.setHeadImgUrl(respJson.getString("headimgurl"));
+		User user = this.setUser(openId, respJson);
 		
 		return user;
 	}
 
 	@Override
 	public User getUser(String code) {
+		
 		User user = null;
+
 		Oauth2AccessToken accessToken = WeUtil.getOauth2AccessToken(code);
+		
 		if(accessToken == null){
 			log.error("Cannot get valid Oauth2 access token for code:" + code);
 		}else if(accessToken.getAccessToken() == null){
@@ -53,11 +49,60 @@ public class UserServiceImpl implements UserService {
 		}else if(accessToken.getOpenId() == null){
 			log.error("Failed to get openid from code:" + code);
 		}else{
-			user = this.getUser(accessToken.getAccessToken(), accessToken.getOpenId());			
+			String token = accessToken.getAccessToken();
+			String openid = accessToken.getOpenId();
+
+			user = this.getUser(token, openid);
 		}
 		return user;
 	}
 	
 	
-
+	private User setUser(String openId, JSONObject respJson){
+		if(openId == null || respJson == null){
+			return null;
+		}
+		User user = new User();
+		
+		user.setOpenId(openId);
+		
+		
+		String nickName = respJson.getString("nickname");
+		if(nickName != null){
+			user.setNickname(nickName);
+		}
+		String country = respJson.getString("country");
+		if(country != null){
+			user.setCountry(country);
+		}
+		String province = respJson.getString("province");
+		if(province != null){
+			user.setProvince(province);
+		}
+		String city = respJson.getString("city");
+		if(city != null){
+			user.setCity(city);
+		}
+		int sex = respJson.getInt("sex");
+		if(sex >= 0){
+			user.setSex(sex);
+		}
+		int subscribe = respJson.getInt("subscribe");
+		if(subscribe >=0 ){
+			user.setSubscribe(subscribe);
+		}
+		String subscribeTime = respJson.getString("subscribe_time");
+		if(subscribeTime != null){
+			user.setSubscribeTime(subscribeTime);
+		}
+		String language = respJson.getString("language");
+		if(language != null){
+			user.setLanguage(language);
+		}
+		String headImgUrl = respJson.getString("headimgurl");
+		if(headImgUrl != null){
+			user.setHeadImgUrl(headImgUrl);
+		}
+		return user;
+	}
 }
