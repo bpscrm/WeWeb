@@ -10,11 +10,15 @@ import com.bp.wei.dao.MemberDao;
 import com.bp.wei.dao.MemberinfoDao;
 import com.bp.wei.dao.FollowerinfoDao;
 import com.bp.wei.dao.MemberToFollowerDao;
+import com.bp.wei.dao.QAOnlineDao;
+import com.bp.wei.dao.QAOnlineToFollowerDao;
 import com.bp.wei.crm.model.Followerinfo;
 import com.bp.wei.crm.model.Member;
 import com.bp.wei.crm.model.MemberToFollower;
 import com.bp.wei.crm.model.Memberinfo;
 import com.bp.wei.crm.model.MemberinfoWithBLOBs;
+import com.bp.wei.crm.model.QAOnlineToFollower;
+import com.bp.wei.crm.model.QAOnlineWithBLOBs;
 import com.bp.wei.service.CRMDBManageService;
 
 @Service
@@ -24,10 +28,16 @@ public class CRMDBManageServiceImpl implements CRMDBManageService {
 	
 	
 	@Resource
-	private MemberinfoDao mbdao;
+	private FollowerinfoDao fldao;
 	
 	@Resource
-	private FollowerinfoDao fldao;
+	private QAOnlineDao qadao;
+	
+	@Resource
+	private QAOnlineToFollowerDao qatofldao;	
+	
+	@Resource
+	private MemberinfoDao mbdao;
 	
 	@Resource
 	private MemberToFollowerDao mtfdao;
@@ -101,6 +111,41 @@ public class CRMDBManageServiceImpl implements CRMDBManageService {
 		}
 	}
 		
+	
+	/////////////////////////////////////////////////////////////你问我答
+	//search follower
+		public Followerinfo getFollowerInfo(String wechatUserid) {
+			Followerinfo followerinfo = fldao.selectFollowerInfoByKey(wechatUserid);
+			return followerinfo;
+		}
+		
+		//search follower QA online
+		public Followerinfo getFollowerQAOnlineList(String id) {
+			Followerinfo followerinfo = fldao.selectFollowerQAOnlineList(id);
+			return followerinfo;
+		}
+		
+		//set QA online
+		public int setQAOnlineinfo(QAOnlineWithBLOBs record, String followerid) {
+			//insert QA Online
+			int result = qadao.insertQAOnlineInfo(record);
+			
+			//insert relation to follower
+			QAOnlineToFollower qatofl = new QAOnlineToFollower();
+			qatofl.setEc1QaOnlineEc1Followerec1FollowerIda(followerid);
+			qatofl.setEc1QaOnlineEc1Followerec1QaOnlineIdb(record.getId());
+			
+			result = qatofldao.insertQAOnlineToFollower(qatofl);
+			
+			return result;
+		}	
+		
+		//get QA Online info for view
+		@Override
+		public QAOnlineWithBLOBs getQAOnlineInfo(String id) {
+			QAOnlineWithBLOBs qaonline = qadao.selectQAOnlineByKey(id);
+			return qaonline;
+		}	
 
 	//for examples
 	@Resource

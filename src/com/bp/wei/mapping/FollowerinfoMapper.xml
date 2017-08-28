@@ -28,6 +28,16 @@
   		<result property="followDt" column="myflfldt"/>
   	</collection>
   </resultMap>
+  
+  <resultMap id="ResultMapWithFollowerQAOnline" type="com.bp.wei.crm.model.Followerinfo">
+  	<id property="id" column="flid"/>
+  	<result property="name" column="flname"/>
+  	<collection property="qaonline" javaType="java.util.List" ofType="com.bp.wei.crm.model.QAOnline">
+  		<id property="id" column="qid"/>
+  		<result property="name" column="qname"/>
+  		<result property="questionDt" column="qdate"/>
+  	</collection>
+  </resultMap>    
   <!-- end -->
   
   <sql id="Base_Column_List">
@@ -51,6 +61,25 @@
   </delete>  
   
   <!-- start-->
+  <select id="selectFollowerQAOnlineList" parameterType="java.lang.String" resultMap="ResultMapWithFollowerQAOnline">
+    SELECT fl.id flid, qa.id qid, qa.name qname, DATE_FORMAT(qa.date_entered,'%Y%m%d') qdate 
+      FROM ec1_follower fl,ec1_qa_online_ec1_follower_c qatofl, ec1_qa_online qa
+     WHERE qa.id = qatofl.ec1_qa_online_ec1_followerec1_qa_online_idb
+       AND fl.id = qatofl.ec1_qa_online_ec1_followerec1_follower_ida
+       AND qa.deleted = "0"
+       AND fl.id = #{id,jdbcType=CHAR}
+      Order by qa.date_entered desc
+  </select>
+  
+  <select id="selectFollowerInfoByKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_follower
+    where wechat_userid = #{wechatUserid,jdbcType=CHAR}
+  </select>  
+  
   <select id="selectMyFollowerListByKey" parameterType="java.lang.String" resultMap="ResultMapWithMyFollower">
 	SELECT fl.id flid, fl.name flname, myfl.id myflid, myfl.name myflname, myfl.follow_dt myflfldt
       FROM ec1_follower fl, ec1_follower myfl, ec1_follower_ec1_follower_c fltomyfl

@@ -1,11 +1,8 @@
 package com.bp.wei.crm.model;
 
 import java.util.Date;
-import java.util.List;
 
-import com.bp.wei.crm.model.QAOnline;
-
-public class Followerinfo {
+public class QAOnline {
     private String id;
 
     private String name;
@@ -22,17 +19,9 @@ public class Followerinfo {
 
     private String assignedUserId;
 
-    private String followDt;
+    private String questionDt;
 
-    private String wechatUserid;
-    
-    private String followType; 
-
-    private String description;
-    
-    private List<Followerinfo> follower;
-    
-    private List<QAOnline> qaonline;
+    private Date askDt;
 
     public String getId() {
         return id;
@@ -98,51 +87,19 @@ public class Followerinfo {
         this.assignedUserId = assignedUserId == null ? null : assignedUserId.trim();
     }
 
-    public String getFollowDt() {
-        return followDt;
+    public String getQuestionDt() {
+        return questionDt;
     }
 
-    public void setFollowDt(String followDt) {
-        this.followDt = followDt;
+    public void setQuestionDt(String questionDt) {
+        this.questionDt = questionDt;
     }
 
-    public String getWechatUserid() {
-        return wechatUserid;
+    public Date getAskDt() {
+        return askDt;
     }
 
-    public void setWechatUserid(String wechatUserid) {
-        this.wechatUserid = wechatUserid == null ? null : wechatUserid.trim();
+    public void setAskDt(Date askDt) {
+        this.askDt = askDt;
     }
-    
-    public String getFollowType() {
-        return followType;
-    }
-
-    public void setFollowType(String followType) {
-        this.followType = followType == null ? null : followType.trim();
-    }    
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
-    }
-    
-	public List<Followerinfo> getFollower() {
-		return follower;
-	}
-
-	public void setFollower(List<Followerinfo> follower) {
-		this.follower = follower;
-	}
-	
-	public List<QAOnline> getQAOnline() {
-		return qaonline;
-	}
-
-	public void setQAOnline(List<QAOnline> qaonline) {
-		this.qaonline = qaonline;
-	}
 }

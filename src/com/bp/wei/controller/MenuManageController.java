@@ -23,8 +23,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bp.wei.model.Button;
 import com.bp.wei.model.ComboButton;
+import com.bp.wei.crm.model.Followerinfo;
 import com.bp.wei.model.Menu;
+import com.bp.wei.crm.model.QAOnlineWithBLOBs;
 import com.bp.wei.model.User;
+import com.bp.wei.service.CRMDBManageService;
 import com.bp.wei.service.MenuManager;
 import com.bp.wei.service.UserService;
 import com.bp.wei.util.WeUtil;
@@ -47,6 +50,10 @@ public class MenuManageController {
 	@Autowired
 	private UserService userSrv;
 	
+	@Autowired
+	private CRMDBManageService crmdbSrv;
+	
+	//////////////////////////////////////////////////////////////////////for 设定微信服务号菜单
 	@RequestMapping(value="menu", method = RequestMethod.GET)
 	public String redirectMenu(){
 		
@@ -74,6 +81,81 @@ public class MenuManageController {
 		return result;
 	}
 	
+	//////////////////////////////////////////////////////////////////////for 你问我答
+	@RequestMapping(value="QAOnlineIndex", method = RequestMethod.GET)
+	public String redirectQAOnlineIndexu(){
+		
+		System.out.println( "[MenuMangerController][redirectQAOnlineIndexu]");
+		return "qaonlineindex";
+	}
+	
+	@RequestMapping(value="getFollowerInfo", method = RequestMethod.GET)
+	public @ResponseBody Followerinfo findFollowerInfo(String id){
+		log.debug("###########open id: " + id);
+		if(id == null || id.length() == 0){
+			return null;
+		}
+		Followerinfo followinfo = crmdbSrv.getFollowerInfo(id);
+		log.debug("###########" + followinfo.toString());
+		return followinfo;
+	}
+	
+	
+	@RequestMapping(value="getFollowerQAOnlineList", method = RequestMethod.GET)
+	public @ResponseBody Followerinfo findFollowerQAOnlineList(String id){
+		log.debug("###########memberid: " + id);
+		if(id == null || id.length() == 0){
+			return null;
+		}
+
+		Followerinfo followinfo = crmdbSrv.getFollowerQAOnlineList(id);
+		log.debug("###########" + followinfo.toString());
+		return followinfo;
+	}
+	
+	
+	@RequestMapping(value="setQAOnlineinfo", method = RequestMethod.POST)
+	public @ResponseBody int setQAonlineinfo(@RequestBody JSONObject strQAOnlineinfo){
+		
+		log.debug("Start to set QAOnlineinfo...");
+		if(strQAOnlineinfo == null){
+			log.error("Failed to get qa online info from UI: " + strQAOnlineinfo);
+			return -1;
+		}
+		
+		System.out.println("#################" + strQAOnlineinfo.toString());
+		
+		QAOnlineWithBLOBs qaonline = new QAOnlineWithBLOBs();
+		
+		String cname = strQAOnlineinfo.getString("select_type_name");
+		if(cname != null && cname.length() > 0){
+			qaonline.setName(cname);
+		}
+		
+		String cdesc = strQAOnlineinfo.getString("question_name");
+		if(cdesc != null && cdesc.length() > 0){
+			qaonline.setDescription(cdesc);
+		}
+		
+		int result = crmdbSrv.setQAOnlineinfo(qaonline, strQAOnlineinfo.getString("followid_name"));
+		
+		System.out.println("@@@@@@@@@@@@@@result: " + result);
+		return result;		
+	}
+
+	@RequestMapping(value="qaonlineview", method = RequestMethod.GET)
+	public String redirectQAOnlineview(){	
+		return "qaonlineview";
+	}
+	
+	@RequestMapping(value="getqaonlineinfo", method = RequestMethod.GET)
+	public @ResponseBody QAOnlineWithBLOBs findQAOnlineInfo(String id){
+		
+		return crmdbSrv.getQAOnlineInfo(new String(id));
+		
+	}	
+	
+	//////////////////////////////////////////////////////////////////////for 会员管理
 	@RequestMapping(value="redirectMember", method = RequestMethod.GET)
 	public void redirectMemberMgmt(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
 		String url = WeUtil.getRedirectUrl();
@@ -117,86 +199,7 @@ public class MenuManageController {
 		return sb.toString();
 	}
 	
-//	/**
-//	 * 
-//	 * @param jmenu
-//	 * @return
-//	 * @see Temporary solution for mapping json menu to menu class, to be changed
-//	 */
-//	private Menu fromJSONObject(JSONObject jmenu){
-//		Menu menu = new Menu();
-////		ObjectMapper mapper = new ObjectMapper(); 
-////		mapper.convertValue(jmenu, Menu.class);
-//		JSONArray bnames = (JSONArray) jmenu.get("buttons");
-//		JSONArray sbnames = (JSONArray) jmenu.get("subButtons");
-//		int i = 0;		
-//		List<ComboButton> buttons = new ArrayList<ComboButton>();
-//		for(int a = 0; a < bnames.size(); a ++){
-//			String bname = bnames.get(a).toString();
-//			if(bname == null || "".equals(bname)){
-//				continue;
-//			}
-//			ComboButton btn = new ComboButton();
-//			btn.setName(bname);		
-//
-//			List<Button> subButtons = new ArrayList<Button>();
-//			
-//			for(int b = i,c = 0; c < 5; b ++, c ++){
-//				String sbname = sbnames.get(b).toString();
-//				if(sbname == null || "".equals(sbname)){
-//					i ++;
-//					continue;
-//				}
-//				Button sbtn = new Button();
-//				sbtn.setName(sbname);
-//				subButtons.add(sbtn);
-//				i ++;
-//			}
-//			Button[] sbtns = subButtonsToArray(subButtons);
-//			if(sbtns != null && sbtns.length > 0){
-//				btn.setSub_button(sbtns);
-//			}
-//
-//			buttons.add(btn);
-//		}
-//		ComboButton[] btns = buttonsToArray(buttons);
-//		if(btns != null){
-//			menu.setButton(btns);
-//		}
-//		System.out.println("Encode menu as: " +JSONObject.fromObject(menu).toString());
-//		return menu;
-//	}
-//	
-//	private Button[] subButtonsToArray(List<Button> buttons){
-//		
-//		if(buttons.size() == 0){
-//			return null;
-//		}
-//		Button[] btns = new Button[buttons.size()];
-//		int i = 0;
-//		for(Button btn:buttons){
-//			btns[i] = btn;
-//			i ++;
-//		}
-//		
-//		return btns;
-//	}
-//	
-//	private ComboButton[] buttonsToArray(List<ComboButton> buttons){
-//		
-//		if(buttons.size() == 0){
-//			return null;
-//		}
-//		ComboButton[] btns = new ComboButton[buttons.size()];
-//		int i = 0;
-//		for(ComboButton btn:buttons){
-//			btns[i] = btn;
-//			i ++;
-//		}
-//		
-//		return btns;
-//	}
-//	
+	///////
 	public static void main(String[] args){
 		int i =0;
 		System.out.println( "[MenuMangerController][main]");

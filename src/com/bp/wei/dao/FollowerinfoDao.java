@@ -22,4 +22,10 @@ public interface FollowerinfoDao {
     int updateByPrimaryKey(Followerinfo record);
     
     int updateByFollowerID(Followerinfo record);
+    
+    //for get Follower id
+    Followerinfo selectFollowerInfoByKey(String wechatUserid);
+    
+    //get follower QA Online List
+    Followerinfo selectFollowerQAOnlineList(String id);
 }
