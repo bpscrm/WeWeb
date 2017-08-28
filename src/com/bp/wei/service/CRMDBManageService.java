@@ -30,8 +30,7 @@ public interface CRMDBManageService {
 	//get QA Online info for view
 	QAOnlineWithBLOBs getQAOnlineInfo(String id);
 	
-	////////////////////////////////////////////////////////////////////////
-	///////////////////for member
+	////////////////////////////////////////////////////////////for member
 	//insert
 	int insertMemberinfo(MemberinfoWithBLOBs memberinfowithblogs, String openid);
 	//search
@@ -62,7 +61,8 @@ public interface CRMDBManageService {
 	//update
 	int updateFeedbackinfo(FeedbackWithBLOBs feedbackinfo);
 
-	//for examples
+	
+	/////////////////////////////////////////////////////////////////for examples
 	Member getMemberById(int memberId);
 	int setMember(Member member);
 	

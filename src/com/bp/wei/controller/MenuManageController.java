@@ -4,41 +4,24 @@
 package com.bp.wei.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bp.wei.model.Button;
-import com.bp.wei.model.ComboButton;
-import com.bp.wei.crm.model.Followerinfo;
-import com.bp.wei.model.Menu;
-import com.bp.wei.crm.model.QAOnlineWithBLOBs;
 import com.bp.wei.model.User;
-import com.bp.wei.service.CRMDBManageService;
 import com.bp.wei.service.MenuManager;
 import com.bp.wei.service.UserService;
 import com.bp.wei.util.WeUtil;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-/**
- * @author liyanc
- *
- */
 @Controller
 @RequestMapping()
 public class MenuManageController {
@@ -50,8 +33,6 @@ public class MenuManageController {
 	@Autowired
 	private UserService userSrv;
 	
-	@Autowired
-	private CRMDBManageService crmdbSrv;
 	
 	//////////////////////////////////////////////////////////////////////for 设定微信服务号菜单
 	@RequestMapping(value="menu", method = RequestMethod.GET)
@@ -83,10 +64,10 @@ public class MenuManageController {
 	
 	//////////////////////////////////////////////////////////////////////for 你问我答
 	@RequestMapping(value="QAOnlineIndex", method = RequestMethod.GET)
-	public String redirectQAOnlineIndexu(){
+	public String redirectQAOnlineIndex(){
 		
-		System.out.println( "[MenuMangerController][redirectQAOnlineIndexu]");
-		return "qaonlineindex";
+		System.out.println( "[MenuMangerController][redirectQAOnlineIndex]");
+		return "indexqaonline";
 	}
 	
 	
@@ -95,12 +76,9 @@ public class MenuManageController {
 	@RequestMapping(value="MemberIndex", method = RequestMethod.GET)
 	public String redirectMemberIndex(){
 		
-		System.out.println( "[MenuMangerController][redirectQAOnlineIndexu]");
-		return "memberindex";
+		System.out.println( "[MenuMangerController][redirectMemberIndex]");
+		return "indexmember";
 	}
-	
-	
-	
 	
 	@RequestMapping(value="redirectMember", method = RequestMethod.GET)
 	public void redirectMemberMgmt(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
@@ -145,7 +123,7 @@ public class MenuManageController {
 		return sb.toString();
 	}
 	
-	///////
+	//////////////////////////////////////////////////////////////////////
 	public static void main(String[] args){
 		int i =0;
 		System.out.println( "[MenuMangerController][main]");

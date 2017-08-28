@@ -1,27 +1,8 @@
 package com.bp.wei.controller;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +21,7 @@ import com.bp.wei.crm.model.Childinfo;
 import com.bp.wei.crm.model.FeedbackWithBLOBs;
 import com.bp.wei.crm.model.Purchaseinfo;
 import com.bp.wei.service.CRMDBManageService;
-import com.swetake.util.Qrcode;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -57,8 +36,7 @@ public class MemberMgmtController {
 	public String redirectMemberregister(){		
 		return "memberregister";
 	}
-	
-	
+		
 	@RequestMapping(value="memberinfo", method = RequestMethod.GET)
 	public String redirectMemberinfo(){	
 		return "memberinfo";
@@ -67,12 +45,6 @@ public class MemberMgmtController {
 	@RequestMapping(value="mypromotion", params = {"openid"}, method = RequestMethod.GET)
 	public String mypromotion(){	
 		return "mypromotion";
-	}
-	
-	
-	@RequestMapping(value="register", method = RequestMethod.GET)
-	public String redirectRegister(){		
-		return "register";
 	}
 
 	@RequestMapping(value="childrenlist", method = RequestMethod.GET)
@@ -120,29 +92,6 @@ public class MemberMgmtController {
 		return "myfollower";
 	}
 	
-	
-	
-	
-	@RequestMapping(value="registerinfo", method = RequestMethod.POST)
-	public ModelAndView viewRegisterinfo(HttpServletRequest request){	
-		log.debug("redirectRegisterinfo start...");
-		Member member = new Member();
-		member.setName(request.getParameter("membername"));
-		log.debug("################" + member.toString());
-		ModelAndView result = new ModelAndView();
-		//Map<String, Object> modelMap = new HashMap<String, Object>();
-		result.setViewName("registerinfo");		
-		result.addObject("member", JSONObject.fromObject(member));	
-		return result;
-	}
-	
-	@RequestMapping(value="getmember", method = RequestMethod.GET)
-	public @ResponseBody Member findMember(int id){
-		
-		return memberService.getMemberById(new Integer(id));
-		
-	}
-	
 	@RequestMapping(value="getMemberchild", method = RequestMethod.GET)
 	public @ResponseBody Memberinfo findMemberWithChildren(String id){
 		log.debug("###########memberid: " + id);
@@ -155,32 +104,6 @@ public class MemberMgmtController {
 		return member;
 	}
 	
-	@RequestMapping(value="setmember", method = RequestMethod.POST)
-	public @ResponseBody int setMember(@RequestBody JSONObject strMember){
-		log.debug("Start to set member...");
-		if(strMember == null){
-			log.error("Failed to get member info from UI: " + strMember);
-			return -1;
-		}
-		
-		Member member = new Member();
-		String mobile = strMember.getString("membermobile");
-		if(mobile != null && mobile.length() > 0){
-			member.setMobile(mobile);
-		}
-		String name = strMember.getString("membername");
-		if(name != null && name.length() > 0){
-			member.setName(name);
-		}
-		member.setGender("F");
-		member.setBirthday("2017-01-01");
-		
-		int result = memberService.setMember(member);		
-		
-		return result;		
-	}
-	
-	/////////for follower
 	//search myfollower
 	@RequestMapping(value="getFollowerlist", method = RequestMethod.GET)
 	public @ResponseBody Followerinfo findMyFollowerList(String id){
@@ -194,8 +117,6 @@ public class MemberMgmtController {
 		return followerinfo;
 	}
 	
-	
-	/////////for member 
 	//insert member
 	@RequestMapping(value="setmemberinfo", method = RequestMethod.POST)
 	public @ResponseBody int setMemberinfo(@RequestBody JSONObject strMemberinfo){
@@ -255,6 +176,7 @@ public class MemberMgmtController {
 		return result;		
 	
 	}
+	
 	//search member
 	@RequestMapping(value="getmemberinfo", method = RequestMethod.GET)
 	public @ResponseBody MemberinfoWithBLOBs findMemberinfo(String name){
@@ -262,6 +184,7 @@ public class MemberMgmtController {
 		return memberService.getMemberinfobyname(new String(name));
 		
 	}
+	
 	//update member 
 	@RequestMapping(value="updatememberinfo", method = RequestMethod.POST)
 	public @ResponseBody int updateMemberinfo(@RequestBody JSONObject strMemberinfo){
@@ -318,14 +241,12 @@ public class MemberMgmtController {
 			memberinfo.setMbAddr(addr);
 		}
 		
-		
 		int result = memberService.updateMemberinfo(memberinfo);
 		
 		System.out.println("@@@@@@@@@@@@@@result: " + result);
 		return result;	
 	}
 	
-	/////////for child
 	//insert child
 	@RequestMapping(value="setchildinfo", method = RequestMethod.POST)
 	public @ResponseBody int setChildinfo(@RequestBody JSONObject strChildinfo){
@@ -366,6 +287,7 @@ public class MemberMgmtController {
 		System.out.println("@@@@@@@@@@@@@@result: " + result);
 		return result;		
 	}
+	
 	//search child
 	@RequestMapping(value="getchildinfo", method = RequestMethod.GET)
 	public @ResponseBody Childinfo findChildinfo(String id){
@@ -373,6 +295,7 @@ public class MemberMgmtController {
 		return memberService.getchildinfo(new String(id));
 		
 	}
+	
 	//update child
 	@RequestMapping(value="updatechildinfo", method = RequestMethod.POST)
 	public @ResponseBody int updateChildinfo(@RequestBody JSONObject strChildinfo){
@@ -419,8 +342,6 @@ public class MemberMgmtController {
 		return result;		
 	}
 	
-	
-	/////////for purchase
 	//search purchase
 	@RequestMapping(value="getPurchaselist", method = RequestMethod.GET)
 	public @ResponseBody Memberinfo findMemberWithPurchase(String id){
@@ -447,8 +368,6 @@ public class MemberMgmtController {
 	}
 	
 	
-		
-	/////////for feedback
 	//insert feedback
 	@RequestMapping(value="setfeedbackinfo", method = RequestMethod.POST)
 	public @ResponseBody int setfeedbackinfo(@RequestBody JSONObject strfeedbackinfo){
@@ -479,13 +398,12 @@ public class MemberMgmtController {
 			feedback.setFdDt(ftime);
 		}
 		
-
-		
 		int result = memberService.insertFeedbackinfo(feedback, strfeedbackinfo.getString("purchaseid"));
 		
 		System.out.println("@@@@@@@@@@@@@@result: " + result);
 		return result;		
 	}
+	
 	//search feedback
 	@RequestMapping(value="getfeedbackinfo", method = RequestMethod.GET)
 	public @ResponseBody FeedbackWithBLOBs findFeedbackinfo(String id){
@@ -540,15 +458,62 @@ public class MemberMgmtController {
 		if(ftime != null && ftime.length() > 0){
 			feedback.setFdDt(ftime);
 		}
-		
-
-		
+				
 		int result = memberService.updateFeedbackinfo(feedback);
 		
 		System.out.println("@@@@@@@@@@@@@@result: " + result);
 		return result;		
 	}
-	
-	
 
+	
+	/////////////////////////////////////////////////////////////////////for examples
+	@RequestMapping(value="register", method = RequestMethod.GET)
+	public String redirectRegister(){		
+		return "register";
+	}
+	
+	@RequestMapping(value="registerinfo", method = RequestMethod.POST)
+	public ModelAndView viewRegisterinfo(HttpServletRequest request){	
+		log.debug("redirectRegisterinfo start...");
+		Member member = new Member();
+		member.setName(request.getParameter("membername"));
+		log.debug("################" + member.toString());
+		ModelAndView result = new ModelAndView();
+		//Map<String, Object> modelMap = new HashMap<String, Object>();
+		result.setViewName("registerinfo");		
+		result.addObject("member", JSONObject.fromObject(member));	
+		return result;
+	}
+	
+	@RequestMapping(value="getmember", method = RequestMethod.GET)
+	public @ResponseBody Member findMember(int id){
+		
+		return memberService.getMemberById(new Integer(id));
+		
+	}
+	
+	@RequestMapping(value="setmember", method = RequestMethod.POST)
+	public @ResponseBody int setMember(@RequestBody JSONObject strMember){
+		log.debug("Start to set member...");
+		if(strMember == null){
+			log.error("Failed to get member info from UI: " + strMember);
+			return -1;
+		}
+		
+		Member member = new Member();
+		String mobile = strMember.getString("membermobile");
+		if(mobile != null && mobile.length() > 0){
+			member.setMobile(mobile);
+		}
+		String name = strMember.getString("membername");
+		if(name != null && name.length() > 0){
+			member.setName(name);
+		}
+		member.setGender("F");
+		member.setBirthday("2017-01-01");
+		
+		int result = memberService.setMember(member);		
+		
+		return result;		
+	}
 }
