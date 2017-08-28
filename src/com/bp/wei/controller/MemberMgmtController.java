@@ -32,6 +32,17 @@ public class MemberMgmtController {
 	@Autowired
 	CRMDBManageService memberService;
 	
+	@RequestMapping(value="getFollowerIDForMemberMgmt", method = RequestMethod.GET)
+	public @ResponseBody Followerinfo findFollowerInfo(String id){
+		log.debug("###########open id: " + id);
+		if(id == null || id.length() == 0){
+			return null;
+		}
+		Followerinfo followinfo = memberService.getFollowerInfo(id);
+		log.debug("###########" + followinfo.toString());
+		return followinfo;
+	}
+	
 	@RequestMapping(value="memberregister", method = RequestMethod.GET)
 	public String redirectMemberregister(){		
 		return "memberregister";

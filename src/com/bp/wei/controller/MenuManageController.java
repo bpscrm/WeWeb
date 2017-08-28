@@ -70,7 +70,48 @@ public class MenuManageController {
 		return "indexqaonline";
 	}
 	
+	@RequestMapping(value="redirectQAOnline", method = RequestMethod.GET)
+	public void redirectQAOnlineMgmt(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		String url = WeUtil.getRedirectUrl();
+		url = url.replace("REDIRECT_URI", "http://119.23.206.200/EnglishCenterZHH/oauthQAOnline");
+		log.debug("Redirect to: " + url);
+		response.sendRedirect(url);
+	}
 	
+	@RequestMapping(value = "oauthQAOnline", method = RequestMethod.GET)
+	public void authAndRedirectQAOnline(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		request.setCharacterEncoding("UTF-8");  
+        response.setCharacterEncoding("UTF-8"); 
+        // 用户同意授权后，能获取到code
+        String code = request.getParameter("code");
+        String state = request.getParameter("state");
+        log.info("Enter redirectQAOnline and got the code as:" + code + ", state:" + state);
+
+        if(!"authdeny".equals(code)){
+        	User user = userSrv.getUser(code);
+        	
+        	if(user == null){
+        		log.error("Failed to get User Info from wechat!");
+        	}else{
+        		log.info("Got user info:" + user.toString());
+        		String url = getRedirectQAOnlineUrl(user);
+        		response.sendRedirect(url);
+        	}
+        }		
+	}
+	
+	private String getRedirectQAOnlineUrl(User user){
+		StringBuffer sb = new StringBuffer("http://119.23.206.200/EnglishCenterZHH/QAOnlineIndex");
+		sb.append("?");
+		if(user.getOpenId() != null){
+			sb.append("openid=" + user.getOpenId());
+			sb.append("&");
+		}
+		if(user.getNickname()!=null){
+			sb.append("nickname="+user.getNickname());
+		}
+		return sb.toString();
+	}
 	
 	//////////////////////////////////////////////////////////////////////for 会员管理
 	@RequestMapping(value="MemberIndex", method = RequestMethod.GET)
@@ -111,7 +152,7 @@ public class MenuManageController {
 	}
 	
 	private String getRedirectUrl(User user){
-		StringBuffer sb = new StringBuffer("http://www.wecarecrm.cn/MemberMgmt");
+		StringBuffer sb = new StringBuffer("http://119.23.206.200/EnglishCenterZHH/MemberIndex");
 		sb.append("?");
 		if(user.getOpenId() != null){
 			sb.append("openid=" + user.getOpenId());

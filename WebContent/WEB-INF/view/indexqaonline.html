@@ -47,7 +47,7 @@
 				
 				<div class="page-btn-area">
 					<a class="page-btn page-btn_primary" href="javascript:setQAOnlineinfo();">新增</a>
-					<input type="hidden" id="openid_id" name="openid_name" value="888888" />
+					<input type="hidden" id="openid_id" name="openid_name" value="1" />
 					<input type="hidden" id="followid_id" name="followid_name" value="1" />
 				</div>			
 	
@@ -182,7 +182,7 @@
 			//form 初始化			
 			$(document).ready(function() {				
 				//				
-				//$("#openid_id").val($.getUrlParam('openid'));
+				$("#openid_id").val($.getUrlParam('openid'));
 				alert(document.getElementById('openid_id').value);
 				
 				//获取Follower ID

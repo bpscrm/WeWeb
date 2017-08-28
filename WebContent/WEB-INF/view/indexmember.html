@@ -70,26 +70,10 @@
 			<br />
 			<br />
 			<br />
-			<article class="weui-article">
-				<p>
-					如果你不是微信进入此页面，请设定你的手机号码，作为测试数据为后续页面使用
-				</p>
+						
+			<input type="hidden" id="openid_id" name="openid_name" value="1" />
+			<input type="hidden" id="followid_id" name="followid_name" value="1" />
 
-				<div class="weui-cell">
-					<div class="weui-cell__hd"><label class="weui-label">手机号码</label></div>
-					<div class="weui-cell__bd">
-						<input id="membertelnumid" name="membertelnumname" class="weui-input" type="text" pattern="[0-9]*" placeholder="手机号码" />
-					</div>
-				</div>
-
-				<div class="page__bd page__bd_spacing">
-					<div class="page-btn-area">
-						<a class="page-btn page-btn_primary" href="javascript:gettestfollowerid();">获取测试粉丝资料</a>
-						<input type="hidden" id="followid" value="1" />
-						<input type="hidden" id="membertel" value="2" />
-					</div>
-				</div>
-			</article>
 		</div>
 
 		<div class="weui-footer">
@@ -105,8 +89,6 @@
 		
 		
 		<script type="text/javascript">
-			//var gbl_openid;
-		
 			function parse_query_string(query) 
 			{
 				var params = {};
@@ -124,43 +106,10 @@
 				return params;
 			}
 				
-			//var query_string = location.search;
-			//var parsed_qs = parse_query_string(query_string);
-			//var ws_appid_pos = parsed_qs.state.indexOf("appid");
-			//var ws_appid = parsed_qs.state.substring(ws_appid_pos+5);
-			//var ws_appsecret = parsed_qs.state.substring(0,ws_appid_pos);
-		
-			//var token_url ="https://api.weixin.qq.com/sns/oauth2/access_token?appid="+ws_appid +
-			//	"&secret="+ws_appsecret+"&code="+parsed_qs.code+"&grant_type=authorization_code";
-			//var abc_url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=3.11986,101.67764&sensor=true";
-			//alert("token_url "+token_url);
-			//alert(ws_appid);
-		
-			//$.ajax(
-			//{ 				
-			//	type: "get",   
-		   	 //url: "getopenid",   
-		    	//async: false,
-		    	//cache: false,
-		    	//dataType: 'text',
-		    	//data: {appid: ws_appid, secret: ws_appsecret, code: parsed_qs.code},
-		    	//contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-				//success: function(data) {
-				//	alert("Success "+data);
-				//	gbl_openid = data;
-				//},           	
-				//error: function(data) {
-				//	alert('failed:' + data.msg);
-		//	}});
-				
-			//alert("after getopenid ");
-		
-		
 			function memberregister() {						
-				var flid = document.getElementById('followid').value;
-				var mbtel = document.getElementById('membertel').value;
+				var flid = document.getElementById('followid_id').value;
 				
-				if(flid != "" & mbtel != ""){
+				if(flid != ""){
 					$.ajax({
 						type: 'get',
 						url: 'memberregister',
@@ -169,22 +118,21 @@
 						dataType: 'json',
 						　　　　　　contentType: 'application/json',
 						success: function(data) {
-							window.location.href = 'memberregister.html?flid=' + flid + '&mbtel=' + mbtel;
+							window.location.href = 'memberregister.html?flid=' + flid;
 						},
 						error: function(data) {
 							alert(data.msg);
 						}
 					});
 				} else {
-					alert("请先   获取测试粉丝资料");
+					alert("资料有误");
 				}
 			}
 
 			function memberinfo() {
-				var flid = document.getElementById('followid').value;
-				var mbtel = document.getElementById('membertel').value;
+				var flid = document.getElementById('followid_id').value;
 				
-				if(flid != "" & mbtel != ""){
+				if(flid != ""){
 
 					$.ajax({
 						type: 'get',
@@ -194,22 +142,22 @@
 						dataType: 'json',
 						　　　　　　contentType: 'application/json',
 						success: function(data) {
-							window.location.href = 'memberinfo.html?flid=' + flid + '&mbtel=' + mbtel;
+							window.location.href = 'memberinfo.html?flid=' + flid;
 						},
 						error: function(data) {
 							alert(data.msg);
 						}
 					});
 				} else {
-					alert("请先   获取测试粉丝资料");
+					alert("资料有误");
 				}
 			}
 
 			function mypromotion() {
-				var flid = document.getElementById('followid').value;
-				var mbtel = document.getElementById('membertel').value;
+				var flid = document.getElementById('followid_id').value;
+				var openid = document.getElementById('openid_id').value;
 				
-				if(flid != "" & mbtel != ""){
+				if(flid != ""){
 					$.ajax({
 						type: 'get',
 						url: 'mypromotion',
@@ -220,14 +168,14 @@
 					　　　contentType: 'application/json',
 						success: function(data) 
 						{
-							window.location.href = 'mypromotion?openid='+gbl_openid;
+							window.location.href = 'mypromotion?openid='+openid;
 						},
 						error: function(data) {
 							alert(data.msg);
 						}
 					});
 				} else {
-					alert("请先   获取测试粉丝资料");
+					alert("资料有误");
 				}
 			}
 
@@ -249,7 +197,7 @@
 				});
 			}
 			
-			//for test follower data
+			//
 			$.fn.serializeObject = function() {
 				var o = {};
 				var a = this.serializeArray();
@@ -266,40 +214,26 @@
 				return o;
 			};
 
-			function gettestfollowerid() {
+			function getFollowerIDForMemberMgmt() {
+				var openid = document.getElementById('openid_id').value;
+				var params = {id: openid};
 
-				var formdata = $('#memberindex').serializeObject();
-				var mbtel = document.getElementById('membertelnumid').value;
-				
-				$("#followid").val('');
-				$("#membertel").val('');
-														
-				if(mbtel != ""){
-				
-					$.ajax({
-						type: 'post',
-						url: 'gettestfollowerid',
-						cache: false,
-						dataType: 'json',
-						data: JSON.stringify(formdata),
-						contentType: 'application/json',
-						　　　　　　async: false,
-						success: function(data) {
-							var result = JSON.stringify(data);
-							//alert('success:' + data.id);
-							
-							$("#followid").val(data.id);
-							$("#membertel").val(mbtel);
-							
-						},
-						error: function(data) {
-							alert('failed:' + data.msg);
-						}
-					});
-					
-				} else {
-					alert("请输入  手机号码");
-				}
+				$.ajax({
+					type: 'get',
+					url: 'getFollowerIDForMemberMgmt',
+					cache: false,
+					dataType: 'json',
+					data: params,
+					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+						$("#followid_id").val(data.id);
+						alert(data.id);
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
 			}
 			
 			jQuery.getUrlParam = function (name) {
@@ -310,6 +244,12 @@
 			
 			$(document).ready(function() {				
 				alert($.getUrlParam('openid'));
+				//alert("888888");
+				
+				$("#openid_id").val($.getUrlParam('openid'));
+				//$("#openid_id").val("888888");
+				
+				getFollowerIDForMemberMgmt();
 			});
 			
 		</script>
