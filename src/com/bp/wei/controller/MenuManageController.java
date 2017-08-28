@@ -105,7 +105,7 @@ public class MenuManageController {
 	}
 	
 	private String getRedirectUrl(User user){
-		StringBuffer sb = new StringBuffer("http://weweb.chinacloudapp.cn/MemberMgmt");
+		StringBuffer sb = new StringBuffer("http://www.wecarecrm.cn/MemberMgmt");
 		sb.append("?");
 		if(user.getOpenId() != null){
 			sb.append("openid=" + user.getOpenId());
