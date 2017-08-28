@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bp.wei.dao.MemberToParticipateDao">
+  <resultMap id="BaseResultMap" type="com.bp.wei.crm.model.MemberToParticipate">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="ec1_member_ec1_participateec1_participate_ida" jdbcType="VARCHAR" property="ec1MemberEc1Participateec1ParticipateIda" />
+    <result column="ec1_member_ec1_participateec1_member_idb" jdbcType="VARCHAR" property="ec1MemberEc1Participateec1MemberIdb" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, date_modified, deleted, ec1_member_ec1_participateec1_participate_ida, ec1_member_ec1_participateec1_member_idb
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ec1_member_ec1_participate_c
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ec1_member_ec1_participate_c
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  
+  <insert id="insertMemberToParticipate" parameterType="com.bp.wei.crm.model.MemberToParticipate">
+    insert into ec1_member_ec1_participate_c (id, date_modified, deleted, 
+      ec1_member_ec1_participateec1_participate_ida, ec1_member_ec1_participateec1_member_idb
+      )
+    values (uuid(), now(), "0",
+      #{ec1MemberEc1Participateec1ParticipateIda,jdbcType=VARCHAR}, #{ec1MemberEc1Participateec1MemberIdb,jdbcType=VARCHAR}
+      )
+  </insert>
+    
+  
+  <insert id="insert" parameterType="com.bp.wei.crm.model.MemberToParticipate">
+    insert into ec1_member_ec1_participate_c (id, date_modified, deleted, 
+      ec1_member_ec1_participateec1_participate_ida, ec1_member_ec1_participateec1_member_idb
+      )
+    values (#{id,jdbcType=VARCHAR}, #{dateModified,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, 
+      #{ec1MemberEc1Participateec1ParticipateIda,jdbcType=VARCHAR}, #{ec1MemberEc1Participateec1MemberIdb,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bp.wei.crm.model.MemberToParticipate">
+    insert into ec1_member_ec1_participate_c
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="ec1MemberEc1Participateec1ParticipateIda != null">
+        ec1_member_ec1_participateec1_participate_ida,
+      </if>
+      <if test="ec1MemberEc1Participateec1MemberIdb != null">
+        ec1_member_ec1_participateec1_member_idb,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="ec1MemberEc1Participateec1ParticipateIda != null">
+        #{ec1MemberEc1Participateec1ParticipateIda,jdbcType=VARCHAR},
+      </if>
+      <if test="ec1MemberEc1Participateec1MemberIdb != null">
+        #{ec1MemberEc1Participateec1MemberIdb,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bp.wei.crm.model.MemberToParticipate">
+    update ec1_member_ec1_participate_c
+    <set>
+      <if test="dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="ec1MemberEc1Participateec1ParticipateIda != null">
+        ec1_member_ec1_participateec1_participate_ida = #{ec1MemberEc1Participateec1ParticipateIda,jdbcType=VARCHAR},
+      </if>
+      <if test="ec1MemberEc1Participateec1MemberIdb != null">
+        ec1_member_ec1_participateec1_member_idb = #{ec1MemberEc1Participateec1MemberIdb,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bp.wei.crm.model.MemberToParticipate">
+    update ec1_member_ec1_participate_c
+    set date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=BIT},
+      ec1_member_ec1_participateec1_participate_ida = #{ec1MemberEc1Participateec1ParticipateIda,jdbcType=VARCHAR},
+      ec1_member_ec1_participateec1_member_idb = #{ec1MemberEc1Participateec1MemberIdb,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bp.wei.dao.MarketinginfoDao">
+  <resultMap id="BaseResultMap" type="com.bp.wei.crm.model.Marketinginfo">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="date_entered" jdbcType="TIMESTAMP" property="dateEntered" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="modified_user_id" jdbcType="CHAR" property="modifiedUserId" />
+    <result column="created_by" jdbcType="CHAR" property="createdBy" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="assigned_user_id" jdbcType="CHAR" property="assignedUserId" />
+    <result column="st_dt" jdbcType="DATE" property="stDt" />
+    <result column="ed_dt" jdbcType="DATE" property="edDt" />
+    <result column="market_st" jdbcType="VARCHAR" property="marketSt" />
+    <result column="market_fee" jdbcType="DECIMAL" property="marketFee" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bp.wei.crm.model.MarketinginfoWithBLOBs">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    <result column="desc_signup" jdbcType="LONGVARCHAR" property="descSignup" />
+    <result column="desc_survey" jdbcType="LONGVARCHAR" property="descSurvey" />
+    <result column="desc_present" jdbcType="LONGVARCHAR" property="descPresent" />
+  </resultMap>
+  
+  <resultMap id="ResultMapWithMarketingList" type="com.bp.wei.crm.model.Marketinginfo">
+  	<id property="id" column="mid"/>
+  	<result property="name" column="mname"/>
+  	<collection property="marketinglist" javaType="java.util.List" ofType="com.bp.wei.crm.model.Marketinginfo">
+  		<id property="id" column="mkid"/>
+  		<result property="name" column="mkname"/>
+  	</collection>
+  </resultMap>
+  
+  <resultMap id="ResultMapWithMarketingForSignin" type="com.bp.wei.crm.model.MarketinginfoWithBLOBs">
+  	<id property="id" column="mid"/>
+  	<result property="name" column="mname"/>
+	<result property="assignedUserId" column="pid"/>
+  </resultMap>  
+  
+  
+  <select id="selecAllMarketingList" resultMap="ResultMapWithMarketingList">
+    select '1', id mkid, name mkname
+    from ec1_marketing
+  </select>  
+  
+  <select id="selectMarketingInfo" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_marketing
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  
+  <select id="selectMarketingInfoForSignin" parameterType="java.lang.String" resultMap="ResultMapWithMarketingForSignin">
+    SELECT mk.id mid, mk.name mname, pt.id pid
+    FROM ec1_marketing mk, ec1_marketing_ec1_participate_c mktopt, ec1_participate pt
+   WHERE mk.id = mktopt.ec1_marketing_ec1_participateec1_marketing_ida
+     AND pt.id = mktopt.ec1_marketing_ec1_participateec1_participate_idb
+     AND pt.partic_type = 'L1'
+     AND mk.id = #{id,jdbcType=CHAR}
+  </select>  
+
+  <sql id="Base_Column_List">
+    id, name, date_entered, date_modified, modified_user_id, created_by, deleted, assigned_user_id, 
+    st_dt, ed_dt, market_st, market_fee
+  </sql>
+  <sql id="Blob_Column_List">
+    description, desc_signup, desc_survey, desc_present
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_marketing
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ec1_marketing
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bp.wei.crm.model.MarketinginfoWithBLOBs">
+    insert into ec1_marketing (id, name, date_entered, 
+      date_modified, modified_user_id, created_by, 
+      deleted, assigned_user_id, st_dt, 
+      ed_dt, market_st, market_fee, 
+      description, desc_signup, desc_survey, 
+      desc_present)
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{dateEntered,jdbcType=TIMESTAMP}, 
+      #{dateModified,jdbcType=TIMESTAMP}, #{modifiedUserId,jdbcType=CHAR}, #{createdBy,jdbcType=CHAR}, 
+      #{deleted,jdbcType=BIT}, #{assignedUserId,jdbcType=CHAR}, #{stDt,jdbcType=DATE}, 
+      #{edDt,jdbcType=DATE}, #{marketSt,jdbcType=VARCHAR}, #{marketFee,jdbcType=DECIMAL}, 
+      #{description,jdbcType=LONGVARCHAR}, #{descSignup,jdbcType=LONGVARCHAR}, #{descSurvey,jdbcType=LONGVARCHAR}, 
+      #{descPresent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bp.wei.crm.model.MarketinginfoWithBLOBs">
+    insert into ec1_marketing
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="dateEntered != null">
+        date_entered,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id,
+      </if>
+      <if test="stDt != null">
+        st_dt,
+      </if>
+      <if test="edDt != null">
+        ed_dt,
+      </if>
+      <if test="marketSt != null">
+        market_st,
+      </if>
+      <if test="marketFee != null">
+        market_fee,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="descSignup != null">
+        desc_signup,
+      </if>
+      <if test="descSurvey != null">
+        desc_survey,
+      </if>
+      <if test="descPresent != null">
+        desc_present,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="stDt != null">
+        #{stDt,jdbcType=DATE},
+      </if>
+      <if test="edDt != null">
+        #{edDt,jdbcType=DATE},
+      </if>
+      <if test="marketSt != null">
+        #{marketSt,jdbcType=VARCHAR},
+      </if>
+      <if test="marketFee != null">
+        #{marketFee,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="descSignup != null">
+        #{descSignup,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="descSurvey != null">
+        #{descSurvey,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="descPresent != null">
+        #{descPresent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bp.wei.crm.model.MarketinginfoWithBLOBs">
+    update ec1_marketing
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="stDt != null">
+        st_dt = #{stDt,jdbcType=DATE},
+      </if>
+      <if test="edDt != null">
+        ed_dt = #{edDt,jdbcType=DATE},
+      </if>
+      <if test="marketSt != null">
+        market_st = #{marketSt,jdbcType=VARCHAR},
+      </if>
+      <if test="marketFee != null">
+        market_fee = #{marketFee,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="descSignup != null">
+        desc_signup = #{descSignup,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="descSurvey != null">
+        desc_survey = #{descSurvey,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="descPresent != null">
+        desc_present = #{descPresent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bp.wei.crm.model.MarketinginfoWithBLOBs">
+    update ec1_marketing
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      st_dt = #{stDt,jdbcType=DATE},
+      ed_dt = #{edDt,jdbcType=DATE},
+      market_st = #{marketSt,jdbcType=VARCHAR},
+      market_fee = #{marketFee,jdbcType=DECIMAL},
+      description = #{description,jdbcType=LONGVARCHAR},
+      desc_signup = #{descSignup,jdbcType=LONGVARCHAR},
+      desc_survey = #{descSurvey,jdbcType=LONGVARCHAR},
+      desc_present = #{descPresent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bp.wei.crm.model.Marketinginfo">
+    update ec1_marketing
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      st_dt = #{stDt,jdbcType=DATE},
+      ed_dt = #{edDt,jdbcType=DATE},
+      market_st = #{marketSt,jdbcType=VARCHAR},
+      market_fee = #{marketFee,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

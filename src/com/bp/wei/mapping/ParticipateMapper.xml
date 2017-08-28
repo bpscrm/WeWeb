@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bp.wei.dao.ParticipateDao">
+  <resultMap id="BaseResultMap" type="com.bp.wei.crm.model.Participate">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="date_entered" jdbcType="TIMESTAMP" property="dateEntered" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="modified_user_id" jdbcType="CHAR" property="modifiedUserId" />
+    <result column="created_by" jdbcType="CHAR" property="createdBy" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="assigned_user_id" jdbcType="CHAR" property="assignedUserId" />
+    <result column="partic_fee" jdbcType="DECIMAL" property="particFee" />
+    <result column="partic_st_dt" jdbcType="DATE" property="particStDt" />
+    <result column="partic_ed_dt" jdbcType="DATE" property="particEdDt" />
+    <result column="partict_st" jdbcType="VARCHAR" property="partictSt" />
+    <result column="partic_type" jdbcType="VARCHAR" property="particType" />
+    <result column="partic_code" jdbcType="VARCHAR" property="particCode" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bp.wei.crm.model.Participate">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, date_entered, date_modified, modified_user_id, created_by, deleted, assigned_user_id, 
+    partic_fee, partic_st_dt, partic_ed_dt, partict_st, partic_type, partic_code
+  </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  
+  
+  <select id="selectParticipateInfo" parameterType="java.lang.String" resultType="String">
+	SELECT pctopt.ec1_participate_ec1_participate_typeec1_participate_type_idb id
+  	  FROM ec1_participate pc, ec1_participate_ec1_participate_type_c pctopt
+ 	 WHERE pc.id = pctopt.ec1_participate_ec1_participate_typeec1_participate_ida
+       AND pc.id = #{id,jdbcType=CHAR}
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_participate
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ec1_participate
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bp.wei.crm.model.Participate">
+    insert into ec1_participate (id, name, date_entered, 
+      date_modified, modified_user_id, created_by, 
+      deleted, assigned_user_id, partic_fee, 
+      partic_st_dt, partic_ed_dt, partict_st, 
+      partic_type, partic_code, description
+      )
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{dateEntered,jdbcType=TIMESTAMP}, 
+      #{dateModified,jdbcType=TIMESTAMP}, #{modifiedUserId,jdbcType=CHAR}, #{createdBy,jdbcType=CHAR}, 
+      #{deleted,jdbcType=BIT}, #{assignedUserId,jdbcType=CHAR}, #{particFee,jdbcType=DECIMAL}, 
+      #{particStDt,jdbcType=DATE}, #{particEdDt,jdbcType=DATE}, #{partictSt,jdbcType=VARCHAR}, 
+      #{particType,jdbcType=VARCHAR}, #{particCode,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bp.wei.crm.model.Participate">
+    insert into ec1_participate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="dateEntered != null">
+        date_entered,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id,
+      </if>
+      <if test="particFee != null">
+        partic_fee,
+      </if>
+      <if test="particStDt != null">
+        partic_st_dt,
+      </if>
+      <if test="particEdDt != null">
+        partic_ed_dt,
+      </if>
+      <if test="partictSt != null">
+        partict_st,
+      </if>
+      <if test="particType != null">
+        partic_type,
+      </if>
+      <if test="particCode != null">
+        partic_code,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="particFee != null">
+        #{particFee,jdbcType=DECIMAL},
+      </if>
+      <if test="particStDt != null">
+        #{particStDt,jdbcType=DATE},
+      </if>
+      <if test="particEdDt != null">
+        #{particEdDt,jdbcType=DATE},
+      </if>
+      <if test="partictSt != null">
+        #{partictSt,jdbcType=VARCHAR},
+      </if>
+      <if test="particType != null">
+        #{particType,jdbcType=VARCHAR},
+      </if>
+      <if test="particCode != null">
+        #{particCode,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bp.wei.crm.model.Participate">
+    update ec1_participate
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="particFee != null">
+        partic_fee = #{particFee,jdbcType=DECIMAL},
+      </if>
+      <if test="particStDt != null">
+        partic_st_dt = #{particStDt,jdbcType=DATE},
+      </if>
+      <if test="particEdDt != null">
+        partic_ed_dt = #{particEdDt,jdbcType=DATE},
+      </if>
+      <if test="partictSt != null">
+        partict_st = #{partictSt,jdbcType=VARCHAR},
+      </if>
+      <if test="particType != null">
+        partic_type = #{particType,jdbcType=VARCHAR},
+      </if>
+      <if test="particCode != null">
+        partic_code = #{particCode,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bp.wei.crm.model.Participate">
+    update ec1_participate
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      partic_fee = #{particFee,jdbcType=DECIMAL},
+      partic_st_dt = #{particStDt,jdbcType=DATE},
+      partic_ed_dt = #{particEdDt,jdbcType=DATE},
+      partict_st = #{partictSt,jdbcType=VARCHAR},
+      partic_type = #{particType,jdbcType=VARCHAR},
+      partic_code = #{particCode,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bp.wei.crm.model.Participate">
+    update ec1_participate
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      partic_fee = #{particFee,jdbcType=DECIMAL},
+      partic_st_dt = #{particStDt,jdbcType=DATE},
+      partic_ed_dt = #{particEdDt,jdbcType=DATE},
+      partict_st = #{partictSt,jdbcType=VARCHAR},
+      partic_type = #{particType,jdbcType=VARCHAR},
+      partic_code = #{particCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

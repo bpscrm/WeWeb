@@ -1,6 +1,8 @@
 package com.bp.wei.service;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.bp.wei.crm.model.Followerinfo;
 import com.bp.wei.crm.model.Member;
 import com.bp.wei.crm.model.Memberinfo;
@@ -9,6 +11,9 @@ import com.bp.wei.crm.model.QAOnlineWithBLOBs;
 import com.bp.wei.crm.model.Childinfo;
 import com.bp.wei.crm.model.FeedbackWithBLOBs;
 import com.bp.wei.crm.model.Purchaseinfo;
+import com.bp.wei.crm.model.Marketinginfo;
+import com.bp.wei.crm.model.MarketinginfoWithBLOBs;
+import com.bp.wei.crm.model.Questionnaire;
 
 public interface CRMDBManageService {
 	
@@ -61,6 +66,19 @@ public interface CRMDBManageService {
 	//update
 	int updateFeedbackinfo(FeedbackWithBLOBs feedbackinfo);
 
+	/////////////////////////////////////////////////////////////////for 营销活动
+	Marketinginfo getMarketinglist();
+	
+	MarketinginfoWithBLOBs getMarketing(String id);
+	
+	Questionnaire getQuestionnaireById(String id);
+	
+	boolean setInteractionData(HttpServletRequest request);
+	
+	boolean setParticipateData(HttpServletRequest request);
+	
+	MarketinginfoWithBLOBs getMarketingForSignin(String id);
+	
 	
 	/////////////////////////////////////////////////////////////////for examples
 	Member getMemberById(int memberId);
