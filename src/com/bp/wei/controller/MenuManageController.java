@@ -164,6 +164,14 @@ public class MenuManageController {
 		return sb.toString();
 	}
 	
+	//////////////////////////////////////////////////////////////////////for 营销活动
+	@RequestMapping(value="MarketingIndex", method = RequestMethod.GET)
+	public String redirectMarketingIndex(){
+		
+		System.out.println( "[MenuMangerController][MarketingIndex]");
+		return "indexmarketing";
+	}
+	
 	//////////////////////////////////////////////////////////////////////
 	public static void main(String[] args){
 		int i =0;
