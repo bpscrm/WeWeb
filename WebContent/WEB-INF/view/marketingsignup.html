@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>活动报名</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/weui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
+	</head>
+
+	<body>
+
+		<form id="marketingsignup" method="post">
+		
+			<header class="ui-header ui-header-positive ui-border-b">
+				
+				<i class="ui-icon-return" onclick="history.back()"></i>
+				
+				<div class="ui-row">
+ 					<div class="ui-col ui-col-80"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="免费试听活动" /></h1></div>
+    				<div class="ui-col ui-col-20"><a href="javascript:gomarketingentry();"><div class="ui-badge-muted">回首页</div></a></div>		    			
+    			</div>
+	
+			</header>
+			<br />
+			
+			<article class="weui-article">
+
+				<div class="weui-cells weui-cells_form">
+					
+					<textarea id="desc_id" name="desc_nm" cols="50" rows="4" readonly="readonly" style= "background:transparent;border-style:none; resize: none;"></textarea>
+			
+	
+				</div>
+
+			</article>
+
+			<div class="page__bd page__bd_spacing">
+				<div class="page-btn-area">
+					<a class="page-btn page-btn_primary" href="javascript:gosignupsurvey();">我要报名</a>
+					<br />
+					<a class="page-btn page-btn_default" href="javascript:gosignupcancel();">取消报名</a>
+					<input type="hidden" id="mkid" value="1" />
+					<input type="hidden" id="cdid" value="1" />
+				</div>
+			</div>
+
+		</form>
+
+		<div class="weui-footer">
+			<br />
+			<br />
+			<p class="weui-footer__links">
+				<a href="javascript:;" class="weui-footer__link">关于我们</a>
+			</p>
+			<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+		</div>
+
+
+		<script type="text/javascript">
+		
+			//search data
+			$.fn.parseTemplate = function(data) {
+				var str = (this).html();
+				var _tmplCache = {}
+				var err = "";
+				try {
+					var func = _tmplCache[str];
+					if(!func) {
+						var strFunc =
+							"var p=[],print=function(){p.push.apply(p,arguments);};" +
+							"with(obj){p.push('" +
+							str.replace(/[\r\t\n]/g, " ")
+							.replace(/'(?=[^#]*#>)/g, "\t")
+							.split("'").join("\\'")
+							.split("\t").join("'")
+							.replace(/<#=(.+?)#>/g, "',$1,'")
+							.split("<#").join("');")
+							.split("#>").join("p.push('") +
+							"');}return p.join('');";
+						func = new Function("obj", strFunc);
+						_tmplCache[str] = func;
+					}
+					return func(data);
+				} catch(e) {
+					err = e.message;
+				}
+				return "< # ERROR: " + err.toString() + " # >";
+			};
+
+			function getmarketing() {
+				var marketingid = document.getElementById('mkid').value;
+				var params = {
+					id: marketingid
+				};
+
+				$.ajax({
+					type: 'get',
+					url: 'getmarketing',
+					cache: false,
+					dataType: 'json',
+					data: params,
+					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+					
+						$("#marketing_title").val(data.name);
+						$("#desc_id").val(data.description);
+
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+			}
+
+			$(function() {
+				var winH = $(window).height();
+				var categorySpace = 10;
+
+				$('.js_item').on('click', function() {
+					var id = $(this).data('id');
+					window.pageManager.go(id);
+				});
+				$('.js_category').on('click', function() {
+					var $this = $(this),
+						$inner = $this.next('.js_categoryInner'),
+						$page = $this.parents('.page'),
+						$parent = $(this).parent('li');
+					var innerH = $inner.data('height');
+					bear = $page;
+
+					if(!innerH) {
+						$inner.css('height', 'auto');
+						innerH = $inner.height();
+						$inner.removeAttr('style');
+						$inner.data('height', innerH);
+					}
+
+					if($parent.hasClass('js_show')) {
+						$parent.removeClass('js_show');
+					} else {
+						$parent.siblings().removeClass('js_show');
+
+						$parent.addClass('js_show');
+						if(this.offsetTop + this.offsetHeight + innerH > $page.scrollTop() + winH) {
+							var scrollTop = this.offsetTop + this.offsetHeight + innerH - winH + categorySpace;
+
+							if(scrollTop > this.offsetTop) {
+								scrollTop = this.offsetTop - categorySpace;
+							}
+
+							$page.scrollTop(scrollTop);
+						}
+					}
+				});
+			});
+					
+			//进入调查问卷页面
+			function gosignupsurvey() {
+			
+				var mkid = document.getElementById('mkid').value;
+
+				$.ajax({
+					type: 'get',
+					url: 'signupsurvey',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'signupsurvey.html?mkid=' + mkid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}		
+			
+			//提交问卷后，返回本次活动首页
+			function gosignupcancel() {
+
+				$.ajax({
+					type: 'get',
+					url: 'signupcancel',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'signupcancel';
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}	
+			//返回营销活动入口
+			function gomarketingentry() {
+
+				$.ajax({
+					type: 'get',
+					url: 'marketingentry',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'marketingentry';
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			}  			
+			$(document).ready(function() {
+				
+				$("#mkid").val($.getUrlParam('mkid'));
+				
+				getmarketing();
+
+			});
+		</script>
+	</body>
+
+</html>

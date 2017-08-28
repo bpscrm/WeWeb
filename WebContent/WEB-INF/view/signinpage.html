@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>活动签到</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/weui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+	</head>
+
+	<body>
+
+		<form id="signinpage" method="post" action="submitSignin">
+		
+			<header class="ui-header ui-header-positive ui-border-b">
+
+				<i class="ui-icon-return" onclick="history.back()"></i>
+				
+				<div class="ui-row">
+ 					<div class="ui-col ui-col-80"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="免费试听活动" /></h1></div>
+    				<div class="ui-col ui-col-20"><a href="javascript:gomarketingentry();"><div class="ui-badge-muted">回首页</div></a></div>			    			
+    			</div>
+
+			</header>
+			<br />
+			<br />
+			<br />
+			<br />
+
+			<div class="weui-cells weui-cells_form">
+
+
+				<div class="page__bd page__bd_spacing">
+					<div class="page-btn-area">
+						<a class="page-btn page-btn_primary" href="javascript:submitSignin()">签                      到</a>
+						<input type="hidden" id="mbid" name="mbname" value="8e795f1f-7980-11e7-9bd6-201a06c68160" />
+						<input type="hidden" id="mkid" name="mkname" value="2" />
+						<input type="hidden" id="particid" name="particname" value="2" />
+					</div>
+				</div>
+
+				<div class="weui-footer">
+					<br />
+					<br />
+					<p class="weui-footer__links">
+						<a href="javascript:;" class="weui-footer__link">关于我们</a>
+					</p>
+					<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+				</div>
+			</div>
+
+		</form>
+
+		<script type="text/javascript">
+			
+			//提交问卷后，返回本次活动首页
+			function gobackmarktingindex() {
+
+				$.ajax({
+					type: 'get',
+					url: 'marketingindex',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'marketingentry';
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}	
+			//返回营销活动入口
+			function gomarketingentry() {
+
+				$.ajax({
+					type: 'get',
+					url: 'marketingentry',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'marketingentry';
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+			
+			function getmarketing() {
+				var marketingid = document.getElementById('mkid').value;
+				var params = {
+					id: marketingid
+				};
+
+				$.ajax({
+					type: 'get',
+					url: 'getmarketingforsignin',
+					cache: false,
+					dataType: 'json',
+					data: params,
+					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+					
+						$("#marketing_title").val(data.name + "签到");
+						$("#mkid").val(data.id);
+						$("#particid").val(data.assignedUserId);
+
+
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+			}			
+			
+			//for open form
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			}			
+			$(document).ready(function() {
+				
+				$("#mkid").val($.getUrlParam('mkid'));
+				
+				getmarketing();
+
+				//getSurvey();
+			});				
+
+			//签到处理
+			function submitSignin(){
+				
+				$('#signinpage').submit();
+			}
+
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>取消活动报名</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/weui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+	</head>
+
+	<body>
+
+		<form id="signinpage">
+		
+			<header class="ui-header ui-header-positive ui-border-b">
+
+				<i class="ui-icon-return" onclick="history.back()"></i>
+				
+				<div class="ui-row">
+ 					<div class="ui-col ui-col-80"><h1>取消活动报名</h1></div>
+    				<div class="ui-col ui-col-20"><a href="javascript:gomarketingentry();"><div class="ui-badge-muted">回首页</div></a></div>		    			
+    			</div>
+
+			</header>
+			<br />
+			<br />
+			<br />
+			<br />
+
+			<div class="weui-cells weui-cells_form">
+
+
+				<div class="page__bd page__bd_spacing">
+					<div class="page-btn-area">
+						<a class="page-btn page-btn_primary" href="javascript:gobackmarktingindex()">确认取消</a>
+						<input type="hidden" id="followid" name="followid" value="1" />
+						<input type="hidden" id="membertel" name="membertel" value="2" />
+					</div>
+				</div>
+
+				<div class="weui-footer">
+					<br />
+					<br />
+					<p class="weui-footer__links">
+						<a href="javascript:;" class="weui-footer__link">关于我们</a>
+					</p>
+					<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+				</div>
+			</div>
+
+		</form>
+
+		<script type="text/javascript">
+			
+			//提交问卷后，返回本次活动首页
+			function gobackmarktingindex() {
+
+				$.ajax({
+					type: 'get',
+					url: 'marketingindex',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'marketingindex';
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}	
+			//返回营销活动入口
+			function gomarketingentry() {
+
+				$.ajax({
+					type: 'get',
+					url: 'marketingentry',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'marketingentry';
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+
+
+		</script>
+	</body>
+
+</html>

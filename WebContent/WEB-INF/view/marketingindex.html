@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>营销活动</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/weui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
+	</head>
+
+	<body>
+	    <form id="marketingindex" method="post">
+			<header class="ui-header ui-header-positive ui-border-b">
+				<h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="免费试听活动" /></h1>
+			</header>
+			<br />
+			<br />
+	
+			<div class="page__bd">
+	
+				<div class="page">
+					<br />
+					<br />
+					<br />
+					
+					<div class="weui-grids">
+							
+						<a href="javascript:marketingsignup();" class="weui-grid">
+							<div class="weui-grid__icon">
+								<img src="./images/frame_64.png" alt="">
+							</div>
+							<p class="weui-grid__label">活动报名</p>
+						</a>
+						
+						<a href="javascript:signinpage();" class="weui-grid">
+							<div class="weui-grid__icon">
+								<img src="./images/flag_64.png" alt="">
+							</div>
+							<p class="weui-grid__label">签到</p>
+						</a>
+						
+						<a href="javascript:feedbacksurvey();" class="weui-grid">
+							<div class="weui-grid__icon">
+								<img src="./images/gear_64.png" alt="">
+							</div>
+							<p class="weui-grid__label">调查反馈</p>
+						</a>
+						
+					</div>
+				</div>
+	
+			</div>
+	
+			<div class="page__bd">
+				<br />
+				<br />
+				<br />
+				<article class="weui-article">
+	
+					<div class="page__bd page__bd_spacing">
+						<div class="page-btn-area">
+							<a class="page-btn page-btn_primary" href="javascript:gomarketingentry();">返回营销活动首页</a>
+							<input type="hidden" id="mkid" value="1" />
+							<input type="hidden" id="mbid" value="2" />
+						</div>
+					</div>
+					
+				</article>
+			</div>
+	
+			<div class="weui-footer">
+				<br />
+				<br />
+				<p class="weui-footer__links">
+					<a href="javascript:;" class="weui-footer__link">关于我们</a>
+				</p>
+				<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+			</div>
+		
+		</form>
+		
+		
+		<script type="text/javascript">
+		
+			//search data
+			$.fn.parseTemplate = function(data) {
+				var str = (this).html();
+				var _tmplCache = {}
+				var err = "";
+				try {
+					var func = _tmplCache[str];
+					if(!func) {
+						var strFunc =
+							"var p=[],print=function(){p.push.apply(p,arguments);};" +
+							"with(obj){p.push('" +
+							str.replace(/[\r\t\n]/g, " ")
+							.replace(/'(?=[^#]*#>)/g, "\t")
+							.split("'").join("\\'")
+							.split("\t").join("'")
+							.replace(/<#=(.+?)#>/g, "',$1,'")
+							.split("<#").join("');")
+							.split("#>").join("p.push('") +
+							"');}return p.join('');";
+						func = new Function("obj", strFunc);
+						_tmplCache[str] = func;
+					}
+					return func(data);
+				} catch(e) {
+					err = e.message;
+				}
+				return "< # ERROR: " + err.toString() + " # >";
+			};
+
+			function getmarketing() {
+				var marketingid = document.getElementById('mkid').value;
+				var params = {
+					id: marketingid
+				};
+
+				$.ajax({
+					type: 'get',
+					url: 'getmarketing',
+					cache: false,
+					dataType: 'json',
+					data: params,
+					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+					
+						$("#marketing_title").val(data.name);
+						$("#descsignup_id").val(data.description);
+
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+			}		
+		
+			//活动报名
+			function marketingsignup() {
+			
+				var mkid = document.getElementById('mkid').value;
+
+				$.ajax({
+					type: 'get',
+					url: 'marketingsignup',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'marketingsignup.html?mkid=' + mkid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}		
+			//签到
+			function signinpage() {
+				var mkid = document.getElementById('mkid').value;
+
+				$.ajax({
+					type: 'get',
+					url: 'signinpage',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'signinpage.html?mkid=' + mkid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+			//调查反馈
+			function feedbacksurvey() {
+
+				$.ajax({
+					type: 'get',
+					url: 'feedbacksurvey',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'feedbacksurvey';
+						
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}			
+			//返回营销活动入口
+			function gomarketingentry() {
+
+				$.ajax({
+					type: 'get',
+					url: 'marketingentry',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'marketingentry';
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+			
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			}  			
+			$(document).ready(function() {
+				
+				$("#mkid").val($.getUrlParam('mkid'));
+				
+				getmarketing();
+
+			});	
+		</script>
+	</body>
+
+</html>
