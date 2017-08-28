@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>我的资料</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/weui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+	</head>
+
+	<body>
+		<form id="memberinfo" method="post">
+			<header class="ui-header ui-header-positive ui-border-b">
+				<h1>我的资料</h1><button class="ui-btn" onclick="history.back()">回首页</button>
+			</header>
+			<br />
+			<br />
+
+			<div class="page__bd">
+
+				<div class="weui-cell weui-cell_vcode">
+					<div id="searchresult"></div>
+				</div>
+				
+			</div>
+		</form>
+
+		<div class="page__bd page__bd_spacing">
+			<div class="page-btn-area">
+				<a class="page-btn page-btn_primary" href="javascript:updatememberinfo()">修改</a>
+					<input type="hidden" id="followid" name="followid" value="1" />
+					<input type="hidden" id="membertel" name="membertel" value="2" />
+			</div>
+		</div>
+
+		<div class="weui-cells__title">通过下面的连接可以查看资料</div>
+		<div class="weui-cells">
+			<a class="weui-cell weui-cell_access" href="javascript:childrenlist();">
+				<span class="weui-cell__bd">
+					<p>小孩资料</p>
+				</span>
+				<span class="weui-cell__ft">点击进入</span>
+			</a>
+			<a class="weui-cell weui-cell_access" href="javascript:purchaselist();">
+				<span class="weui-cell__bd">
+					<p>购买记录</p>
+				</span>
+				<span class="weui-cell__ft">点击进入</span>
+			</a>
+
+		</div>
+
+		<div class="weui-footer">
+			<br />
+			<br />
+			<p class="weui-footer__links">
+				<a href="javascript:;" class="weui-footer__link">关于我们</a>
+			</p>
+			<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+		</div>
+
+		<script id="template" type="text/html">
+			<div>
+
+                <input type="hidden" id="memberid" name="memberid1" value = <#= id #> />
+
+				<div class="weui-cell weui-cell_vcode">
+					<div class="weui-cell__hd">
+						<label class="weui-label">手机号码</label>
+					</div>
+					<div class="weui-cell__bd">
+						<input name="memberinfotelnum" class="weui-input" type="text" value = <#= name #> />
+					</div>
+				</div>
+
+
+				<div class="weui-cell weui-cell_select weui-cell_select-after">
+					<div class="weui-cell__hd">
+						<label for="" class="weui-label">称谓</label>
+					</div>
+
+					<div class="weui-cell__bd">
+						<select class="weui-select" name="memberinfotitle" value = <#= mbTitle #> >
+							<option value="L1">女士</option>
+							<option value="L2">先生</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+					<div class="weui-cell__bd">
+						<input name="memberinfoname" class="weui-input" type="text" value = <#= mbName #> />
+					</div>
+				</div>
+
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label for="" class="weui-label">生日</label></div>
+					<div class="weui-cell__bd">
+						<input name="memberinfobird" class="weui-input" type="date" value = <#= mbBirthday #> />
+					</div>
+				</div>
+
+				<div class="weui-cell weui-cell_select weui-cell_select-after">
+					<div class="weui-cell__hd">
+						<label for="" class="weui-label">是否有小孩</label>
+					</div>
+
+					<div class="weui-cell__bd">
+						<select class="weui-select" name="memberinfoifchild" value = <#= mbChild #> >
+							<option value="L1">否</option>
+							<option value="L2">一个</option>
+							<option value="L3">两个</option>
+							<option value="L4">两个以上</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="weui-cell weui-cell_select weui-cell_select-after">
+					<div class="weui-cell__hd">
+						<label for="" class="weui-label">教育程度</label>
+					</div>
+
+					<div class="weui-cell__bd">
+						<select class="weui-select" name="memberinfoedulevel" value = <#= mbEdu #> >
+							<option value="L1">高中</option>
+							<option value="L2">本科</option>
+							<option value="L3">硕士</option>
+							<option value="L4">其它</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">居住地址</label></div>
+					<div class="weui-cell__bd">
+						<input name="memberinfoaddr" class="weui-input" type="text" value = <#= mbAddr #> />
+					</div>
+				</div>
+
+			</div>
+
+		</script>
+
+		<script type="text/javascript">
+			//search data
+			$.fn.parseTemplate = function(data) {
+				var str = (this).html();
+				var _tmplCache = {}
+				var err = "";
+				try {
+					var func = _tmplCache[str];
+					if(!func) {
+						var strFunc =
+							"var p=[],print=function(){p.push.apply(p,arguments);};" +
+							"with(obj){p.push('" +
+							str.replace(/[\r\t\n]/g, " ")
+							.replace(/'(?=[^#]*#>)/g, "\t")
+							.split("'").join("\\'")
+							.split("\t").join("'")
+							.replace(/<#=(.+?)#>/g, "',$1,'")
+							.split("<#").join("');")
+							.split("#>").join("p.push('") +
+							"');}return p.join('');";
+						func = new Function("obj", strFunc);
+						_tmplCache[str] = func;
+					}
+					return func(data);
+				} catch(e) {
+					err = e.message;
+				}
+				return "< # ERROR: " + err.toString() + " # >";
+			};
+
+			function getmemberinfo() {
+				var memberinfotelnum = document.getElementById('membertel').value;
+				var params = {
+					name: memberinfotelnum
+				};
+
+				$.ajax({
+					type: 'get',
+					url: 'getmemberinfo',
+					cache: false,
+					dataType: 'json',
+					data: params,
+					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+						//var result= JSON.stringify(data);
+						//alert('success:' + result);
+						var output = $('#template').parseTemplate(data);
+
+						$('#searchresult').html(output);
+
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+			}
+
+			$(function() {
+				var winH = $(window).height();
+				var categorySpace = 10;
+
+				$('.js_item').on('click', function() {
+					var id = $(this).data('id');
+					window.pageManager.go(id);
+				});
+				$('.js_category').on('click', function() {
+					var $this = $(this),
+						$inner = $this.next('.js_categoryInner'),
+						$page = $this.parents('.page'),
+						$parent = $(this).parent('li');
+					var innerH = $inner.data('height');
+					bear = $page;
+
+					if(!innerH) {
+						$inner.css('height', 'auto');
+						innerH = $inner.height();
+						$inner.removeAttr('style');
+						$inner.data('height', innerH);
+					}
+
+					if($parent.hasClass('js_show')) {
+						$parent.removeClass('js_show');
+					} else {
+						$parent.siblings().removeClass('js_show');
+
+						$parent.addClass('js_show');
+						if(this.offsetTop + this.offsetHeight + innerH > $page.scrollTop() + winH) {
+							var scrollTop = this.offsetTop + this.offsetHeight + innerH - winH + categorySpace;
+
+							if(scrollTop > this.offsetTop) {
+								scrollTop = this.offsetTop - categorySpace;
+							}
+
+							$page.scrollTop(scrollTop);
+						}
+					}
+				});
+			});
+			
+			
+			//for update data
+			$.fn.serializeObject = function() {
+				var o = {};
+				var a = this.serializeArray();
+				$.each(a, function() {
+					if(o[this.name]) {
+						if(!o[this.name].push) {
+							o[this.name] = [o[this.name]];
+						}
+						o[this.name].push(this.value || '');
+					} else {
+						o[this.name] = this.value || '';
+					}
+				});
+				return o;
+			};
+
+			function updatememberinfo() {
+
+				var formdata = $('#memberinfo').serializeObject();
+				//alert(formdata);							
+				$.ajax({
+					type: 'post',
+					url: 'updatememberinfo',
+					cache: false,
+					dataType: 'json',
+					data: JSON.stringify(formdata),
+					contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+						var result = JSON.stringify(data);
+						alert('success:' + result);
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+			}
+
+			//for open page
+			function childrenlist() {			
+				var mbid = document.getElementById('memberid').value;
+
+				$.ajax({
+					type: 'get',
+					url: 'childrenlist',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'childrenlist.html?mdid=' + mbid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+
+			function purchaselist() {
+			    var mbid = document.getElementById('memberid').value;
+			    
+				$.ajax({
+					type: 'get',
+					url: 'purchaselist',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'purchaselist.html?mbid=' + mbid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			};
+			
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			}  
+			
+			$(document).ready(function() {
+				
+				$("#followid").val($.getUrlParam('flid'));
+				$("#membertel").val($.getUrlParam('mbtel'));
+
+				getmemberinfo();
+			});
+		</script>
+	</body>
+
+</html>

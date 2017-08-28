@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>新增产品意见反馈</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/weui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
+	</head>
+
+	<body>
+
+		<form id="feedbackinfo" method="post">
+
+			<header class="ui-header ui-header-positive ui-border-b">
+				<h1>新增产品意见反馈</h1><button class="ui-btn" onclick="history.back()">回首页</button>
+			</header>
+			<br />
+			<br />
+
+			<div class="weui-cells weui-cells_form">
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">标题</label></div>
+					<div class="weui-cell__bd">
+						<input name="feedbackname" class="weui-input" type="text" value="产品反馈" />
+					</div>
+				</div>
+
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">内容</label></div>
+					<div class="weui-cell__bd">
+						<input name="feedbackcontent" class="weui-input" type="text" placeholder="反馈内容" />
+					</div>
+				</div>
+
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label for="" class="weui-label">提出时间</label></div>
+					<div class="weui-cell__bd">
+						<input name="feedbacktime" class="weui-input" type="date" />
+						<script language="JavaScript">
+							today = new Date();
+							feedbackinfo.feedbacktime.value = today.getYear() + '年' + today.getMonth() + '月' + today.getDay() + '日';
+						</script>
+					</div>
+				</div>
+
+			</div>
+			<br />
+			
+				<div class="weui-cell">
+					<div class="weui-cell__bd">
+						<input name="testpurchase" class="weui-input" type="text" placeholder="输入测试用产品订购" />
+					</div>
+				</div>
+
+			<div class="page__bd page__bd_spacing">
+				<div class="button-sp-area">
+					<a class="page-btn page-btn_primary" href="javascript:setfeedbackinfo();">新增</a>
+					<input type="hidden" id="purchaseid1" name="purchaseid" value="1" />
+				</div>
+			</div>
+
+		</form>
+		<script type="text/javascript">
+			$.fn.serializeObject = function() {
+				var o = {};
+				var a = this.serializeArray();
+				$.each(a, function() {
+					if(o[this.name]) {
+						if(!o[this.name].push) {
+							o[this.name] = [o[this.name]];
+						}
+						o[this.name].push(this.value || '');
+					} else {
+						o[this.name] = this.value || '';
+					}
+				});
+				return o;
+			};
+
+			function setfeedbackinfo() {
+
+				var formdata = $('#feedbackinfo').serializeObject();
+											
+				$.ajax({
+					type: 'post',
+					url: 'setfeedbackinfo',
+					cache: false,
+					dataType: 'json',
+					data: JSON.stringify(formdata),
+					contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+						var result = JSON.stringify(data);
+						alert('success:' + result);
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+			}
+			
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			}  
+			
+			$(document).ready(function() {
+				
+				$("#purchaseid1").val($.getUrlParam('purid'));
+				
+			});				
+		</script>
+
+	</body>
+
+</html>

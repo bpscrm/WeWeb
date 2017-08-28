@@ -31,9 +31,9 @@ public class Memberinfo {
 
     private String mbEdu;
     
-    //private List<Childinfo> children;
+    private List<Childinfo> children;
     
-    //private List<Purchaseinfo> purchase;
+    private List<Purchaseinfo> purchase;
 
     public String getId() {
         return id;
@@ -147,19 +147,19 @@ public class Memberinfo {
         this.mbEdu = mbEdu == null ? null : mbEdu.trim();
     }
     
-	//public List<Childinfo> getChildren() {
-	//	return children;
-	//}
+	public List<Childinfo> getChildren() {
+		return children;
+	}
 
-	//public void setChildren(List<Childinfo> children) {
-	//	this.children = children;
-	//}
+	public void setChildren(List<Childinfo> children) {
+		this.children = children;
+	}
 	
-	//public List<Purchaseinfo> getPurchase() {
-	//	return purchase;
-	//}
+	public List<Purchaseinfo> getPurchase() {
+		return purchase;
+	}
 
-	//public void setPurchase(List<Purchaseinfo> purchase) {
-	//	this.purchase = purchase;
-	//}
+	public void setPurchase(List<Purchaseinfo> purchase) {
+		this.purchase = purchase;
+	}
 }

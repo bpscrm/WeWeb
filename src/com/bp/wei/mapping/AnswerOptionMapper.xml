@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bp.wei.dao.AnswerOptionMapper">
+  <resultMap id="BaseResultMap" type="com.bp.wei.crm.model.AnswerOption">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="date_entered" jdbcType="TIMESTAMP" property="dateEntered" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="modified_user_id" jdbcType="CHAR" property="modifiedUserId" />
+    <result column="created_by" jdbcType="CHAR" property="createdBy" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="assigned_user_id" jdbcType="CHAR" property="assignedUserId" />
+    <result column="cust_scores" jdbcType="DECIMAL" property="custScores" />
+    <result column="list_st" jdbcType="VARCHAR" property="listSt" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bp.wei.crm.model.AnswerOption">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, date_entered, date_modified, modified_user_id, created_by, deleted, assigned_user_id, 
+    cust_scores, list_st
+  </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_interaction_ask
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ec1_interaction_ask
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bp.wei.crm.model.AnswerOption">
+    insert into ec1_interaction_ask (id, name, date_entered, 
+      date_modified, modified_user_id, created_by, 
+      deleted, assigned_user_id, cust_scores, 
+      list_st, description)
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{dateEntered,jdbcType=TIMESTAMP}, 
+      #{dateModified,jdbcType=TIMESTAMP}, #{modifiedUserId,jdbcType=CHAR}, #{createdBy,jdbcType=CHAR}, 
+      #{deleted,jdbcType=BIT}, #{assignedUserId,jdbcType=CHAR}, #{custScores,jdbcType=DECIMAL}, 
+      #{listSt,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bp.wei.crm.model.AnswerOption">
+    insert into ec1_interaction_ask
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="dateEntered != null">
+        date_entered,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id,
+      </if>
+      <if test="custScores != null">
+        cust_scores,
+      </if>
+      <if test="listSt != null">
+        list_st,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="custScores != null">
+        #{custScores,jdbcType=DECIMAL},
+      </if>
+      <if test="listSt != null">
+        #{listSt,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bp.wei.crm.model.AnswerOption">
+    update ec1_interaction_ask
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="custScores != null">
+        cust_scores = #{custScores,jdbcType=DECIMAL},
+      </if>
+      <if test="listSt != null">
+        list_st = #{listSt,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bp.wei.crm.model.AnswerOption">
+    update ec1_interaction_ask
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      cust_scores = #{custScores,jdbcType=DECIMAL},
+      list_st = #{listSt,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bp.wei.crm.model.AnswerOption">
+    update ec1_interaction_ask
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      cust_scores = #{custScores,jdbcType=DECIMAL},
+      list_st = #{listSt,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

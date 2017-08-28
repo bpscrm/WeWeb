@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bp.wei.dao.PurchaseinfoDao">
+  <resultMap id="BaseResultMap" type="com.bp.wei.crm.model.Purchaseinfo">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="date_entered" jdbcType="TIMESTAMP" property="dateEntered" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="modified_user_id" jdbcType="CHAR" property="modifiedUserId" />
+    <result column="created_by" jdbcType="CHAR" property="createdBy" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="assigned_user_id" jdbcType="CHAR" property="assignedUserId" />
+    <result column="purchase_price" jdbcType="DECIMAL" property="purchasePrice" />
+    <result column="purchase_st_dt" jdbcType="DATE" property="purchaseStDt" />
+    <result column="purchase_ed_dt" jdbcType="DATE" property="purchaseEdDt" />
+    <result column="purchase_st" jdbcType="VARCHAR" property="purchaseSt" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bp.wei.crm.model.Purchaseinfo">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  
+  <!-- start -->
+  <resultMap id="ResultPuschaseInfoMap" type="com.bp.wei.crm.model.Purchaseinfo">
+  	<id property="id" column="purid"/>
+  	<result property="name" column="prdname"/>
+  	<result property="purchasePrice" column="purprice"/>
+  	<result property="purchaseStDt" column="stdate" />
+  	<result property="purchaseEdDt" column="eddate" />
+  </resultMap>
+  
+  <resultMap id="ResultFeedbackMapWithPurchase" type="com.bp.wei.crm.model.Purchaseinfo">
+  	<id property="id" column="purid"/>
+  	<result property="name" column="purname"/>
+  	<collection property="feedback" javaType="java.util.List" ofType="com.bp.wei.crm.model.Feedback">
+  		<id property="id" column="fbid"/>
+  		<result property="name" column="fbname"/>
+  	</collection>
+  </resultMap>  
+  <!-- end -->
+  
+  <sql id="Base_Column_List">
+    id, name, date_entered, date_modified, modified_user_id, created_by, deleted, assigned_user_id, 
+    purchase_price, purchase_st_dt, purchase_ed_dt, purchase_st
+  </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_purchase_data
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  
+  <!-- start-->
+  <select id="selectPurchaseinfoByKey" parameterType="java.lang.String" resultMap="ResultPuschaseInfoMap">
+ 	SELECT pur.id purid, prd.name prdname,pur.purchase_price purprice, 
+           DATE_FORMAT(pur.purchase_st_dt,'%Y-%m-%d') stdate, DATE_FORMAT(purchase_ed_dt,'%Y-%m-%d') eddate
+  	  FROM ec1_purchase_data pur, ec1_product_catalog prd, ec1_purchase_data_ec1_product_catalog_c purtoprd
+     WHERE pur.id = purtoprd.ec1_purchase_data_ec1_product_catalogec1_purchase_data_idb
+       AND prd.id = purtoprd.ec1_purchase_data_ec1_product_catalogec1_product_catalog_ida
+       AND pur.id = #{id,jdbcType=CHAR}
+  </select>
+  <select id="selectFeedbacklistByKey" parameterType="java.lang.String" resultMap="ResultFeedbackMapWithPurchase">
+	SELECT pur.id purid, pur.name purname, fb.id fbid, fb.name fbname
+  	  FROM ec1_purchase_data pur,ec1_feedback fb, ec1_feedback_ec1_purchase_data_c fbtopur
+     WHERE pur.id = fbtopur.ec1_feedback_ec1_purchase_dataec1_purchase_data_ida
+       AND fb.id = fbtopur.ec1_feedback_ec1_purchase_dataec1_feedback_idb
+       AND pur.id = #{id,jdbcType=CHAR}
+  </select>
+  <!-- end-->
+  
+  <select id="selectIDByMember" parameterType="java.lang.String" resultType="String">
+    select id
+    from ec1_purchase_data
+    where name = #{name,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ec1_purchase_data
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bp.wei.crm.model.Purchaseinfo">
+    insert into ec1_purchase_data (id, name, date_entered, 
+      date_modified, modified_user_id, created_by, 
+      deleted, assigned_user_id, purchase_price, 
+      purchase_st_dt, purchase_ed_dt, purchase_st, 
+      description)
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{dateEntered,jdbcType=TIMESTAMP}, 
+      #{dateModified,jdbcType=TIMESTAMP}, #{modifiedUserId,jdbcType=CHAR}, #{createdBy,jdbcType=CHAR}, 
+      #{deleted,jdbcType=BIT}, #{assignedUserId,jdbcType=CHAR}, #{purchasePrice,jdbcType=DECIMAL}, 
+      #{purchaseStDt,jdbcType=DATE}, #{purchaseEdDt,jdbcType=DATE}, #{purchaseSt,jdbcType=VARCHAR}, 
+      #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bp.wei.crm.model.Purchaseinfo">
+    insert into ec1_purchase_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="dateEntered != null">
+        date_entered,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id,
+      </if>
+      <if test="purchasePrice != null">
+        purchase_price,
+      </if>
+      <if test="purchaseStDt != null">
+        purchase_st_dt,
+      </if>
+      <if test="purchaseEdDt != null">
+        purchase_ed_dt,
+      </if>
+      <if test="purchaseSt != null">
+        purchase_st,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="purchasePrice != null">
+        #{purchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="purchaseStDt != null">
+        #{purchaseStDt,jdbcType=DATE},
+      </if>
+      <if test="purchaseEdDt != null">
+        #{purchaseEdDt,jdbcType=DATE},
+      </if>
+      <if test="purchaseSt != null">
+        #{purchaseSt,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bp.wei.crm.model.Purchaseinfo">
+    update ec1_purchase_data
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="purchasePrice != null">
+        purchase_price = #{purchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="purchaseStDt != null">
+        purchase_st_dt = #{purchaseStDt,jdbcType=DATE},
+      </if>
+      <if test="purchaseEdDt != null">
+        purchase_ed_dt = #{purchaseEdDt,jdbcType=DATE},
+      </if>
+      <if test="purchaseSt != null">
+        purchase_st = #{purchaseSt,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bp.wei.crm.model.Purchaseinfo">
+    update ec1_purchase_data
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      purchase_price = #{purchasePrice,jdbcType=DECIMAL},
+      purchase_st_dt = #{purchaseStDt,jdbcType=DATE},
+      purchase_ed_dt = #{purchaseEdDt,jdbcType=DATE},
+      purchase_st = #{purchaseSt,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bp.wei.crm.model.Purchaseinfo">
+    update ec1_purchase_data
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      purchase_price = #{purchasePrice,jdbcType=DECIMAL},
+      purchase_st_dt = #{purchaseStDt,jdbcType=DATE},
+      purchase_ed_dt = #{purchaseEdDt,jdbcType=DATE},
+      purchase_st = #{purchaseSt,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

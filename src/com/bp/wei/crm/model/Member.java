@@ -14,7 +14,7 @@ public class Member {
 	
 	private String birthday;
 	
-	//private List<Childinfo> children;
+	private List<Childinfo> children;
 
 	public String getId() {
 		return id;
@@ -56,18 +56,18 @@ public class Member {
 		this.birthday = birthday;
 	}	
 
-	//public List<Childinfo> getChildren() {
-	//	return children;
-	//}
+	public List<Childinfo> getChildren() {
+		return children;
+	}
 
-	//public void setChildren(List<Childinfo> children) {
-	//	this.children = children;
-	//}
+	public void setChildren(List<Childinfo> children) {
+		this.children = children;
+	}
 
-	//@Override
-	//public String toString() {
-	//	return "Member [id=" + id + ", name=" + name + ", mobile=" + mobile + ", gender=" + gender + ", birthday="
-	//			+ birthday + ", children=" + children + "]";
-	//}
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", name=" + name + ", mobile=" + mobile + ", gender=" + gender + ", birthday="
+				+ birthday + ", children=" + children + "]";
+	}
 	
 }

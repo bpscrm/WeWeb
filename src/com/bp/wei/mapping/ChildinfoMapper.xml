@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bp.wei.dao.ChildinfoDao">
+  <resultMap id="BaseResultMap" type="com.bp.wei.crm.model.Childinfo">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="date_entered" jdbcType="TIMESTAMP" property="dateEntered" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="modified_user_id" jdbcType="CHAR" property="modifiedUserId" />
+    <result column="created_by" jdbcType="CHAR" property="createdBy" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="assigned_user_id" jdbcType="CHAR" property="assignedUserId" />
+    <result column="child_sex" jdbcType="VARCHAR" property="childSex" />
+    <result column="child_birthday" jdbcType="DATE" property="childBirthday" />
+    <result column="child_eng" jdbcType="VARCHAR" property="childEng" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bp.wei.crm.model.Childinfo">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, date_entered, date_modified, modified_user_id, created_by, deleted, assigned_user_id, 
+    child_sex, child_birthday, child_eng
+  </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_child_data
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <select id="selectByChildName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_child_data
+    where name = #{name,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ec1_child_data
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bp.wei.crm.model.Childinfo">
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+        select  uuid()   from dual  
+    </selectKey> 
+    insert into ec1_child_data (id, name, date_entered,  date_modified, modified_user_id, created_by, deleted, 
+      assigned_user_id, child_sex, 
+      child_birthday, child_eng, description
+      )
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, now(), now(), "1", "1", "0",
+	  #{assignedUserId,jdbcType=CHAR}, #{childSex,jdbcType=VARCHAR}, 
+      #{childBirthday,jdbcType=DATE}, #{childEng,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bp.wei.crm.model.Childinfo">
+    insert into ec1_child_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="dateEntered != null">
+        date_entered,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id,
+      </if>
+      <if test="childSex != null">
+        child_sex,
+      </if>
+      <if test="childBirthday != null">
+        child_birthday,
+      </if>
+      <if test="childEng != null">
+        child_eng,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="childSex != null">
+        #{childSex,jdbcType=VARCHAR},
+      </if>
+      <if test="childBirthday != null">
+        #{childBirthday,jdbcType=DATE},
+      </if>
+      <if test="childEng != null">
+        #{childEng,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bp.wei.crm.model.Childinfo">
+    update ec1_child_data
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dateEntered != null">
+        date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUserId != null">
+        modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="assignedUserId != null">
+        assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      </if>
+      <if test="childSex != null">
+        child_sex = #{childSex,jdbcType=VARCHAR},
+      </if>
+      <if test="childBirthday != null">
+        child_birthday = #{childBirthday,jdbcType=DATE},
+      </if>
+      <if test="childEng != null">
+        child_eng = #{childEng,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bp.wei.crm.model.Childinfo">
+    update ec1_child_data
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      child_sex = #{childSex,jdbcType=VARCHAR},
+      child_birthday = #{childBirthday,jdbcType=DATE},
+      child_eng = #{childEng,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bp.wei.crm.model.Childinfo">
+    update ec1_child_data
+    set name = #{name,jdbcType=VARCHAR},
+      date_entered = #{dateEntered,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      modified_user_id = #{modifiedUserId,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=CHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      assigned_user_id = #{assignedUserId,jdbcType=CHAR},
+      child_sex = #{childSex,jdbcType=VARCHAR},
+      child_birthday = #{childBirthday,jdbcType=DATE},
+      child_eng = #{childEng,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

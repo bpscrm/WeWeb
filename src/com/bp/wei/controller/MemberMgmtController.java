@@ -1,13 +1,27 @@
 package com.bp.wei.controller;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.Map;
-
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +36,19 @@ import com.bp.wei.crm.model.Followerinfo;
 import com.bp.wei.crm.model.Member;
 import com.bp.wei.crm.model.Memberinfo;
 import com.bp.wei.crm.model.MemberinfoWithBLOBs;
+import com.bp.wei.crm.model.Childinfo;
+import com.bp.wei.crm.model.FeedbackWithBLOBs;
+import com.bp.wei.crm.model.Purchaseinfo;
 import com.bp.wei.service.CRMDBManageService;
+import com.swetake.util.Qrcode;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping
-public class CRMDBManageController {
-	public static Logger log = LoggerFactory.getLogger(CRMDBManageController.class);
+public class MemberMgmtController {
+	public static Logger log = LoggerFactory.getLogger(MemberMgmtController.class);
 	
 	@Autowired
 	CRMDBManageService memberService;
@@ -45,8 +64,8 @@ public class CRMDBManageController {
 		return "memberinfo";
 	}
 
-	@RequestMapping(value="mypromotion", method = RequestMethod.GET)
-	public String redirectMypromotion(){	
+	@RequestMapping(value="mypromotion", params = {"openid"}, method = RequestMethod.GET)
+	public String mypromotion(){	
 		return "mypromotion";
 	}
 	
@@ -101,10 +120,8 @@ public class CRMDBManageController {
 		return "myfollower";
 	}
 	
-	@RequestMapping(value="myqrcode", method = RequestMethod.GET)
-	public String redirectMyqrcode(){	
-		return "myqrcode";
-	}
+	
+	
 	
 	@RequestMapping(value="registerinfo", method = RequestMethod.POST)
 	public ModelAndView viewRegisterinfo(HttpServletRequest request){	
@@ -124,6 +141,18 @@ public class CRMDBManageController {
 		
 		return memberService.getMemberById(new Integer(id));
 		
+	}
+	
+	@RequestMapping(value="getMemberchild", method = RequestMethod.GET)
+	public @ResponseBody Memberinfo findMemberWithChildren(String id){
+		log.debug("###########memberid: " + id);
+		if(id == null || id.length() == 0){
+			return null;
+		}
+		log.debug("###########memberid: " + id);
+		Memberinfo member = memberService.getMemberWithChildren(id);
+		log.debug("###########" + member.toString());
+		return member;
 	}
 	
 	@RequestMapping(value="setmember", method = RequestMethod.POST)
@@ -296,41 +325,230 @@ public class CRMDBManageController {
 		return result;	
 	}
 	
-	
-	//for test data 
-	@RequestMapping(value="gettestfollowerid", method = RequestMethod.POST)
-	public @ResponseBody JSONObject getTestfollowerid(@RequestBody JSONObject strtestfollowerid){
-		
-		Map params = new HashMap();
+	/////////for child
+	//insert child
+	@RequestMapping(value="setchildinfo", method = RequestMethod.POST)
+	public @ResponseBody int setChildinfo(@RequestBody JSONObject strChildinfo){
 		
 		log.debug("Start to set member...");
-		if(strtestfollowerid == null){
-			log.error("Failed to get child info from UI: " + strtestfollowerid);
-			
-			params.put("id", "null");
-			JSONObject result = JSONObject.fromObject(params);
-			
-			return result;
+		if(strChildinfo == null){
+			log.error("Failed to get child info from UI: " + strChildinfo);
+			return -1;
 		}
 		
-		System.out.println("#################" + strtestfollowerid.toString());
+		System.out.println("#################" + strChildinfo.toString());
 		
 		//JSONObject jsonObject = JSONObject.fromObject(strMember);
-		Followerinfo follow = new Followerinfo();
+		Childinfo childinfo = new Childinfo();
 		
-		String flname = strtestfollowerid.getString("membertelnumname");
-		if(flname != null && flname.length() > 0){
-			follow.setName("openid-" + flname);
+		String cname = strChildinfo.getString("childname");
+		if(cname != null && cname.length() > 0){
+			childinfo.setName(cname);
 		}
-				
-		String flid = memberService.getTestFollowerinfo(follow);
 		
-		params.put("id", flid);
-		JSONObject result = JSONObject.fromObject(params);
+		String csex = strChildinfo.getString("childsex");
+		if(csex != null && csex.length() > 0){
+			childinfo.setChildSex(csex);
+		}
+		
+		String cbird = strChildinfo.getString("childbird");
+		if(cbird != null && cbird.length() > 0){
+			childinfo.setChildBirthday(cbird);
+		}
+		
+		String ceng = strChildinfo.getString("childeng");
+		if(ceng != null && ceng.length() > 0){
+			childinfo.setChildEng(ceng);
+		}
+		
+		int result = memberService.insertChildinfo(childinfo, strChildinfo.getString("memberid1"));
 		
 		System.out.println("@@@@@@@@@@@@@@result: " + result);
-		
 		return result;		
 	}
+	//search child
+	@RequestMapping(value="getchildinfo", method = RequestMethod.GET)
+	public @ResponseBody Childinfo findChildinfo(String id){
+		
+		return memberService.getchildinfo(new String(id));
+		
+	}
+	//update child
+	@RequestMapping(value="updatechildinfo", method = RequestMethod.POST)
+	public @ResponseBody int updateChildinfo(@RequestBody JSONObject strChildinfo){
+			
+		log.debug("Start to set member...");
+		if(strChildinfo == null){
+			log.error("Failed to get child info from UI: " + strChildinfo);
+			return -1;
+		}
+		
+		System.out.println("#################" + strChildinfo.toString());
+		
+		//JSONObject jsonObject = JSONObject.fromObject(strMember);
+		Childinfo childinfo = new Childinfo();
+		
+		String cid = strChildinfo.getString("childid");
+		if(cid != null && cid.length() > 0){
+			childinfo.setId(cid);
+		}
+		
+		String cname = strChildinfo.getString("childname");
+		if(cname != null && cname.length() > 0){
+			childinfo.setName(cname);
+		}
+		
+		String csex = strChildinfo.getString("childsex");
+		if(csex != null && csex.length() > 0){
+			childinfo.setChildSex(csex);
+		}
+		
+		String cbird = strChildinfo.getString("childbird");
+		if(cbird != null && cbird.length() > 0){
+			childinfo.setChildBirthday(cbird);
+		}
+		
+		String ceng = strChildinfo.getString("childeng");
+		if(ceng != null && ceng.length() > 0){
+			childinfo.setChildEng(ceng);
+		}
+		
+		int result = memberService.updateChildinfo(childinfo);
+		
+		System.out.println("@@@@@@@@@@@@@@result: " + result);
+		return result;		
+	}
+	
+	
+	/////////for purchase
+	//search purchase
+	@RequestMapping(value="getPurchaselist", method = RequestMethod.GET)
+	public @ResponseBody Memberinfo findMemberWithPurchase(String id){
+		log.debug("###########memberid: " + id);
+		if(id == null || id.length() == 0){
+			return null;
+		}
+		log.debug("###########memberid: " + id);
+		Memberinfo member = memberService.getMemberWithPurchase(id);
+		log.debug("###########" + member.toString());
+		return member;
+	}
+	
+	@RequestMapping(value="getPurchaseinfo", method = RequestMethod.GET)
+	public @ResponseBody Purchaseinfo findPurchaseInfo(String id){
+		log.debug("###########memberid: " + id);
+		if(id == null || id.length() == 0){
+			return null;
+		}
+		log.debug("###########memberid: " + id);
+		Purchaseinfo purinfo = memberService.getPurchaseInfo(id);
+		log.debug("###########" + purinfo.toString());
+		return purinfo;
+	}
+	
+	
+		
+	/////////for feedback
+	//insert feedback
+	@RequestMapping(value="setfeedbackinfo", method = RequestMethod.POST)
+	public @ResponseBody int setfeedbackinfo(@RequestBody JSONObject strfeedbackinfo){
+		
+		log.debug("Start to set member...");
+		if(strfeedbackinfo == null){
+			log.error("Failed to get child info from UI: " + strfeedbackinfo);
+			return -1;
+		}
+		
+		System.out.println("#################" + strfeedbackinfo.toString());
+		
+		//JSONObject jsonObject = JSONObject.fromObject(strMember);
+		FeedbackWithBLOBs feedback = new FeedbackWithBLOBs();
+		
+		String fname = strfeedbackinfo.getString("feedbackname");
+		if(fname != null && fname.length() > 0){
+			feedback.setName(fname);
+		}
+		
+		String fcontent = strfeedbackinfo.getString("feedbackcontent");
+		if(fcontent != null && fcontent.length() > 0){
+			feedback.setDescription(fcontent);
+		}
+		
+		String ftime = strfeedbackinfo.getString("feedbacktime");
+		if(ftime != null && ftime.length() > 0){
+			feedback.setFdDt(ftime);
+		}
+		
+
+		
+		int result = memberService.insertFeedbackinfo(feedback, strfeedbackinfo.getString("purchaseid"));
+		
+		System.out.println("@@@@@@@@@@@@@@result: " + result);
+		return result;		
+	}
+	//search feedback
+	@RequestMapping(value="getfeedbackinfo", method = RequestMethod.GET)
+	public @ResponseBody FeedbackWithBLOBs findFeedbackinfo(String id){
+		
+		return memberService.getFeedbackinfobyid(new String(id));
+		
+	}
+	
+	@RequestMapping(value="getFeedbacklist", method = RequestMethod.GET)
+	public @ResponseBody Purchaseinfo findFeedbacklist(String id){
+		log.debug("###########memberid: " + id);
+		if(id == null || id.length() == 0){
+			return null;
+		}
+		log.debug("###########memberid: " + id);
+		Purchaseinfo purinfo = memberService.getFeedbacklist(id);
+		log.debug("###########" + purinfo.toString());
+		return purinfo;
+	}
+	
+	//update feedback
+	@RequestMapping(value="updatefeedbackinfo", method = RequestMethod.POST)
+	public @ResponseBody int updatefeedbackinfo(@RequestBody JSONObject strfeedbackinfo){
+		
+		log.debug("Start to set member...");
+		if(strfeedbackinfo == null){
+			log.error("Failed to get child info from UI: " + strfeedbackinfo);
+			return -1;
+		}
+		
+		System.out.println("#################" + strfeedbackinfo.toString());
+		
+		//JSONObject jsonObject = JSONObject.fromObject(strMember);
+		FeedbackWithBLOBs feedback = new FeedbackWithBLOBs();
+		
+		String fid = strfeedbackinfo.getString("feedbackid");
+		if(fid != null && fid.length() > 0){
+			feedback.setId(fid);
+		}
+		
+		String fname = strfeedbackinfo.getString("feedbackname");
+		if(fname != null && fname.length() > 0){
+			feedback.setName(fname);
+		}
+		
+		String fcontent = strfeedbackinfo.getString("feedbackcontent");
+		if(fcontent != null && fcontent.length() > 0){
+			feedback.setDescription(fcontent);
+		}
+		
+		String ftime = strfeedbackinfo.getString("feedbacktime");
+		if(ftime != null && ftime.length() > 0){
+			feedback.setFdDt(ftime);
+		}
+		
+
+		
+		int result = memberService.updateFeedbackinfo(feedback);
+		
+		System.out.println("@@@@@@@@@@@@@@result: " + result);
+		return result;		
+	}
+	
+	
 
 }

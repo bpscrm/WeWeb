@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>购买产品详细资料</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/weui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
+	</head>
+
+	<body>
+
+		<form id="feedbacklist" method="post">
+			<header class="ui-header ui-header-positive ui-border-b">
+				<h1>已购产品信息</h1><button class="ui-btn" onclick="history.back()">回首页</button>
+			</header>
+			<br />
+			<br />
+
+			<div class="page__bd">
+				<article class="weui-article">
+					<section>
+						<div id="searchresultpurchase"></div>
+
+						<br />
+					</section>
+				</article>
+			</div>
+
+			<div class="weui-cells__title">点选查看对此产品提出的建议和反馈</div>
+			<div class="weui-cells">
+				<div id="searchresultfeedback"></div>
+
+				<br />
+			</div>
+
+			<div class="page__bd page__bd_spacing">
+				<div class="button-sp-area">
+						<a class="page-btn page-btn_primary" href="javascript:feedbackinfoadd();">新增意见反馈</a>
+						<input type="hidden" id="purchaseid" value="1" />
+				</div>
+			</div>
+
+			<div class="weui-footer">
+				<br />
+				<br />
+				<p class="weui-footer__links">
+					<a href="javascript:;" class="weui-footer__link">关于我们</a>
+				</p>
+				<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+			</div>
+		</form>
+
+		<script id="template" type="text/html">
+			<div>
+
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">产品名称</label></div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" name="purchasename" type="text" value=<#= name #> />
+					</div>
+				</div>
+
+				<div class="weui-cell">
+					<div class="weui-cell__hd">
+						<label class="weui-label">购买价格</label>
+					</div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" name="purchasenprice" type="number" value=<#= purchasePrice #> />
+					</div>
+				</div>
+
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label for="" class="weui-label">开始时间</label></div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" name="purchasenstdt" type="text" value=<#= purchaseStDt #> />
+					</div>
+				</div>
+
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label for="" class="weui-label">结束时间</label></div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" name="purchaseneddt" type="text" value=<#= purchaseEdDt #> />
+					</div>
+				</div>
+			</div>
+
+		</script>
+		
+		<script id="feedbacklist-template" type="text/html">
+			 <a class="weui-cell weui-cell_access" href="javascript:feedbackinfoupdate('<#= id #>');">
+	                <div class="weui-cell__hd"><img src="./images/Projects_favico.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
+	                <div class="weui-cell__bd">
+	                    <p><#= name #></p>
+	                </div>
+	                <div class="weui-cell__ft">查看详细资料</div>
+	         </a>			
+		</script>
+
+		<script type="text/javascript">
+			//search data
+			$.fn.parseTemplate = function(data) {
+				var str = (this).html();
+				var _tmplCache = {}
+				var err = "";
+				try {
+					var func = _tmplCache[str];
+					if(!func) {
+						var strFunc =
+							"var p=[],print=function(){p.push.apply(p,arguments);};" +
+							"with(obj){p.push('" +
+							str.replace(/[\r\t\n]/g, " ")
+							.replace(/'(?=[^#]*#>)/g, "\t")
+							.split("'").join("\\'")
+							.split("\t").join("'")
+							.replace(/<#=(.+?)#>/g, "',$1,'")
+							.split("<#").join("');")
+							.split("#>").join("p.push('") +
+							"');}return p.join('');";
+						func = new Function("obj", strFunc);
+						_tmplCache[str] = func;
+					}
+					return func(data);
+				} catch(e) {
+					err = e.message;
+				}
+				return "< # ERROR: " + err.toString() + " # >";
+			};
+
+			function getPurchaseinfo() {
+				var purid = document.getElementById('purchaseid').value;
+				var params = {
+					id: purid
+				};
+
+				$.ajax({
+					type: 'get',
+					url: 'getPurchaseinfo',
+					cache: false,
+					dataType: 'json',
+					data: params,
+					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+						//var result= JSON.stringify(data);
+						//alert('success:' + result);
+						var output = $('#template').parseTemplate(data);
+
+						$('#searchresultpurchase').html(output);
+
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+			}
+
+			$(function() {
+				var winH = $(window).height();
+				var categorySpace = 10;
+
+				$('.js_item').on('click', function() {
+					var id = $(this).data('id');
+					window.pageManager.go(id);
+				});
+				$('.js_category').on('click', function() {
+					var $this = $(this),
+						$inner = $this.next('.js_categoryInner'),
+						$page = $this.parents('.page'),
+						$parent = $(this).parent('li');
+					var innerH = $inner.data('height');
+					bear = $page;
+
+					if(!innerH) {
+						$inner.css('height', 'auto');
+						innerH = $inner.height();
+						$inner.removeAttr('style');
+						$inner.data('height', innerH);
+					}
+
+					if($parent.hasClass('js_show')) {
+						$parent.removeClass('js_show');
+					} else {
+						$parent.siblings().removeClass('js_show');
+
+						$parent.addClass('js_show');
+						if(this.offsetTop + this.offsetHeight + innerH > $page.scrollTop() + winH) {
+							var scrollTop = this.offsetTop + this.offsetHeight + innerH - winH + categorySpace;
+
+							if(scrollTop > this.offsetTop) {
+								scrollTop = this.offsetTop - categorySpace;
+							}
+
+							$page.scrollTop(scrollTop);
+						}
+					}
+				});
+			});
+		
+        	function getFeedbacklist(){
+				var purid = document.getElementById('purchaseid').value;
+				var params = {id: purid};
+				
+				$.ajax({  
+			        type: 'get',  
+			        url: 'getFeedbacklist',
+			        cache: false,
+			        dataType : 'json',
+			        data: params,
+			　　　　　　 	contentType : 'application/json', 
+			　　　　　　 	async: false,
+			        success: function (data) { 	
+			        	var result= JSON.stringify(data);
+			        	
+			        	var htmllist = '';
+			        	data.feedback.forEach(function(object) {			        		
+			        		var output = $('#feedbacklist-template').parseTemplate(object);			        		
+			        		htmllist += output;
+			        	});
+			        	
+			        	$('#searchresultfeedback').html(htmllist); 
+			        			        				        	
+			        },  
+			        error: function (data) { 		        	
+			        	alert('failed:' + data.msg);
+			        }  
+			    });
+			}		
+		
+			function feedbackinfoupdate(id) {
+
+				$.ajax({
+					type: 'get',
+					url: 'feedbackinfoupdate',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'feedbackinfoupdate.html?fbid=' + id;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+			
+			function feedbackinfoadd() {
+				var purid = document.getElementById('purchaseid').value;
+				
+				$.ajax({
+					type: 'get',
+					url: 'feedbackinfoadd',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'feedbackinfoadd.html?purid=' + purid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+			
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			}  
+			
+			$(document).ready(function() {
+				
+				$("#purchaseid").val($.getUrlParam('purid'));
+
+				getPurchaseinfo();
+				
+				getFeedbacklist();
+				
+			});				
+		</script>
+
+	</body>
+
+</html>

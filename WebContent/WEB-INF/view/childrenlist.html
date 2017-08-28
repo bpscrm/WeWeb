@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>小孩资料列表</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/weui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
+	</head>
+
+	<body>
+		<form id="childrenlist" method="post">
+			<header class="ui-header ui-header-positive ui-border-b">
+				<h1>我的小孩资料</h1><button class="ui-btn" onclick="history.back()">回首页</button>
+			</header>
+			<br />
+			<br />
+			
+
+			
+        	<div class="weui-cells">
+        	
+        	        	
+        		<div id="searchresult"> 
+	       		</div>
+
+				<div class="page__bd page__bd_spacing">
+					<div class="page-btn-area">
+						<a class="page-btn page-btn_primary" href="javascript:childinfoadd()">增加小孩资料</a>
+						<input type="hidden" id="memberid" value="1" />
+					</div>
+				</div>
+		
+        	</div>
+        
+        </form>
+        
+        <script id="children-template" type="text/html">
+			 <a class="weui-cell weui-cell_access" href="javascript:childinfoupdate('<#= id #>');">
+	                <div class="weui-cell__hd"><img src="./images/Users_favico.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
+	                <div class="weui-cell__bd">
+	                    <p><#= name #></p>
+	                </div>
+	                <div class="weui-cell__ft">查看详细资料</div>
+	         </a>			
+		</script>
+        
+        <script type="text/javascript">
+        
+        	function getMemberchild(){
+				var memberid = document.getElementById('memberid').value;
+				var params = {id: memberid};
+				
+				$.ajax({  
+			        type: 'get',  
+			        url: 'getMemberchild',
+			        cache: false,
+			        dataType : 'json',
+			        data: params,
+			　　　　　　 	contentType : 'application/json', 
+			　　　　　　 	async: false,
+			        success: function (data) { 	
+			        	var result= JSON.stringify(data);
+			        	
+			        	var htmllist = '';
+			        	data.children.forEach(function(object) {			        		
+			        		var output = $('#children-template').parseTemplate(object);			        		
+			        		htmllist += output;
+			        	});
+			        	
+			        	$('#searchresult').html(htmllist); 
+			        				        	
+			        },  
+			        error: function (data) { 		        	
+			        	alert('failed:' + data.msg);
+			        }  
+			    });
+			}
+        
+       	  	function childinfoupdate(id) {
+
+				$.ajax({
+					type: 'get',
+					url: 'childinfoupdate',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'childinfoupdate.html?cdid=' + id;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+			
+			function childinfoadd() {
+				var memberid = document.getElementById('memberid').value;
+
+				$.ajax({
+					type: 'get',
+					url: 'childinfoadd',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'childinfoadd.html?mbid=' + memberid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+			
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			}  
+			
+			$(document).ready(function() {
+				
+				$("#memberid").val($.getUrlParam('mdid'));
+
+				getMemberchild();
+			});
+		</script>
+		
+	</body>
+
+</html>

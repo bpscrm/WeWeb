@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>测试页面</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/weui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
+	</head>
+	<script type="text/javascript">  
+        
+	</script>
+	<body>
+
+		<form id="childinfoadd" method="post">
+			<header class="ui-header ui-header-positive ui-border-b">
+				<h1>测试页面</h1><button class="ui-btn" onclick="history.back()">回首页</button>
+			</header>
+			<br />
+			<br />
+
+			<div class="weui-cells weui-cells_form">
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">会员名称</label></div>
+					<div class="weui-cell__bd">
+						<input  name="childname" class="weui-input" type="text" value=${member.name} />
+					</div>
+				</div>
+				
+				<div class="weui-cell weui-cell_vcode">
+					<div class="weui-cell__hd">
+						<label class="weui-label">性别</label>
+					</div>
+					<div class="weui-cell__bd">
+						<select class="weui-select" name="childsex">
+							<option value="L1">女</option>
+							<option value="L2">男</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label for="" class="weui-label">日期</label></div>
+					<div class="weui-cell__bd">
+						<input name="childbird" class="weui-input" type="date" value="" />
+					</div>
+				</div>
+				
+				
+
+			<div class="page__bd page__bd_spacing">
+				<div class="page-btn-area">
+					<a class="page-btn page-btn_primary" href="javascript:;">新增</a>
+					<input type="hidden" id="memberid" value="1" />
+				</div>
+			</div>
+		</div>
+		</form>
+
+		<script type="text/javascript">
+	
+		</script>
+	</body>
+
+</html>

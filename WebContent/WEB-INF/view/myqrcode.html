@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>面对面推广</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/weui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+	</head>
+
+	<body onload="set_img_name()">
+		<form id="myqrcode" method="post">
+			<header class="ui-header ui-header-positive ui-border-b">
+				<h1>我的二维码</h1><button class="ui-btn" onclick="history.back()">回上页</button>
+			</header>
+			<br />
+			<br />
+
+			<div class="weui-cells">
+				<br />
+
+				<div class="weui-cells__tips">二维码</div>
+				<img src="images/book_64.png" id="photo" name="photo" width="185" height="185" align="middle" alt="ERR" style="float:middle;margin-top:20px;cursor:pointer;""/>	
+					
+				<br />
+
+			</div>
+
+		</form>
+
+		<script type="text/javascript">
+			var gbl_openid = "";
+			
+			var query_string = location.search;
+			var parsed_qs = parse_query_string(query_string);
+			
+			alert(query_string);
+			
+			gbl_openid = parsed_qs.openid;
+			
+			function parse_query_string(query) 
+			{
+				var params = {};
+				if (query) 
+				{
+		   			var parts = query.substring(1).split('&');
+
+		    		for (var i = 0; i < parts.length; i++) {
+		       			var nv = parts[i].split('=');
+		        		if (!nv[0]) continue;
+		        		params[nv[0]] = nv[1] || true;
+		    		}
+				}
+
+				return params;
+			}
+			
+			function set_img_name() 
+			{ 
+				alert('You triggered an alert!'); 
+				document.getElementById('photo').src = display_img();
+			}
+			
+			function display_img()
+			{
+				//your displaydate() function here
+				return "images/"+gbl_openid+".png?keycode=https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2c80bfa2eabeb26&redirect_uri=http://wongls.hopto.org/WeWeb&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect";
+
+			}
+			alert("app " + location.href);
+			alert("after Generate QrCode '"+gbl_openid + "'");
+		</script>
+		</form>
+	</body>
+
+</html>
