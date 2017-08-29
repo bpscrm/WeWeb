@@ -4,8 +4,10 @@
 package com.bp.wei.controller;
 
 import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,38 @@ public class MenuManageController {
 	@Autowired
 	private UserService userSrv;
 	
+	//////////////////////////////////////////////////////////////////////for 测试页面
+	//测试主页
+	@RequestMapping(value="TestIndex", method = RequestMethod.GET)
+	public String redirectTestIndex(){
+		
+		System.out.println( "[MenuMangerController][TestIndex]");
+		return "indextest";
+	}
+	
+	//打开你问我答
+	@RequestMapping(value="indexqaonline", method = RequestMethod.GET)
+	public String redirectintoQAOnlineIndex(){		
+		
+		System.out.println( "[MenuMangerController][redirectintoQAOnlineIndex]");
+		return "indexqaonline";
+	}	
+	
+	//打开会员管理
+	@RequestMapping(value="indexmember", method = RequestMethod.GET)
+	public String redirectintoMemberIndex(){		
+		
+		System.out.println( "[MenuMangerController][redirectintoMemberIndex]");
+		return "indexmember";
+	}	
+	
+	//打开营销活动
+	@RequestMapping(value="indexmarketing", method = RequestMethod.GET)
+	public String redirectintoMarketingIndex(){		
+		
+		System.out.println( "[MenuMangerController][redirectintoMarketingIndex]");
+		return "indexmarketing";
+	}		
 	
 	//////////////////////////////////////////////////////////////////////for 设定微信服务号菜单
 	@RequestMapping(value="menu", method = RequestMethod.GET)
@@ -73,7 +107,7 @@ public class MenuManageController {
 	@RequestMapping(value="redirectQAOnline", method = RequestMethod.GET)
 	public void redirectQAOnlineMgmt(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
 		String url = WeUtil.getRedirectUrl();
-		url = url.replace("REDIRECT_URI", "http://119.23.206.200/EnglishCenterZHH/oauthQAOnline");
+		url = url.replace("REDIRECT_URI", "http://www.wecarecrm.com/EnglishCenterZHH/oauthQAOnline");
 		log.debug("Redirect to: " + url);
 		response.sendRedirect(url);
 	}
@@ -101,7 +135,7 @@ public class MenuManageController {
 	}
 	
 	private String getRedirectQAOnlineUrl(User user){
-		StringBuffer sb = new StringBuffer("http://119.23.206.200/EnglishCenterZHH/QAOnlineIndex");
+		StringBuffer sb = new StringBuffer("http://www.wecarecrm.com/EnglishCenterZHH/QAOnlineIndex");
 		sb.append("?");
 		if(user.getOpenId() != null){
 			sb.append("openid=" + user.getOpenId());
@@ -124,7 +158,7 @@ public class MenuManageController {
 	@RequestMapping(value="redirectMember", method = RequestMethod.GET)
 	public void redirectMemberMgmt(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
 		String url = WeUtil.getRedirectUrl();
-		url = url.replace("REDIRECT_URI", WeUtil.redirect_url);
+		url = url.replace("REDIRECT_URI", "http://www.wecarecrm.com//EnglishCenterZHH/oauth");
 		log.debug("Redirect to: " + url);
 		response.sendRedirect(url);
 	}
@@ -152,7 +186,7 @@ public class MenuManageController {
 	}
 	
 	private String getRedirectUrl(User user){
-		StringBuffer sb = new StringBuffer("http://119.23.206.200/EnglishCenterZHH/MemberIndex");
+		StringBuffer sb = new StringBuffer("http://www.wecarecrm.com/EnglishCenterZHH/MemberIndex");
 		sb.append("?");
 		if(user.getOpenId() != null){
 			sb.append("openid=" + user.getOpenId());

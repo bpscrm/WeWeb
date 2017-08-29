@@ -30,7 +30,7 @@ public class WeUtil {
 	public final static String oauth_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
 	public final static String oauth_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
 	
-	public final static String redirect_url = "http://119.23.206.200/EnglishCenterZHH/oauth";
+	public final static String redirect_url = "http://www.wecarecrm.com//EnglishCenterZHH/oauth";
 	
 	private static Logger log = LoggerFactory.getLogger(WeUtil.class);
 	
