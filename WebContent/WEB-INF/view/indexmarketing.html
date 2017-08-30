@@ -33,33 +33,15 @@
 	
 			</div>
 			
-			<div class="page__bd">
-				<br />
-				<br />
-				<br />
-				<article class="weui-article">
-					<p>
-						如果你不是微信进入此页面，请设定你的手机号码，作为测试数据为后续页面使用！
-					</p>
-	
-					<div class="weui-cell">
-						<div class="weui-cell__hd"><label class="weui-label">手机号码</label></div>
-						<div class="weui-cell__bd">
-							<input id="membertelnumid" name="membertelnumname" class="weui-input" type="text" pattern="[0-9]*" placeholder="手机号码" />
-						</div>
-					</div>
-	
-					<div class="page__bd page__bd_spacing">
-						<div class="page-btn-area">
-							<a class="page-btn page-btn_primary" href="javascript:gettestfollowerid();">获取测试粉丝和会员资料</a>
-							<input type="hidden" id="followid" value="1" />
-							<input type="hidden" id="membertel" value="2" />
-						</div>
-					</div>
-				</article>
-			</div>
-	
-		
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<input type="hidden" id="openid_id" name="openid_name" value="1" />
+			<input type="hidden" id="nick_id" name="nick_name" value="1" />
+			
 			<div class="weui-footer">
 				<br />
 				<br />
@@ -85,7 +67,8 @@
 			
 			//for open page
 			function openmarketing(id) {
-			
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;	
 
 				$.ajax({
 					type: 'get',
@@ -95,7 +78,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'marketingindex.html?mkid=' + id;
+						window.location.href = 'marketingindex.html?mkid=' + id + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -131,6 +114,30 @@
 			        }  
 			    });
 			}
+			
+			//去session openid
+			function getOpenidFromSession() {
+			
+				var formdata = $('#marketingindex').serializeObject();
+				alert(formdata);	
+
+				$.ajax({
+					type: 'post',
+					url: 'getOpenidFromSession',
+					cache: false,
+					dataType: 'json',
+					data: JSON.stringify(formdata),
+					contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+						var result = JSON.stringify(data);
+						alert('success:' + result);
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+			}
         					
 			jQuery.getUrlParam = function (name) {
      			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -139,6 +146,11 @@
 			}  
 						
 			$(document).ready(function() {
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
+				
+				getOpenidFromSession();
+				
 				
 				getMarketinglist();
 				

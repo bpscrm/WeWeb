@@ -7,7 +7,7 @@
 		<title>你问我答</title>
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="css/weui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/frozen.css">
+		<link href="css/frozen.css" rel="stylesheet" />
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/weui.min.js"></script>
 		<script src="js/zepto.min.js"></script>
@@ -48,6 +48,7 @@
 				<div class="page-btn-area">
 					<a class="page-btn page-btn_primary" href="javascript:setQAOnlineinfo();">新增</a>
 					<input type="hidden" id="openid_id" name="openid_name" value="1" />
+					<input type="hidden" id="nick_id" name="nick_name" value="1" />
 					<input type="hidden" id="followid_id" name="followid_name" value="1" />
 				</div>			
 	
@@ -161,7 +162,9 @@
 			
 			//进入历史记录页面
 		    function QAOnlineView(id) {
-
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
+				
 				$.ajax({
 					type: 'get',
 					url: 'qaonlineview',
@@ -170,7 +173,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'qaonlineview.html?qaid=' + id;
+						window.location.href = 'qaonlineview.html?qaid=' + id  + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -180,13 +183,19 @@
 		
 			
 			//form 初始化			
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			} 
 			$(document).ready(function() {				
 				//				
 				$("#openid_id").val($.getUrlParam('openid'));
-				alert(document.getElementById('openid_id').value);
+				$("#nick_id").val($.getUrlParam('nickname'));
 				
 				//获取Follower ID
 				getFollowerID();				
+				
 				//获取历史记录
 				getFollowerQAOnlineList();
 			});

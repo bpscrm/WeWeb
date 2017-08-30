@@ -24,7 +24,7 @@
 				
 				<div class="ui-row">
  					<div class="ui-col ui-col-80"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="免费试听活动" /></h1></div>
-    				<div class="ui-col ui-col-20"><a href="javascript:gomarketingentry();"><div class="ui-badge-muted">回首页</div></a></div>		    			
+    				<div class="ui-col ui-col-20"><a href="javascript:intoMarketingIndex();"><div class="ui-badge-muted">回首页</div></a></div>		    			
     			</div>
 	
 			</header>
@@ -48,6 +48,8 @@
 					<a class="page-btn page-btn_default" href="javascript:gosignupcancel();">取消报名</a>
 					<input type="hidden" id="mkid" value="1" />
 					<input type="hidden" id="cdid" value="1" />
+					<input type="hidden" id="openid_id" name="openid_name" value="1" />
+					<input type="hidden" id="nick_id" name="nick_name" value="1" />
 				</div>
 			</div>
 
@@ -164,6 +166,8 @@
 					
 			//进入调查问卷页面
 			function gosignupsurvey() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;			
 			
 				var mkid = document.getElementById('mkid').value;
 
@@ -175,7 +179,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'signupsurvey.html?mkid=' + mkid;
+						window.location.href = 'signupsurvey.html?mkid=' + mkid + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -185,6 +189,8 @@
 			
 			//提交问卷后，返回本次活动首页
 			function gosignupcancel() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;			
 
 				$.ajax({
 					type: 'get',
@@ -194,7 +200,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'signupcancel';
+						window.location.href = 'signupcancel?openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -202,22 +208,30 @@
 				});
 			}	
 			//返回营销活动入口
-			function gomarketingentry() {
-
+			function intoMarketingIndex() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;				
+				
+				if(openid != ""){
+					
 				$.ajax({
 					type: 'get',
-					url: 'marketingentry',
+					url: 'indexmarketing',
 					cache: false,
 					async: false,
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'marketingentry';
+						window.location.href = 'indexmarketing.html?openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
 					}
 				});
+					
+				} else {
+					alert("资料有误");
+				}
 			}
 
 			jQuery.getUrlParam = function (name) {
@@ -227,6 +241,9 @@
 			}  			
 			$(document).ready(function() {
 				
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
+								
 				$("#mkid").val($.getUrlParam('mkid'));
 				
 				getmarketing();

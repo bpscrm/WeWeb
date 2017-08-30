@@ -1,11 +1,15 @@
 package com.bp.wei.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import net.sf.json.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bp.wei.crm.model.Marketinginfo;
 import com.bp.wei.crm.model.MarketinginfoWithBLOBs;
+import com.bp.wei.crm.model.QAOnlineWithBLOBs;
 import com.bp.wei.crm.model.Questionnaire;
 import com.bp.wei.service.CRMDBManageService;
 
@@ -100,6 +105,8 @@ public class MarketingMgmtController {
 	public ModelAndView submitSurvey(HttpServletRequest request){	
 		log.debug("setSurveryResult start...");
 		String surveryId = request.getParameter("sid");
+		String openId = request.getParameter("openid_name");
+		String nickName = request.getParameter("nick_name");
 		System.out.println("survery id: " + surveryId);
 		int i = 1;
 		
@@ -123,13 +130,32 @@ public class MarketingMgmtController {
 			boolean blResult = marktingService.setInteractionData(request);
 		//}
 		
+			
+		HttpSession session = request.getSession();
+		session.removeAttribute("openid");
+		session.removeAttribute("nickname");
+		session.setAttribute("openid", openId);
+		session.setAttribute("nickname", nickName);
 
-		ModelAndView result = new ModelAndView();
+		ModelAndView result = new ModelAndView();	
+		result.addObject ("openid", openId);
+		result.setViewName("indexmarketing");
 		
-		result.setViewName("msg_success");		
 			
 		return result;
 	}	
+	
+	
+	
+	
+	@RequestMapping(value="getOpenidFromSession", method = RequestMethod.POST)
+	public @ResponseBody String getOpenidFromSession(@RequestBody JSONObject strForminfo){
+		
+		
+        		
+		return "1";		
+	}
+	
 	
 	
 	//search marketing info for 签到

@@ -23,7 +23,7 @@
 				
 				<div class="ui-row">
  					<div class="ui-col ui-col-80"><h1>取消活动报名</h1></div>
-    				<div class="ui-col ui-col-20"><a href="javascript:gomarketingentry();"><div class="ui-badge-muted">回首页</div></a></div>		    			
+    				<div class="ui-col ui-col-20"><a href="javascript:intoMarketingIndex();"><div class="ui-badge-muted">回首页</div></a></div>		    			
     			</div>
 
 			</header>
@@ -37,9 +37,12 @@
 
 				<div class="page__bd page__bd_spacing">
 					<div class="page-btn-area">
-						<a class="page-btn page-btn_primary" href="javascript:gobackmarktingindex()">确认取消</a>
+						<a class="page-btn page-btn_primary" href="javascript:intoMarketingIndex()">确认取消</a>
 						<input type="hidden" id="followid" name="followid" value="1" />
 						<input type="hidden" id="membertel" name="membertel" value="2" />
+											
+						<input type="hidden" id="openid_id" name="openid_name" value="1" />
+						<input type="hidden" id="nick_id" name="nick_name" value="1" />
 					</div>
 				</div>
 
@@ -59,7 +62,8 @@
 			
 			//提交问卷后，返回本次活动首页
 			function gobackmarktingindex() {
-
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
 				$.ajax({
 					type: 'get',
 					url: 'marketingindex',
@@ -68,7 +72,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'marketingindex';
+						window.location.href = 'marketingindex?openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -76,24 +80,43 @@
 				});
 			}	
 			//返回营销活动入口
-			function gomarketingentry() {
-
+			function intoMarketingIndex() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;				
+				
+				if(openid != ""){
+					
 				$.ajax({
 					type: 'get',
-					url: 'marketingentry',
+					url: 'indexmarketing',
 					cache: false,
 					async: false,
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'marketingentry';
+						window.location.href = 'indexmarketing.html?openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
 					}
 				});
+					
+				} else {
+					alert("资料有误");
+				}
 			}
+			
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			}  			
+			$(document).ready(function() {
+				
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
 
+			});
 
 		</script>
 	</body>

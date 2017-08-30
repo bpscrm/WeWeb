@@ -65,9 +65,11 @@
 	
 					<div class="page__bd page__bd_spacing">
 						<div class="page-btn-area">
-							<a class="page-btn page-btn_primary" href="javascript:gomarketingentry();">返回营销活动首页</a>
+							<a class="page-btn page-btn_primary" href="javascript:intoMarketingIndex();">返回营销活动首页</a>
 							<input type="hidden" id="mkid" value="1" />
 							<input type="hidden" id="mbid" value="2" />
+							<input type="hidden" id="openid_id" name="openid_name" value="1" />
+							<input type="hidden" id="nick_id" name="nick_name" value="1" />
 						</div>
 					</div>
 					
@@ -145,6 +147,8 @@
 		
 			//活动报名
 			function marketingsignup() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;			
 			
 				var mkid = document.getElementById('mkid').value;
 
@@ -156,7 +160,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'marketingsignup.html?mkid=' + mkid;
+						window.location.href = 'marketingsignup.html?mkid=' + mkid + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -165,6 +169,8 @@
 			}		
 			//签到
 			function signinpage() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;			
 				var mkid = document.getElementById('mkid').value;
 
 				$.ajax({
@@ -175,7 +181,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'signinpage.html?mkid=' + mkid;
+						window.location.href = 'signinpage.html?mkid=' + mkid + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -202,22 +208,30 @@
 				});
 			}			
 			//返回营销活动入口
-			function gomarketingentry() {
-
+			function intoMarketingIndex() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;				
+				
+				if(openid != ""){
+					
 				$.ajax({
 					type: 'get',
-					url: 'marketingentry',
+					url: 'indexmarketing',
 					cache: false,
 					async: false,
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'marketingentry';
+						window.location.href = 'indexmarketing.html?openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
 					}
 				});
+					
+				} else {
+					alert("资料有误");
+				}
 			}
 			
 			jQuery.getUrlParam = function (name) {
@@ -226,6 +240,8 @@
      			if (r != null) return unescape(r[2]); return null;
 			}  			
 			$(document).ready(function() {
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
 				
 				$("#mkid").val($.getUrlParam('mkid'));
 				
