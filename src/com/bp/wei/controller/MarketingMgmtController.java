@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bp.wei.crm.model.Marketinginfo;
 import com.bp.wei.crm.model.MarketinginfoWithBLOBs;
@@ -102,12 +103,13 @@ public class MarketingMgmtController {
 	}
 	//提交答案
 	@RequestMapping(value="submitSurvey", method = RequestMethod.POST)
-	public ModelAndView submitSurvey(HttpServletRequest request){	
+	public String submitSurvey(HttpServletRequest request, RedirectAttributes attr){	
 		log.debug("setSurveryResult start...");
 		String surveryId = request.getParameter("sid");
 		String openId = request.getParameter("openid_name");
 		String nickName = request.getParameter("nick_name");
-		System.out.println("survery id: " + surveryId);
+		String mkid = request.getParameter("mkname");
+		System.out.println("mkid id---------------------: " + mkid);
 		int i = 1;
 		
 
@@ -131,32 +133,14 @@ public class MarketingMgmtController {
 		//}
 		
 			
-		HttpSession session = request.getSession();
-		session.removeAttribute("openid");
-		session.removeAttribute("nickname");
-		session.setAttribute("openid", openId);
-		session.setAttribute("nickname", nickName);
-
-		ModelAndView result = new ModelAndView();	
-		result.addObject ("openid", openId);
-		result.setViewName("indexmarketing");
+		attr.addAttribute("openid", openId);
+		attr.addAttribute("nickname", nickName);
+		attr.addAttribute("mkid", mkid);
+		return "redirect:marketingindex";
 		
-			
-		return result;
+	
 	}	
-	
-	
-	
-	
-	@RequestMapping(value="getOpenidFromSession", method = RequestMethod.POST)
-	public @ResponseBody String getOpenidFromSession(@RequestBody JSONObject strForminfo){
 		
-		
-        		
-		return "1";		
-	}
-	
-	
 	
 	//search marketing info for 签到
 	@RequestMapping(value="getmarketingforsignin", method = RequestMethod.GET)

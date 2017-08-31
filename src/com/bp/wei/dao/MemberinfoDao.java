@@ -25,4 +25,6 @@ public interface MemberinfoDao {
     Memberinfo selectChildrenByKey(String id);
     
     Memberinfo selectPurchaseByKey(String id);
+    
+    String selectMemberInfoBFLID(String id);
 }

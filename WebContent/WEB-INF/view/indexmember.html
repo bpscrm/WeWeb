@@ -58,8 +58,10 @@
 			<br />
 						
 			<input type="hidden" id="openid_id" name="openid_name" value="1" />
+			<input type="hidden" id="nick_id" name="nick_name" value="1" />
 			<input type="hidden" id="followid_id" name="followid_name" value="1" />
-
+			<input type="hidden" id="memberid_id" name="memberid_name" value="1" />
+						
 		</div>
 
 		<div class="weui-footer">
@@ -94,6 +96,9 @@
 				
 			function memberregister() {						
 				var flid = document.getElementById('followid_id').value;
+				var mbid = document.getElementById('memberid_id').value;
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;	
 				
 				if(flid != ""){
 					$.ajax({
@@ -104,7 +109,7 @@
 						dataType: 'json',
 						　　　　　　contentType: 'application/json',
 						success: function(data) {
-							window.location.href = 'memberregister.html?flid=' + flid;
+							window.location.href = 'memberregister.html?flid=' + flid + 'openid='+ openid + '&nickname=' + nkid;
 						},
 						error: function(data) {
 							alert(data.msg);
@@ -117,6 +122,9 @@
 
 			function memberinfo() {
 				var flid = document.getElementById('followid_id').value;
+				var mbid = document.getElementById('memberid_id').value;
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;				
 				
 				if(flid != ""){
 
@@ -128,7 +136,7 @@
 						dataType: 'json',
 						　　　　　　contentType: 'application/json',
 						success: function(data) {
-							window.location.href = 'memberinfo.html?flid=' + flid;
+							window.location.href = 'memberinfo.html?flid=' + flid + 'mbid='+ mbid + 'openid='+ openid + '&nickname=' + nkid;
 						},
 						error: function(data) {
 							alert(data.msg);
@@ -141,7 +149,9 @@
 
 			function mypromotion() {
 				var flid = document.getElementById('followid_id').value;
+				var mbid = document.getElementById('memberid_id').value;
 				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
 				
 				if(flid != ""){
 					$.ajax({
@@ -150,11 +160,9 @@
 						cache: false,
 						async: false,
 						dataType: 'json',
-						data: {openid: gbl_openid},
-					　　　contentType: 'application/json',
-						success: function(data) 
-						{
-							window.location.href = 'mypromotion?openid='+openid;
+						　　　　　　contentType: 'application/json',
+						success: function(data) {
+							window.location.href = 'mypromotion?flid=' + flid + '&mbid='+ mbid + '&openid='+ openid + '&nickname=' + nkid;
 						},
 						error: function(data) {
 							alert(data.msg);
@@ -164,24 +172,66 @@
 					alert("资料有误");
 				}
 			}
-
-			function register() {
+			
+			//////////////// init form
+			function getFollowerIDForMemberMgmt() {
+				var openid = document.getElementById('openid_id').value;
+				var params = {id: openid};
 
 				$.ajax({
 					type: 'get',
-					url: 'register',
+					url: 'getFollowerIDForMemberMgmt',
 					cache: false,
-					async: false,
 					dataType: 'json',
+					data: params,
 					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
 					success: function(data) {
-						window.location.href = 'register';
+						$("#followid_id").val(data.id);
 					},
 					error: function(data) {
-						alert(data.msg);
+						alert('failed:' + data.msg);
 					}
 				});
 			}
+			function getMemberIDForMemberMgmt() {
+				var flid = document.getElementById('followid_id').value;
+				var params = {id: flid};
+				
+				alert(flid);
+
+				$.ajax({
+					type: 'get',
+					url: 'getMemberIDForMemberMgmt',
+					cache: false,
+					dataType: 'json',
+					data: params,
+					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+						$("#memberid_id").val(data.id);
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+			}
+						
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			} 			
+			$(document).ready(function() {				
+
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
+								
+				$("#memberid_id").val('019532cd-8d91-11e7-8835-201a06c68160');
+				getFollowerIDForMemberMgmt();
+				//getMemberIDForMemberMgmt();
+			});
+			
 			
 			//
 			$.fn.serializeObject = function() {
@@ -199,44 +249,6 @@
 				});
 				return o;
 			};
-
-			function getFollowerIDForMemberMgmt() {
-				var openid = document.getElementById('openid_id').value;
-				var params = {id: openid};
-
-				$.ajax({
-					type: 'get',
-					url: 'getFollowerIDForMemberMgmt',
-					cache: false,
-					dataType: 'json',
-					data: params,
-					　　　　　　contentType: 'application/json',
-					　　　　　　async: false,
-					success: function(data) {
-						$("#followid_id").val(data.id);
-						alert(data.id);
-					},
-					error: function(data) {
-						alert('failed:' + data.msg);
-					}
-				});
-			}
-			
-			jQuery.getUrlParam = function (name) {
-     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-     			var r = window.location.search.substr(1).match(reg);
-     			if (r != null) return unescape(r[2]); return null;
-			} 			
-			
-			$(document).ready(function() {				
-				alert($.getUrlParam('openid'));
-				//alert("888888");
-				
-				$("#openid_id").val($.getUrlParam('openid'));
-				//$("#openid_id").val("888888");
-				
-				getFollowerIDForMemberMgmt();
-			});
 			
 		</script>
 	</body>

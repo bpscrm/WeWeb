@@ -18,14 +18,14 @@ import com.bp.wei.crm.model.Questionnaire;
 public interface CRMDBManageService {
 	
 	///////////////////for follower
-	//search myfollower
+	//search my follower
 	Followerinfo getFollowerlist(String id);
 	
-
-	////////////////////////////////////////////////////////////for 你问我答
 	//search follower
 	Followerinfo getFollowerInfo(String wechatUserid);
 	
+
+	////////////////////////////////////////////////////////////for 你问我答
 	//search follower QA online
 	Followerinfo getFollowerQAOnlineList(String id);
 	
@@ -35,7 +35,10 @@ public interface CRMDBManageService {
 	//get QA Online info for view
 	QAOnlineWithBLOBs getQAOnlineInfo(String id);
 	
+	
 	////////////////////////////////////////////////////////////for member
+	//search follower
+	String getMemberInfo(String followid);
 	//insert
 	int insertMemberinfo(MemberinfoWithBLOBs memberinfowithblogs, String openid);
 	//search
@@ -65,6 +68,7 @@ public interface CRMDBManageService {
 	Purchaseinfo getFeedbacklist(String id);
 	//update
 	int updateFeedbackinfo(FeedbackWithBLOBs feedbackinfo);
+	
 
 	/////////////////////////////////////////////////////////////////for 营销活动
 	Marketinginfo getMarketinglist();
@@ -78,6 +82,10 @@ public interface CRMDBManageService {
 	boolean setParticipateData(HttpServletRequest request);
 	
 	MarketinginfoWithBLOBs getMarketingForSignin(String id);
+	
+	
+	
+	
 	
 	
 	/////////////////////////////////////////////////////////////////for examples

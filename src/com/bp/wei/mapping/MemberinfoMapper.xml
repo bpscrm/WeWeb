@@ -21,6 +21,7 @@
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
     <result column="mb_addr" jdbcType="LONGVARCHAR" property="mbAddr" />
   </resultMap>
+  
   <!-- start -->
   <resultMap id="ResultMapWithChildren" type="com.bp.wei.crm.model.Memberinfo">
   	<id property="id" column="mid"/>
@@ -40,6 +41,7 @@
   	</collection>
   </resultMap>
   <!-- end -->
+  
   <sql id="Base_Column_List">
     id, name, date_entered, date_modified, modified_user_id, created_by, deleted, assigned_user_id, 
     mb_password, mb_title, mb_name, mb_birthday, mb_child, mb_edu
@@ -68,13 +70,22 @@
     from ec1_member
     where id = #{id,jdbcType=CHAR}
   </select>
+  
   <!-- start-->
+  <select id="selectMemberInfoBFLID" parameterType="java.lang.String" resultType="String">
+    select mb.id
+    from ec1_member mb, ec1_member_ec1_follower_c mbtofl
+   WHERE mb.id = mbtofl.ec1_member_ec1_followerec1_member_ida
+    AND mbtofl.ec1_member_ec1_followerec1_follower_idb = #{id,jdbcType=CHAR}
+  </select>
+  
   <select id="selectChildrenByKey" parameterType="java.lang.String" resultMap="ResultMapWithChildren">
   	select member.id as mid, member.name as mname, child.id as cid, child.name as cname from ec1_member member, ec1_child_data child, ec1_child_data_ec1_member_c mtoc
   	where member.id = mtoc.ec1_child_data_ec1_memberec1_member_ida
   	and child.id = mtoc.ec1_child_data_ec1_memberec1_child_data_idb
   	and member.id = #{id, jdbcType=CHAR}
   </select>
+  
   <select id="selectPurchaseByKey" parameterType="java.lang.String" resultMap="ResultMapWithPurchase">
 	SELECT mb.id mbid,mb.name mbname, pur.id purid, prd.name purname
 	  FROM ec1_purchase_data pur, ec1_product_catalog prd, ec1_purchase_data_ec1_product_catalog_c purtoprd, ec1_purchase_data_ec1_member_c purtomb, ec1_member mb
@@ -85,6 +96,7 @@
 	   AND mb.id = #{id, jdbcType=CHAR}
   </select>
   <!-- end-->
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from ec1_member
     where id = #{id,jdbcType=CHAR}
