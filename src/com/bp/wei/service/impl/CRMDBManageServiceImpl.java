@@ -189,16 +189,16 @@ public class CRMDBManageServiceImpl implements CRMDBManageService {
 	}
 	//insert
 	@Override
-	public int insertMemberinfo(MemberinfoWithBLOBs memberinfowithblogs, String openid) {
+	public int insertMemberinfo(MemberinfoWithBLOBs memberinfowithblogs, String followid) {
 		
 		int result = mbdao.insert(memberinfowithblogs);
 		//System.out.println("@@@@@@@@@@@@@@member id: " + memberinfowithblogs.getId());
 		
-		String followerID = fldao.selectByPrimaryOpenid(openid);
+		//String followerID = fldao.selectByPrimaryOpenid(openid);
 		
 		MemberToFollower mbTofl = new MemberToFollower();
 		mbTofl.setEc1MemberEc1Followerec1MemberIda(memberinfowithblogs.getId());
-		mbTofl.setEc1MemberEc1Followerec1FollowerIdb(followerID);
+		mbTofl.setEc1MemberEc1Followerec1FollowerIdb(followid);
 		
 		result = mtfdao.insert(mbTofl);
 		

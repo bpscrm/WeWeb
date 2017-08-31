@@ -40,7 +40,7 @@ public interface CRMDBManageService {
 	//search follower
 	MemberinfoWithBLOBs getMemberInfo(String followid);
 	//insert
-	int insertMemberinfo(MemberinfoWithBLOBs memberinfowithblogs, String openid);
+	int insertMemberinfo(MemberinfoWithBLOBs memberinfowithblogs, String followid);
 	//search
 	MemberinfoWithBLOBs getMemberinfobyMBID(String id);
 	//update
