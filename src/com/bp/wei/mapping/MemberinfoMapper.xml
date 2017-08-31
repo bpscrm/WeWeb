@@ -49,14 +49,6 @@
   <sql id="Blob_Column_List">
     description, mb_addr
   </sql>
-  <select id="selectByMemberName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from ec1_member
-    where name = #{name,jdbcType=CHAR}
-  </select>
   <select id="selectIDByMember" parameterType="java.lang.String" resultType="String">
     select id 
     from ec1_member
@@ -72,8 +64,18 @@
   </select>
   
   <!-- start-->
-  <select id="selectMemberInfoBFLID" parameterType="java.lang.String" resultType="String">
-    select mb.id
+  <select id="selectByMemberID" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ec1_member
+    where id = #{id,jdbcType=CHAR}
+  </select>  
+  <select id="selectMemberInfoByFLID" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select     
+    	mb.id, mb.name, mb.date_entered, mb.date_modified, mb.modified_user_id, mb.created_by, mb.deleted, mb.assigned_user_id, 
+    	mb_password, mb_title, mb_name, mb_birthday, mb_child, mb_edu, mb.description, mb_addr
     from ec1_member mb, ec1_member_ec1_follower_c mbtofl
    WHERE mb.id = mbtofl.ec1_member_ec1_followerec1_member_ida
     AND mbtofl.ec1_member_ec1_followerec1_follower_idb = #{id,jdbcType=CHAR}

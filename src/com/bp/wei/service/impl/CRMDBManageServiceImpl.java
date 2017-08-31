@@ -183,9 +183,9 @@ public class CRMDBManageServiceImpl implements CRMDBManageService {
 
 	//////////////////////////////////////////////////////////for member
 	//search follower
-	public String getMemberInfo(String followid){
-		String memberinfoid = mbdao.selectMemberInfoBFLID(followid);
-		return memberinfoid;
+	public MemberinfoWithBLOBs getMemberInfo(String followid){
+		MemberinfoWithBLOBs memberinfo = mbdao.selectMemberInfoByFLID(followid);
+		return memberinfo;
 	}
 	//insert
 	@Override
@@ -206,12 +206,12 @@ public class CRMDBManageServiceImpl implements CRMDBManageService {
 	}
 	//search
 	@Override
-	public MemberinfoWithBLOBs getMemberinfobyname(String name) {
-		if(name.length() <= 0){
-			log.error("Invalid member name: " + name);
+	public MemberinfoWithBLOBs getMemberinfobyMBID(String id) {
+		if(id.length() <= 0){
+			log.error("Invalid member name: " + id);
 			return null;
 		}
-		MemberinfoWithBLOBs memberinfo = mbdao.selectByMemberName(new String(name));
+		MemberinfoWithBLOBs memberinfo = mbdao.selectByMemberID(new String(id));
 		return memberinfo;
 	}
 	//update

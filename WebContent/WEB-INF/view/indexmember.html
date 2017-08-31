@@ -109,7 +109,7 @@
 						dataType: 'json',
 						　　　　　　contentType: 'application/json',
 						success: function(data) {
-							window.location.href = 'memberregister.html?flid=' + flid + 'openid='+ openid + '&nickname=' + nkid;
+							window.location.href = 'memberregister.html?flid=' + flid + '&openid='+ openid + '&nickname=' + nkid;
 						},
 						error: function(data) {
 							alert(data.msg);
@@ -136,7 +136,7 @@
 						dataType: 'json',
 						　　　　　　contentType: 'application/json',
 						success: function(data) {
-							window.location.href = 'memberinfo.html?flid=' + flid + 'mbid='+ mbid + 'openid='+ openid + '&nickname=' + nkid;
+							window.location.href = 'memberinfo.html?flid=' + flid + '&mbid='+ mbid + '&openid='+ openid + '&nickname=' + nkid;
 						},
 						error: function(data) {
 							alert(data.msg);
@@ -198,8 +198,6 @@
 				var flid = document.getElementById('followid_id').value;
 				var params = {id: flid};
 				
-				alert(flid);
-
 				$.ajax({
 					type: 'get',
 					url: 'getMemberIDForMemberMgmt',
@@ -227,9 +225,8 @@
 				$("#openid_id").val($.getUrlParam('openid'));
 				$("#nick_id").val($.getUrlParam('nickname'));
 								
-				$("#memberid_id").val('019532cd-8d91-11e7-8835-201a06c68160');
 				getFollowerIDForMemberMgmt();
-				//getMemberIDForMemberMgmt();
+				getMemberIDForMemberMgmt();
 			});
 			
 			

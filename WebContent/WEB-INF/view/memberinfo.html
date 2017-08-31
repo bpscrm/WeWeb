@@ -180,11 +180,10 @@
 			};
 
 			function getmemberinfo() {
-				var memberinfotelnum = '1212';    //document.getElementById('memberid0_id').value;
+				var memberinfoid = document.getElementById('memberid0_id').value;
 				var params = {
-					name: memberinfotelnum
+					name: memberinfoid
 				};
-
 
 				$.ajax({
 					type: 'get',
@@ -290,7 +289,7 @@
 				});
 			}
 
-			//for open page
+			
 			function childrenlist() {			
 				var mbid = document.getElementById('memberid_id').value;
 
@@ -302,7 +301,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'childrenlist.html?mdid=' + mbid;
+						window.location.href = 'childrenlist.html?mbid=' + mbid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -329,6 +328,7 @@
 				});
 			};
 			
+			////////////////////////for open page
 			jQuery.getUrlParam = function (name) {
      			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
      			var r = window.location.search.substr(1).match(reg);
@@ -340,7 +340,7 @@
 				$("#openid_id").val($.getUrlParam('openid'));
 				$("#nick_id").val($.getUrlParam('nickname'));				
 				$("#followid").val($.getUrlParam('flid'));
-				$("#memberid0_id").val($.getUrlParam('memberid'));
+				$("#memberid0_id").val($.getUrlParam('mbid'));
 
 				getmemberinfo();
 			});

@@ -38,11 +38,11 @@ public interface CRMDBManageService {
 	
 	////////////////////////////////////////////////////////////for member
 	//search follower
-	String getMemberInfo(String followid);
+	MemberinfoWithBLOBs getMemberInfo(String followid);
 	//insert
 	int insertMemberinfo(MemberinfoWithBLOBs memberinfowithblogs, String openid);
 	//search
-	MemberinfoWithBLOBs getMemberinfobyname(String name);
+	MemberinfoWithBLOBs getMemberinfobyMBID(String id);
 	//update
 	int updateMemberinfo(MemberinfoWithBLOBs memberinfowithblogs);
 

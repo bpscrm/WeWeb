@@ -45,14 +45,14 @@ public class MemberMgmtController {
 	}
 	
 	@RequestMapping(value="getMemberIDForMemberMgmt", method = RequestMethod.GET)
-	public @ResponseBody String findMemberInfo(String id){
+	public @ResponseBody MemberinfoWithBLOBs findMemberInfo(String id){
 		log.debug("###########open id: " + id);
 		if(id == null || id.length() == 0){
 			return null;
 		}
-		String memberinfoid = memberService.getMemberInfo(id);
-		log.debug("############################################" + memberinfoid);
-		return memberinfoid;
+		MemberinfoWithBLOBs memberinfo = memberService.getMemberInfo(id);
+		log.debug("############################################" + memberinfo);
+		return memberinfo;
 	}
 	
 	//into form
@@ -205,7 +205,7 @@ public class MemberMgmtController {
 	@RequestMapping(value="getmemberinfo", method = RequestMethod.GET)
 	public @ResponseBody MemberinfoWithBLOBs findMemberinfo(String name){
 		
-		return memberService.getMemberinfobyname(new String(name));
+		return memberService.getMemberinfobyMBID(new String(name));
 		
 	}
 	
