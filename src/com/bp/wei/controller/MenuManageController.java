@@ -107,7 +107,7 @@ public class MenuManageController {
 	@RequestMapping(value="redirectQAOnline", method = RequestMethod.GET)
 	public void redirectQAOnlineMgmt(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
 		String url = WeUtil.getRedirectUrl();
-		url = url.replace("REDIRECT_URI", "http://www.wecarecrm.com/EnglishCenterZHH/oauthQAOnline");
+		url = url.replace("REDIRECT_URI", "http://www.wecarecrm.cn/EnglishCenterZHH/oauthQAOnline");
 		log.debug("Redirect to: " + url);
 		response.sendRedirect(url);
 	}
@@ -135,7 +135,7 @@ public class MenuManageController {
 	}
 	
 	private String getRedirectQAOnlineUrl(User user){
-		StringBuffer sb = new StringBuffer("http://www.wecarecrm.com/EnglishCenterZHH/QAOnlineIndex");
+		StringBuffer sb = new StringBuffer("http://www.wecarecrm.cn/EnglishCenterZHH/QAOnlineIndex");
 		sb.append("?");
 		if(user.getOpenId() != null){
 			sb.append("openid=" + user.getOpenId());
@@ -158,7 +158,7 @@ public class MenuManageController {
 	@RequestMapping(value="redirectMember", method = RequestMethod.GET)
 	public void redirectMemberMgmt(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
 		String url = WeUtil.getRedirectUrl();
-		url = url.replace("REDIRECT_URI", "http://www.wecarecrm.com//EnglishCenterZHH/oauth");
+		url = url.replace("REDIRECT_URI", "http://www.wecarecrm.cn/EnglishCenterZHH/oauth");
 		log.debug("Redirect to: " + url);
 		response.sendRedirect(url);
 	}
@@ -186,7 +186,7 @@ public class MenuManageController {
 	}
 	
 	private String getRedirectUrl(User user){
-		StringBuffer sb = new StringBuffer("http://www.wecarecrm.com/EnglishCenterZHH/MemberIndex");
+		StringBuffer sb = new StringBuffer("http://www.wecarecrm.cn/EnglishCenterZHH/MemberIndex");
 		sb.append("?");
 		if(user.getOpenId() != null){
 			sb.append("openid=" + user.getOpenId());
