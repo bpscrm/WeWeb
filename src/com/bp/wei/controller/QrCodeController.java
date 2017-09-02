@@ -3,14 +3,21 @@
  */
 package com.bp.wei.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bp.wei.service.MenuManager;
+import com.bp.wei.model.qrcode.response.QRCodeTicket;
+import com.bp.wei.service.QRCodeServcie;
 
 /**
  * @author liyanc
@@ -22,13 +29,39 @@ public class QrCodeController {
 	public static Logger log = LoggerFactory.getLogger(QrCodeController.class);
 	
 	@Autowired
-	private MenuManager menuMgt;
+	private QRCodeServcie qrService;
 	
 	@RequestMapping(value="qrcode", method = RequestMethod.GET)
 	public String redirectQrcode(){
 		
 		System.out.println( "[QrCodeController][redirectQrcode]");
 		return "qrcode";
+	}
+	
+	@RequestMapping(value="myqrcode", method = RequestMethod.GET)
+	public String getMyQRCode(HttpServletRequest request){
+		String fromOpenId = request.getParameter("fromOpenId");
+		if(fromOpenId == null || fromOpenId.length() == 0){
+			log.error("Failed to pass openid in.");
+			return "error";
+		}
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("action_name", "QR_STR_SCENE");
+		//需要传入的字符串参数，如果需要传入的是整型参数，action_name需要使用QR_SCENE，永久型是QR_LIMIT_SCENE/QR_LIMIT_STR_SCENE
+		params.put("scene_str", fromOpenId);
+		QRCodeTicket qrTicket = qrService.getTicket(params);
+		if(qrTicket == null || qrTicket.getTicket() == null){
+			log.error("Failed to get promotion qrcode ticket for " + fromOpenId + " from Wechat.");
+			return "error";
+		}
+		
+		String showUrl = qrService.getTicketUrl(qrTicket);
+		if(showUrl == null){
+			log.error("Failed to get qrcode show url from Wechat.");
+			return "error";
+		}
+		
+		return "forward:" + showUrl;
 	}
 	
 	/*@RequestMapping(value="getMenu", method = RequestMethod.GET)

@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>菜单配置</title>
 		<link href="../../css/style.css" rel="stylesheet" />
-		<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="js/jquery-3.2.1.min.js"></script>
 	</head>
 	<body>
 		<div class="page-hd">
@@ -161,7 +161,11 @@
 			</div>
 		</form>
 		<script type="text/javascript">
-
+		$(document).ready(function() {
+			alert('hi');
+			alert(window.location.href);
+		};
+		
 		function updatemenu(){
 			$.ajax({  
                 type: 'post',  

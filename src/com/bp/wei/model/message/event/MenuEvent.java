@@ -18,18 +18,15 @@ public class MenuEvent extends BaseEvent {
 	private String EventKey;
 
 	public String getEventKey() {
-		System.out.println( "[MenuEvent][getEventKey]");
 		return EventKey;
 	}
 
-	public void setEventKey(String eventKey) {
-		System.out.println( "[MenuEvent][setEventKey]");
+	public void setEventKey(String eventKey) {		
 		EventKey = eventKey;
 	}
 
 	@Override
-	public String toString() {
-		System.out.println( "[MenuEvent][toString]");
+	public String toString() {		
 		return "MenuEvent [EventKey=" + EventKey + ", toString()=" + super.toString() + "]";
 	}	
 	

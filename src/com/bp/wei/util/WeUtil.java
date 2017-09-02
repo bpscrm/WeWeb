@@ -17,10 +17,13 @@ import org.slf4j.LoggerFactory;
 
 import com.bp.wei.model.AccessToken;
 import com.bp.wei.model.Oauth2AccessToken;
+import com.bp.wei.model.qrcode.request.QRCode;
+import com.bp.wei.model.qrcode.response.QRCodeTicket;
 import com.bp.wei.service.impl.X509TrustManagerImpl;
 import net.sf.json.JSONObject;
 
 public class WeUtil {
+
 	//public final static String APPID = "wx4eabcc7676fe35b1";
 	//public final static String APPSECRET = "6c763da4f3c974415308bb30c1f94b6e";
 	//public final static String APPID = "wx50c7fecf06ffdd0b";
@@ -32,6 +35,8 @@ public class WeUtil {
 	public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	public final static String oauth_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
 	public final static String oauth_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+	public final static String qrcode_create_url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN";
+	public final static String qrcode_show_url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=TICKET";
 	
 	public final static String redirect_url = "http://www.wecarecrm.com//EnglishCenterZHH/oauth";
 	
@@ -58,9 +63,9 @@ public class WeUtil {
             // 设置请求方式（GET/POST）  
             httpUrlConn.setRequestMethod(requestMethod);  
   
-            if ("GET".equalsIgnoreCase(requestMethod))  
+            if ("GET".equalsIgnoreCase(requestMethod) || "POST".equalsIgnoreCase(requestMethod)){  
                 httpUrlConn.connect();  
-  
+            }
             // 当有数据需要提交时  
             if (null != outputStr) {  
                 OutputStream outputStream = httpUrlConn.getOutputStream();  
@@ -86,9 +91,9 @@ public class WeUtil {
             httpUrlConn.disconnect();  
             jsonObject = JSONObject.fromObject(buffer.toString());  
         } catch (ConnectException ce) {  
-            //log.error("Weixin server connection timed out.");  
+            log.error("Wechat server connection timed out.");  
         } catch (Exception e) {  
-           // log.error("https request error:{}", e);  
+            log.error("https request error:{}", e);  
         }  
         return jsonObject;  
     }  
@@ -148,6 +153,27 @@ public class WeUtil {
 		url = url.replace("SCOPE", "snsapi_userinfo");
 		url = url.replace("STATE", "2001");
 		return url;
+	}
+	
+	public static QRCodeTicket createQRCodeTicket(QRCode code){
+		AccessToken token = getAccessToken();
+		if(token == null || token.getToken() == null){
+			log.error("Failed to get the access token");
+			return null;
+		}
+		QRCodeTicket ticket = null;
+		String requestUrl = qrcode_create_url.replace("TOKEN", token.getToken());
+		JSONObject postData = JSONObject.fromObject(code);
+		JSONObject jsonObject = httpRequest(requestUrl, "POST", postData.toString());
+		
+		if(jsonObject != null){
+			 ticket = (QRCodeTicket) JSONObject.toBean(jsonObject, QRCodeTicket.class);
+		}
+		return ticket;
+	}
+	
+	public static String showQRCode(QRCodeTicket ticket){
+		return qrcode_show_url.replace("TICKET", ticket.getTicket());
 	}
 
 }

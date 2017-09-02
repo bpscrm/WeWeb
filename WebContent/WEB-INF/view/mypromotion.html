@@ -14,7 +14,7 @@
 
 	<body>
 
-		<form id="mypromotion" method="get">
+		<form id="mypromotion" action= "myqrcode" method="post">
 			
 			<header class="ui-header ui-header-positive ui-border-b">
 				<h1>我的推广</h1><button class="ui-btn" onclick="history.back()">回上页</button>
@@ -34,6 +34,7 @@
 					<div class="weui-cell__ft">进入查看</div>
 				</a>
 				<a class="weui-cell weui-cell_access" href="javascript:myqrcode();">
+					<input type="hidden" name="fromOpenId" value="okMyy0Tc0LrcXrKKc5O9GK21dxOg"/>
 					<div class="weui-cell__hd"><img src="./images/Projects_favico.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
 					<div class="weui-cell__bd">
 						<p>面对面推广</p>
@@ -99,10 +100,9 @@
 				//alert(ws_location);				
 				
 				var query_string = location.search;
-				var parsed_qs = parse_query_string(query_string);
-				
-				window.location.href = 'http://wongls.hopto.org/MemberMgmt/myqrcode';
-
+				var parsed_qs = parse_query_string("openid");
+				$('#fromOpenId').val(parsed_qs);
+				$('#mypromotion').submit();
 				/*
 				$.ajax({
 					type: 'get',
