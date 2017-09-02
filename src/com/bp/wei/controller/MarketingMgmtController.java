@@ -1,18 +1,24 @@
 package com.bp.wei.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import net.sf.json.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bp.wei.crm.model.Marketinginfo;
 import com.bp.wei.crm.model.MarketinginfoWithBLOBs;
+import com.bp.wei.crm.model.QAOnlineWithBLOBs;
 import com.bp.wei.crm.model.Questionnaire;
 import com.bp.wei.service.CRMDBManageService;
 
@@ -97,10 +103,13 @@ public class MarketingMgmtController {
 	}
 	//提交答案
 	@RequestMapping(value="submitSurvey", method = RequestMethod.POST)
-	public ModelAndView submitSurvey(HttpServletRequest request){	
+	public String submitSurvey(HttpServletRequest request, RedirectAttributes attr){	
 		log.debug("setSurveryResult start...");
 		String surveryId = request.getParameter("sid");
-		System.out.println("survery id: " + surveryId);
+		String openId = request.getParameter("openid_name");
+		String nickName = request.getParameter("nick_name");
+		String mkid = request.getParameter("mkname");
+		System.out.println("mkid id---------------------: " + mkid);
 		int i = 1;
 		
 
@@ -123,14 +132,15 @@ public class MarketingMgmtController {
 			boolean blResult = marktingService.setInteractionData(request);
 		//}
 		
-
-		ModelAndView result = new ModelAndView();
-		
-		result.setViewName("msg_success");		
 			
-		return result;
-	}	
+		attr.addAttribute("openid", openId);
+		attr.addAttribute("nickname", nickName);
+		attr.addAttribute("mkid", mkid);
+		return "redirect:marketingindex";
+		
 	
+	}	
+		
 	
 	//search marketing info for 签到
 	@RequestMapping(value="getmarketingforsignin", method = RequestMethod.GET)

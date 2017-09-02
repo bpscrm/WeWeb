@@ -32,6 +32,7 @@ public class MemberMgmtController {
 	@Autowired
 	CRMDBManageService memberService;
 	
+	//init index form
 	@RequestMapping(value="getFollowerIDForMemberMgmt", method = RequestMethod.GET)
 	public @ResponseBody Followerinfo findFollowerInfo(String id){
 		log.debug("###########open id: " + id);
@@ -43,6 +44,18 @@ public class MemberMgmtController {
 		return followinfo;
 	}
 	
+	@RequestMapping(value="getMemberIDForMemberMgmt", method = RequestMethod.GET)
+	public @ResponseBody MemberinfoWithBLOBs findMemberInfo(String id){
+		log.debug("###########open id: " + id);
+		if(id == null || id.length() == 0){
+			return null;
+		}
+		MemberinfoWithBLOBs memberinfo = memberService.getMemberInfo(id);
+		log.debug("############################################" + memberinfo);
+		return memberinfo;
+	}
+	
+	//into form
 	@RequestMapping(value="memberregister", method = RequestMethod.GET)
 	public String redirectMemberregister(){		
 		return "memberregister";
@@ -53,8 +66,8 @@ public class MemberMgmtController {
 		return "memberinfo";
 	}
 
-	@RequestMapping(value="mypromotion", params = {"openid"}, method = RequestMethod.GET)
-	public String mypromotion(){	
+	@RequestMapping(value="mypromotion", method = RequestMethod.GET)
+	public String redirectMypromotion(){	
 		return "mypromotion";
 	}
 
@@ -192,7 +205,7 @@ public class MemberMgmtController {
 	@RequestMapping(value="getmemberinfo", method = RequestMethod.GET)
 	public @ResponseBody MemberinfoWithBLOBs findMemberinfo(String name){
 		
-		return memberService.getMemberinfobyname(new String(name));
+		return memberService.getMemberinfobyMBID(new String(name));
 		
 	}
 	

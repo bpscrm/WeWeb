@@ -1,15 +1,9 @@
 /**
  * All the custom js functions
  */
-	jQuery.getUrlParam = function (name) {
-		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-		var r = window.location.search.substr(1).match(reg);
-		if (r != null) return unescape(r[2]); return null;
-	}
-
    $.fn.parseTemplate = function(data){ 
 		var str = (this).html(); 
-		var _tmplCache = {} 
+		var _tmplCache = {};
 		var err = ""; 
 		try{ 
 			var func = _tmplCache[str]; 
@@ -35,7 +29,6 @@
 			return "< # ERROR: " + err.toString() + " # >"; 
 	};
 				
-	//$(document).ready(function(){
 	$.fn.serializeObject = function(){  	   
 	 	var o = {};    
 	 	var a = this.serializeArray();    

@@ -33,8 +33,10 @@
 		<div class="page__bd page__bd_spacing">
 			<div class="page-btn-area">
 				<a class="page-btn page-btn_primary" href="javascript:updatememberinfo()">修改</a>
+					<input type="hidden" id="openid_id" name="openid_name" value="1" />
+					<input type="hidden" id="nick_id" name="nick_name" value="1" />					
 					<input type="hidden" id="followid" name="followid" value="1" />
-					<input type="hidden" id="membertel" name="membertel" value="2" />
+					<input type="hidden" id="memberid0_id" name="memberid0_name" value="2" />
 			</div>
 		</div>
 
@@ -67,7 +69,7 @@
 		<script id="template" type="text/html">
 			<div>
 
-                <input type="hidden" id="memberid" name="memberid1" value = <#= id #> />
+                <input type="hidden" id="memberid_id" name="memberid_name" value = <#= id #> />
 
 				<div class="weui-cell weui-cell_vcode">
 					<div class="weui-cell__hd">
@@ -178,9 +180,9 @@
 			};
 
 			function getmemberinfo() {
-				var memberinfotelnum = document.getElementById('membertel').value;
+				var memberinfoid = document.getElementById('memberid0_id').value;
 				var params = {
-					name: memberinfotelnum
+					name: memberinfoid
 				};
 
 				$.ajax({
@@ -200,7 +202,7 @@
 
 					},
 					error: function(data) {
-						alert('failed:' + data.msg);
+						//alert('failed:' + data.msg);
 					}
 				});
 			}
@@ -287,9 +289,9 @@
 				});
 			}
 
-			//for open page
+			
 			function childrenlist() {			
-				var mbid = document.getElementById('memberid').value;
+				var mbid = document.getElementById('memberid_id').value;
 
 				$.ajax({
 					type: 'get',
@@ -299,7 +301,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'childrenlist.html?mdid=' + mbid;
+						window.location.href = 'childrenlist.html?mbid=' + mbid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -308,7 +310,7 @@
 			}
 
 			function purchaselist() {
-			    var mbid = document.getElementById('memberid').value;
+			    var mbid = document.getElementById('memberid_id').value;
 			    
 				$.ajax({
 					type: 'get',
@@ -326,6 +328,7 @@
 				});
 			};
 			
+			////////////////////////for open page
 			jQuery.getUrlParam = function (name) {
      			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
      			var r = window.location.search.substr(1).match(reg);
@@ -334,8 +337,10 @@
 			
 			$(document).ready(function() {
 				
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));				
 				$("#followid").val($.getUrlParam('flid'));
-				$("#membertel").val($.getUrlParam('mbtel'));
+				$("#memberid0_id").val($.getUrlParam('mbid'));
 
 				getmemberinfo();
 			});

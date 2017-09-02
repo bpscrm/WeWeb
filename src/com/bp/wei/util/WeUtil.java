@@ -34,7 +34,7 @@ public class WeUtil {
 	public final static String qrcode_create_url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN";
 	public final static String qrcode_show_url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=TICKET";
 	
-	public final static String redirect_url = "http://119.23.206.200/EnglishCenterZHH/oauth";
+	public final static String redirect_url = "http://www.wecarecrm.com//EnglishCenterZHH/oauth";
 	
 	private static Logger log = LoggerFactory.getLogger(WeUtil.class);
 	

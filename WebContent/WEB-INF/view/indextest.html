@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>英语培育蕴德中心微信功能测试页面</title>
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/weui.min.css" rel="stylesheet" />
+		<link href="css/frozen.css" rel="stylesheet" />
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
+	</head>
+
+	<body>
+	    <form id="indextest" method="post">
+			<header class="ui-header ui-header-positive ui-border-b">
+				<h1>英语培育蕴德中心微信功能测试页面</h1>
+			</header>
+			<br />
+			<br />
+	
+			<div class="page__bd">
+			    <div class="weui-cells__title"><h4>您可以直接点选功能按钮，进入测试页面，或者输入已经关注测试号的微信昵称</h4></div>
+					<div class="page-btn-area">
+						<div class="ui-row">
+ 							<div class="ui-col ui-col-80"><h1><input name="nickname_name" id="nickname_id" style="border:1" placeholder="已关注测试号的微信昵称" /></h1></div>
+    						<div class="ui-col ui-col-20"><a href="javascript:searchNickName();"><div class="ui-badge-muted">确定</div></a></div>		    			
+    					</div>
+    				</div>
+									
+				</div>
+				
+				<br />
+				
+				<div class="page-btn-area">
+					<a class="page-btn page-btn_primary" href="javascript:intoQAOnlineIndex();">你问我答</a>
+					<br />
+					<a class="page-btn page-btn_primary" href="javascript:intoMemberIndex();">会员中心</a>
+					<br />
+					<a class="page-btn page-btn_primary" href="javascript:intoMarketingIndex();">营销活动</a>
+					<br />
+					<a class="page-btn page-btn_primary" href="javascript:setQAOnlineinfo();">联系我们</a>
+					<input type="hidden" id="openid_id" name="openid_name" value="1" />
+					<input type="hidden" id="nick_id" name="nick_name" value="1" />
+				</div>			
+	
+			</div>
+		
+		</form>
+
+		<script type="text/javascript">
+			//获取Follower ID
+			function searchNickName() {
+				var new_nkname = document.getElementById('nickname_id').value;
+				var old_nkname = document.getElementById('nick_id').value;
+				
+				if(new_nkname != ""){
+					if(new_nkname != old_nkname){
+				
+				
+				    } else {
+					   alert("请设定新的微信昵称，再点选确定！");
+				
+				    }
+				
+				} else {
+					alert("请设定微信昵称");
+				}
+			}			
+			
+			//进入 你问我答
+			function intoQAOnlineIndex() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;				
+				
+				if(openid != ""){
+					
+				$.ajax({
+					type: 'get',
+					url: 'indexqaonline',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'indexqaonline.html?openid='+openid+'&nickname='+nkid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+					
+				} else {
+					alert("资料有误");
+				}
+			}
+			
+			//进入 会员管理
+			function intoMemberIndex() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;				
+				
+				if(openid != ""){
+					
+				$.ajax({
+					type: 'get',
+					url: 'indexmember',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'indexmember.html?openid='+openid+'&nickname='+nkid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+					
+				} else {
+					alert("资料有误");
+				}
+			}	
+			
+			//进入 营销活动
+			function intoMarketingIndex() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;				
+				
+				if(openid != ""){
+					
+				$.ajax({
+					type: 'get',
+					url: 'indexmarketing',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'indexmarketing.html?openid='+openid+'&nickname='+nkid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+					
+				} else {
+					alert("资料有误");
+				}
+			}	
+			
+			//open form
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			} 
+			$(document).ready(function() 
+			{
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
+				$("#nickname_id").val($.getUrlParam('nickname'));
+			});	
+		
+		</script>
+	</body>
+
+</html>

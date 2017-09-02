@@ -23,7 +23,7 @@
 				
 				<div class="ui-row">
  					<div class="ui-col ui-col-80"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="免费试听活动" /></h1></div>
-    				<div class="ui-col ui-col-20"><a href="javascript:gomarketingentry();"><div class="ui-badge-muted">回首页</div></a></div>			    			
+    				<div class="ui-col ui-col-20"><a href="javascript:intoMarketingIndex();"><div class="ui-badge-muted">回首页</div></a></div>			    			
     			</div>
 
 			</header>
@@ -41,6 +41,8 @@
 						<input type="hidden" id="mbid" name="mbname" value="8e795f1f-7980-11e7-9bd6-201a06c68160" />
 						<input type="hidden" id="mkid" name="mkname" value="2" />
 						<input type="hidden" id="particid" name="particname" value="2" />
+						<input type="hidden" id="openid_id" name="openid_name" value="1" />
+						<input type="hidden" id="nick_id" name="nick_name" value="1" />						
 					</div>
 				</div>
 
@@ -76,23 +78,32 @@
 					}
 				});
 			}	
+			
 			//返回营销活动入口
-			function gomarketingentry() {
-
+			function intoMarketingIndex() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;				
+				
+				if(openid != ""){
+					
 				$.ajax({
 					type: 'get',
-					url: 'marketingentry',
+					url: 'indexmarketing',
 					cache: false,
 					async: false,
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'marketingentry';
+						window.location.href = 'indexmarketing.html?openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
 					}
 				});
+					
+				} else {
+					alert("资料有误");
+				}
 			}
 			
 			function getmarketing() {
@@ -130,6 +141,9 @@
      			if (r != null) return unescape(r[2]); return null;
 			}			
 			$(document).ready(function() {
+			
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
 				
 				$("#mkid").val($.getUrlParam('mkid'));
 				

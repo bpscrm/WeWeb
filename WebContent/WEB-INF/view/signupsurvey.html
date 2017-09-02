@@ -22,7 +22,7 @@
 				
 				<div class="ui-row">
  					<div class="ui-col ui-col-80"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="免费试听活动" /></h1></div>
-    				<div class="ui-col ui-col-20"><a href="javascript:gomarketingentry();"><div class="ui-badge-muted">回首页</div></a></div>		    			
+    				<div class="ui-col ui-col-20"><a href="javascript:intoMarketingIndex();"><div class="ui-badge-muted">回首页</div></a></div>		    			
     			</div>
 
 			</header>
@@ -57,6 +57,8 @@
 					<a class="page-btn page-btn_primary" href="javascript:submitSurvey();">提交</a>
 						<input type="hidden" id="followid" name="followid" value="1" />
 						<input type="hidden" id="mkid" name="mkname" value="2" />
+						<input type="hidden" id="openid_id" name="openid_name" value="1" />
+						<input type="hidden" id="nick_id" name="nick_name" value="1" />
 				</div>
 			</div>
 		</form>
@@ -155,6 +157,10 @@
 		
 			//提交问卷后，返回本次活动首页
 			function gobackmarktingindex() {
+			
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
+				var mkid = document.getElementById('mkid').value;
 
 				$.ajax({
 					type: 'get',
@@ -164,7 +170,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'marketingindex';
+						window.location.href = 'marketingindex?mkid=' + mkid + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -173,6 +179,8 @@
 			}		
 			//提交问卷后，返回本次活动首页
 			function gobackmarktingindex() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
 				var mkid = document.getElementById('mkid').value;
 				
 				$.ajax({
@@ -183,7 +191,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'marketingindex.html?mkid=' + mkid;
+						window.location.href = 'marketingindex.html?mkid=' + mkid + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -191,22 +199,30 @@
 				});
 			}	
 			//返回营销活动入口
-			function gomarketingentry() {
-
+			function intoMarketingIndex() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;				
+				
+				if(openid != ""){
+					
 				$.ajax({
 					type: 'get',
-					url: 'marketingentry',
+					url: 'indexmarketing',
 					cache: false,
 					async: false,
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'marketingentry';
+						window.location.href = 'indexmarketing.html?openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
 					}
 				});
+					
+				} else {
+					alert("资料有误");
+				}
 			}
 			
 			//初始化页面
@@ -261,7 +277,8 @@
      			if (r != null) return unescape(r[2]); return null;
 			}			
 			$(document).ready(function() {
-				
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
 				$("#mkid").val($.getUrlParam('mkid'));
 				
 				getmarketing();
@@ -271,7 +288,7 @@
 			
 			//回写答案
 			function submitSurvey(){
-				
+			
 				$('#survey').submit();
 			}			
 			

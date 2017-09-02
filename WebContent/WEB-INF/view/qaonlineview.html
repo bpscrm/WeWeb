@@ -34,6 +34,8 @@
 			<div class="page__bd page__bd_spacing">
 				<div class="page-btn-area">
 					<input type="hidden" id="qaid_id" name="qaid_name" value="1" />
+					<input type="hidden" id="openid_id" name="openid_name" value="1" />
+					<input type="hidden" id="nick_id" name="nick_name" value="1" />
 				</div>
 			</div>
 
@@ -69,77 +71,78 @@
 		</script>		
 
 		<script type="text/javascript">
-		   $.fn.parseTemplate = function(data){ 
-		var str = (this).html(); 
-		var _tmplCache = {} 
-		var err = ""; 
-		try{ 
-			var func = _tmplCache[str]; 
-			if (!func){ 
-				var strFunc = 
-				"var p=[],print=function(){p.push.apply(p,arguments);};" + 
-				"with(obj){p.push('" + 
-				str.replace(/[\r\t\n]/g, " ") 
-				.replace(/'(?=[^#]*#>)/g, "\t") 
-				.split("'").join("\\'") 
-				.split("\t").join("'") 
-				.replace(/<#=(.+?)#>/g, "',$1,'") 
-				.split("<#").join("');") 
-				.split("#>").join("p.push('") 
-				+ "');}return p.join('');";
-				func = new Function("obj", strFunc); 
-				_tmplCache[str] = func; 
+		$.fn.parseTemplate = function(data){ 
+			var str = (this).html(); 
+			var _tmplCache = {} 
+			var err = ""; 
+			try{ 
+				var func = _tmplCache[str]; 
+				if (!func){ 
+					var strFunc = 
+					"var p=[],print=function(){p.push.apply(p,arguments);};" + 
+					"with(obj){p.push('" + 
+					str.replace(/[\r\t\n]/g, " ") 
+					.replace(/'(?=[^#]*#>)/g, "\t") 
+					.split("'").join("\\'") 
+					.split("\t").join("'") 
+					.replace(/<#=(.+?)#>/g, "',$1,'") 
+					.split("<#").join("');") 
+					.split("#>").join("p.push('") 
+					+ "');}return p.join('');";
+					func = new Function("obj", strFunc); 
+					_tmplCache[str] = func; 
+				} 
+					return func(data); 
+			} catch(e){
+				err = e.message; 
 			} 
-				return func(data); 
-		} catch(e){
-			err = e.message; 
-		} 
-			return "< # ERROR: " + err.toString() + " # >"; 
-	};
+				return "< # ERROR: " + err.toString() + " # >"; 
+		};
 		
-			function getqaonlineinfo() {
-				var qaid = document.getElementById('qaid_id').value;
-				var params = {
-					id: qaid
-				};
-				alert('childinfoid:' + qaid);
+		function getqaonlineinfo() {
+			var qaid = document.getElementById('qaid_id').value;
+			var params = {
+				id: qaid
+			};
 
-				$.ajax({
-					type: 'get',
-					url: 'getqaonlineinfo',
-					cache: false,
-					dataType: 'json',
-					data: params,
-					　　　　　　contentType: 'application/json',
-					　　　　　　async: false,
-					success: function(data) {
-						//var result= JSON.stringify(data);
-						//alert('success:' + result);
-						var output = $('#template').parseTemplate(data);
+			$.ajax({
+				type: 'get',
+				url: 'getqaonlineinfo',
+				cache: false,
+				dataType: 'json',
+				data: params,
+				　　　　　　contentType: 'application/json',
+				　　　　　　async: false,
+				success: function(data) {
+					//var result= JSON.stringify(data);
+					//alert('success:' + result);
+					var output = $('#template').parseTemplate(data);
 
-						$('#searchresult').html(output);
+					$('#searchresult').html(output);
 
-					},
-					error: function(data) {
-						alert('failed:' + data.msg);
-					}
-				});
-			}
-				jQuery.getUrlParam = function (name) {
-		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-		var r = window.location.search.substr(1).match(reg);
-		if (r != null) return unescape(r[2]); return null;
-	}
-            //for open form			
-			$(document).ready(function() {
-				
-				alert($.getUrlParam('qaid'));
-				
-				$("#qaid_id").val($.getUrlParam('qaid'));
-
-				getqaonlineinfo();
-				
+				},
+				error: function(data) {
+					alert('failed:' + data.msg);
+				}
 			});
+		}
+		
+		//for open form	
+		jQuery.getUrlParam = function (name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null) return unescape(r[2]); return null;
+		}
+           		
+		$(document).ready(function() {
+			$("#openid_id").val($.getUrlParam('openid'));
+			$("#nick_id").val($.getUrlParam('nickname'));
+		
+			$("#qaid_id").val($.getUrlParam('qaid'));
+
+			getqaonlineinfo();
+			
+		});
 		</script>
 	</body>
 

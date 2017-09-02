@@ -112,8 +112,7 @@
 				<div class="page__bd page__bd_spacing">
 					<div class="page-btn-area">
 						<a class="page-btn page-btn_primary" href="javascript:setmemberinfo()">注册</a>
-						<input type="hidden" id="followid" name="followid" value="1" />
-						<input type="hidden" id="membertel" name="membertel" value="2" />
+						<input type="hidden" id="flid" name="followid" value="1" />
 					</div>
 				</div>
 
@@ -150,10 +149,7 @@
 
 				var formdata = $('#memberinfo').serializeObject();
 				
-				var mbtelnum = document.getElementById('memberinfotelnumid').value;
-				var mbtel = document.getElementById('membertel').value;
-				
-				if(mbtelnum == mbtel){
+				//if(mbtelnum == mbtel){
 				
 					$.ajax({
 						type: 'post',
@@ -171,9 +167,9 @@
 							alert('failed:' + data.msg);
 						}
 					});
-				} else {
-					alert("请重新设定手机号码");
-				}
+				//} else {
+					//alert("请重新设定手机号码");
+				//}
 			};
 			
 			jQuery.getUrlParam = function (name) {
@@ -184,9 +180,7 @@
 			
 
 			$(document).ready(function() {
-			    $("#followid").val($.getUrlParam('flid'));
-				$("#membertel").val($.getUrlParam('mbtel'));
-				$("#memberinfotelnumid").val($.getUrlParam('mbtel'));
+			    $("#flid").val($.getUrlParam('flid'));
 			});
 
 

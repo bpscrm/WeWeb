@@ -12,7 +12,7 @@ public interface MemberinfoDao {
 
     MemberinfoWithBLOBs selectByPrimaryKey(String id);
     
-    MemberinfoWithBLOBs selectByMemberName(String name);
+    MemberinfoWithBLOBs selectByMemberID(String name);
     
     String selectIDByMember(String name);
 
@@ -25,4 +25,6 @@ public interface MemberinfoDao {
     Memberinfo selectChildrenByKey(String id);
     
     Memberinfo selectPurchaseByKey(String id);
+    
+    MemberinfoWithBLOBs selectMemberInfoByFLID(String id);
 }
