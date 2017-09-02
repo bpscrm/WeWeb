@@ -100,6 +100,20 @@ public class WeServiceImpl implements WeService {
         	respXML = "";         
         }else if(eventType.equals(MessageUtil.EVENT_TYPE_CLICK)){
         	
+        	String eventKey = requestMap.get("EventKey");
+        	
+        	if (eventKey.equals("1_1")) { 
+            	TextMessage text = new TextMessage();
+            	
+            	text.setContent("中心从珠海芝麻街购买课程，取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息，取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息");
+	            text.setToUserName(fromUserName);
+	            text.setFromUserName(toUserName);
+    			text.setCreateTime(new Date().getTime());
+                text.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+    			respXML = MessageUtil.messageToXml(text);
+        	}
+
+        	
         }else if(eventType.equals(MessageUtil.EVENT_TYPE_VIEW)){
         	String url = requestMap.get("EventKey");
         	log.debug("########Got url callback request:" + url);
