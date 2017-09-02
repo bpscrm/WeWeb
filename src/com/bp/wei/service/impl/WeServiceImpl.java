@@ -4,7 +4,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -44,8 +46,15 @@ public class WeServiceImpl implements WeService {
 		//关注者OpenID
 		String fromUserName = requestMap.get("FromUserName");
 		String toUserName = requestMap.get("ToUserName");
+		String eventKey = requestMap.get("EventKey");
 		String respXML = null;
 		
+//		Iterator<String> itr = requestMap.keySet().iterator();
+//    	while(itr.hasNext()){
+//    		String key = itr.next();
+//    		log.debug("key=" + key + ", value=" + requestMap.get(key));
+//    	}
+    	
 		log.info("Processing event :" + eventType + ", from user openid:" + fromUserName);
 		
 		if(MessageUtil.EVENT_TYPE_SUBSCRIBE.equalsIgnoreCase(eventType)){	
@@ -70,6 +79,12 @@ public class WeServiceImpl implements WeService {
             text.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
 			respXML = MessageUtil.messageToXml(text);
 			
+			if(eventKey != null && eventKey.startsWith("qrscene_")){
+				//如果有场景值，可获得转发者的openid,目前暂时只有面对面，其他场景后续需要添加
+				String fromOpenId = eventKey.substring(8);
+				log.debug("Got the follwer's open id:" + fromOpenId);
+			}
+			
 			//关注后处理CRM资料
 			Followerinfo follow = new Followerinfo();
 			follow.setWechatUserid(fromUserName);  //open id
@@ -90,20 +105,25 @@ public class WeServiceImpl implements WeService {
 					//return follow.getId();
 				} else {
 					//return "null";
-				}
-				
+				}				
 			}			
 						
         } 
         // TODO 取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息
         else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
-        	respXML = "";         
+        	respXML = "";
+        	//TO-DO
         }else if(eventType.equals(MessageUtil.EVENT_TYPE_CLICK)){
-        	
+        	respXML = "";
+        	//TO-DO
         }else if(eventType.equals(MessageUtil.EVENT_TYPE_VIEW)){
         	String url = requestMap.get("EventKey");
-        	log.debug("########Got url callback request:" + url);
+        	log.debug("Got url callback request:" + url);
         	respXML = "";
+        	//TO-DO
+        }else if(eventType.equals(MessageUtil.EVENT_TYPE_SCAN)){        	
+        	respXML = "";
+        	//TO-DO
         }
 		
 		log.info("Message response: " + respXML);

@@ -20,29 +20,24 @@ public class QRCodeEvent extends BaseEvent {
     // 用于换取二维码图片
     private String Ticket;
 
-	public String getEventKey() {
-		System.out.println( "[event][QRCodeEvent][getEventKey] " + EventKey);
+	public String getEventKey() {		
 		return EventKey;
 	}
 
-	public void setEventKey(String eventKey) {
-		System.out.println( "[event][QRCodeEvent][setEventKey] " + eventKey);
+	public void setEventKey(String eventKey) {		
 		EventKey = eventKey;
 	}
 
-	public String getTicket() {
-		System.out.println( "[event][QRCodeEvent][getTicket] " + Ticket);
+	public String getTicket() {		
 		return Ticket;
 	}
 
-	public void setTicket(String ticket) {
-		System.out.println( "[event][QRCodeEvent][setTicket] " + ticket);
+	public void setTicket(String ticket) {		
 		Ticket = ticket;
 	}
 
 	@Override
-	public String toString() {
-		System.out.println( "[event][QRCodeEvent][toString] ");
+	public String toString() {		
 		return "QRCodeEvent [EventKey=" + EventKey + ", Ticket=" + Ticket + ", toString()=" + super.toString() + "]";
 	}    
     
