@@ -49,11 +49,11 @@ public class WeServiceImpl implements WeService {
 		String eventKey = requestMap.get("EventKey");
 		String respXML = null;
 		
-//		Iterator<String> itr = requestMap.keySet().iterator();
-//    	while(itr.hasNext()){
-//    		String key = itr.next();
-//    		log.debug("key=" + key + ", value=" + requestMap.get(key));
-//    	}
+		Iterator<String> itr = requestMap.keySet().iterator();
+    	while(itr.hasNext()){
+    		String key = itr.next();
+    		log.debug("key=" + key + ", value=" + requestMap.get(key));
+    	}
     	
 		log.info("Processing event :" + eventType + ", from user openid:" + fromUserName);
 		

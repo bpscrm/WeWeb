@@ -23,21 +23,15 @@ import com.bp.wei.service.impl.X509TrustManagerImpl;
 import net.sf.json.JSONObject;
 
 public class WeUtil {
-<<<<<<< HEAD
 
 	//public final static String APPID = "wx4eabcc7676fe35b1";
 	//public final static String APPSECRET = "6c763da4f3c974415308bb30c1f94b6e";
 	//public final static String APPID = "wx50c7fecf06ffdd0b";
 	//public final static String APPSECRET = "69cb967254a95951ca67dcc665fcb190";
+	
+	
 	public final static String APPID = "wxa84e781ec6a1f5b7";
 	public final static String APPSECRET = "b46278c468c8f338216ea6cc0f64b7af";
-	
-=======
-	public final static String APPID = "wx4eabcc7676fe35b1";
-	public final static String APPSECRET = "6c763da4f3c974415308bb30c1f94b6e";
-//	public final static String APPID = "wx50c7fecf06ffdd0b";
-//	public final static String APPSECRET = "69cb967254a95951ca67dcc665fcb190";
->>>>>>> refs/remotes/origin/basement
 	
 	public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	public final static String oauth_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";

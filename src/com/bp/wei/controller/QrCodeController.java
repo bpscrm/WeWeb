@@ -38,7 +38,7 @@ public class QrCodeController {
 		return "qrcode";
 	}
 	
-	@RequestMapping(value="myqrcode", method = RequestMethod.GET)
+	@RequestMapping(value="myqrcode", method = RequestMethod.POST)
 	public String getMyQRCode(HttpServletRequest request){
 		String fromOpenId = request.getParameter("fromOpenId");
 		if(fromOpenId == null || fromOpenId.length() == 0){
@@ -61,7 +61,7 @@ public class QrCodeController {
 			return "error";
 		}
 		
-		return "forward:" + showUrl;
+		return "redirect:" + showUrl;
 	}
 	
 	/*@RequestMapping(value="getMenu", method = RequestMethod.GET)
