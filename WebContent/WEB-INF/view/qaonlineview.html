@@ -4,10 +4,10 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>你问我答</title>
+		<title>英语培育蕴德中心</title>
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="css/weui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/frozen.css">
+		<link href="css/frozen.css" rel="stylesheet" />
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/weui.min.js"></script>
 		<script src="js/zepto.min.js"></script>
@@ -18,7 +18,7 @@
 
 		<form id="qaonline_view" method="post">
 			<header class="ui-header ui-header-positive ui-border-b">
-				<h1>查看你问我答</h1><button class="ui-btn" onclick="history.back()">回首页</button>
+				<h1>查看我的提问</h1><button class="ui-btn-s active" onclick="history.back()">回首页</button>
 			</header>
 			<br />
 			<br />
@@ -54,14 +54,14 @@
 				<div class="weui-cell">
 					<div class="weui-cell__hd"><label class="weui-label">问题描述</label></div>
 					<div class="weui-cell__bd">
-						<input  name="childname" class="weui-input" type="text" value=<#= description #> />
+						<textarea  name="childname" class="weui-textarea" rows="3"><#= description #></textarea>
 					</div>
 				</div>
 				
 				<div class="weui-cell">
 					<div class="weui-cell__hd"><label class="weui-label">解答内容</label></div>
 					<div class="weui-cell__bd">
-						<input  name="childname" class="weui-input" type="text" value=<#= ask #> />
+						<textarea  name="childname" class="weui-textarea" rows="3"><#= ask #></textarea>
 					</div>
 				</div>
 				
