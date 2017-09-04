@@ -98,17 +98,17 @@ public class MemberMgmtController {
 	
 	@RequestMapping(value="feedbacklist", method = RequestMethod.GET)
 	public String redirectFeedbacklist(){	
-		return "feedbacklist";
+		return "purchasefeedbacklist";
 	}
 	
 	@RequestMapping(value="feedbackinfoadd", method = RequestMethod.GET)
 	public String redirectFeedbackinfoadd(){	
-		return "feedbackinfoadd";
+		return "purchasefeedbackinfoadd";
 	}
 	
 	@RequestMapping(value="feedbackinfoupdate", method = RequestMethod.GET)
 	public String redirectFeedbackinfoupdate(){	
-		return "feedbackinfoupdate";
+		return "purchasefeedbackinfoupdate";
 	}
 	
 	@RequestMapping(value="myfollower", method = RequestMethod.GET)

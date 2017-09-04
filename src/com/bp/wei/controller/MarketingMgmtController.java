@@ -52,7 +52,7 @@ public class MarketingMgmtController {
 	//调查反馈
 	@RequestMapping(value="feedbacksurvey", method = RequestMethod.GET)
 	public String redirectFeedbacksurvey(){	
-		return "feedbacksurvey";
+		return "marketingfeedbacksurvey";
 	}
 	//进入报名调查页面
 	@RequestMapping(value="signupsurvey", method = RequestMethod.GET)
