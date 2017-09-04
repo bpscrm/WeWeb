@@ -47,7 +47,7 @@ public class MarketingMgmtController {
 	//签到
 	@RequestMapping(value="signinpage", method = RequestMethod.GET)
 	public String redirectSigninpage(){	
-		return "signinpage";
+		return "marketingsigninpage";
 	}
 	//调查反馈
 	@RequestMapping(value="feedbacksurvey", method = RequestMethod.GET)
@@ -57,12 +57,12 @@ public class MarketingMgmtController {
 	//进入报名调查页面
 	@RequestMapping(value="signupsurvey", method = RequestMethod.GET)
 	public String redirectSignupsurvey(){	
-		return "signupsurvey";
+		return "marketingsignupsurvey";
 	}
 	//进入取消报名页面
 	@RequestMapping(value="signupcancel", method = RequestMethod.GET)
 	public String redirectSignupcancel(){	
-		return "signupcancel";
+		return "marketingsignupcancel";
 	}
 	//获得在用的营销活动
 	@RequestMapping(value="getMarketinglist", method = RequestMethod.GET)
