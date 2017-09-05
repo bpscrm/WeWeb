@@ -84,9 +84,12 @@ public class QAonlineMgmtController {
 	
 	@RequestMapping(value="getqaonlineinfo", method = RequestMethod.GET)
 	public @ResponseBody QAOnlineWithBLOBs findQAOnlineInfo(String id){
-		
 		return crmdbSrv.getQAOnlineInfo(new String(id));
-		
+	}	
+	
+	@RequestMapping(value="goindexqaonline", method = RequestMethod.GET)
+	public String redirectIndexQAOnline(){	
+		return "indexqaonline";
 	}	
 	
 }

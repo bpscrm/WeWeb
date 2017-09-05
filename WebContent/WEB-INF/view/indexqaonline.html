@@ -23,13 +23,11 @@
 			<br />
 	
 			<div class="page__bd">
-			    <div class="weui-cells__title"><h4 style="color:#0000C6">我们将尽快答复您的提问</h4></div>
-	
-				<div class="page">
-					<div class="weui-cell">
+				<div class="weui-cells">
+					<div class="weui-cell weui-cell_select weui-cell_select-after">
 						<div class="weui-cell__hd"><label class="weui-label">选择类别</label></div>
 						<div class="weui-cell__bd">
-							<select name="select_type_name" id="select_type_id" class="weui-select" style= "background:#FFFFFF;">
+							<select name="select_type_name" id="select_type_id" class="weui-select" style="background:#FFFFFF;">
 	    						<option value="英文学习">英文学习</option>
 								<option value="营销活动">营销活动</option>
 								<option value="课程询问">课程询问</option>
@@ -40,7 +38,7 @@
 					<div class="weui-cell">
 						<div class="weui-cell__hd"><label class="weui-label">输入提问</label></div>
 						<div class="weui-cell__bd">
-							<textarea class="weui-textarea" rows="3"  name="question_name" id="question_id" background:#FFFFFF;border:none;display:table-cell;vertical-align:middle;" ></textarea>
+							<textarea class="weui-textarea" name="question_name" id="question_id" style="background:#FFFFFF;border:none;display:table-cell;vertical-align:middle;"></textarea>
 						</div>
 					</div>				
 				</div>
@@ -51,12 +49,11 @@
 					<input type="hidden" id="nick_id" name="nick_name" value="1" />
 					<input type="hidden" id="followid_id" name="followid_name" value="1" />
 				</div>			
-	
 			</div>
 			
+			<br />
+			
 			<div class="page__bd">
-				<br />
-				<div class="weui-cells__title"><h4 style="color:#0000C6">历史提问：</h4></div>
 				<div id="searchresult"> 
 	       		</div>
 			</div>
@@ -67,18 +64,18 @@
 				<p class="weui-footer__links">
 					<a href="javascript:;" class="weui-footer__link">关于我们</a>
 				</p>
-				<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+				<p class="weui-footer__text">Copyright &copy; 2007-2017 wecareCRM</p>
 			</div>
 		
 		</form>
 
         <script id="qaonlineList-template" type="text/html">
 			 <a class="weui-cell weui-cell_access" href="javascript:QAOnlineView('<#= id #>');">
-	                <div class="weui-cell__hd"><img src="./images/Users_favico.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
+	                <div class="weui-cell__hd"><img src="./images/qaonline_ico.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
 	                <div class="weui-cell__bd">
 	                    <p><#= name #> (<#= questionDt #>)</p>
 	                </div>
-	                <div class="weui-cell__ft">查看详细资料</div>
+	                <div class="weui-cell__ft">查看</div>
 	         </a>			
 		</script>		
 		

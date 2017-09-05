@@ -4,13 +4,14 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>会员注册</title>
+		<title>英语培育蕴德中心</title>
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="css/weui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/frozen.css">
+		<link href="css/frozen.css" rel="stylesheet" />
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/weui.min.js"></script>
 		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
 	</head>
 
 	<body>
@@ -18,9 +19,9 @@
 		<form id="memberinfo">
 		
 			<header class="ui-header ui-header-positive ui-border-b">
-				<h1>会员注册</h1><button class="ui-btn" onclick="history.back()">回首页</button>
-			</header>
-			<br />
+ 				<div class="ui-col ui-col-80"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="会员注册" /></h1></div>
+    			<div class="ui-col ui-col-20"><a href="javascript:gobackIndexQAOnline();"><div class="ui-badge-muted">回首页</div></a></div>		    			
+    		</header>
 			<br />
 
 			<div class="weui-cells weui-cells_form">
@@ -30,7 +31,7 @@
 						<label class="weui-label">手机号码</label>
 					</div>
 					<div class="weui-cell__bd">
-						<input id="memberinfotelnumid" name="memberinfotelnum" class="weui-input" type="text"/>
+						<input id="memberinfotelnumid" name="memberinfotelnum" class="weui-input" type="text" placeholder="手机号码"/>
 					</div>
 					<div class="weui-cell__ft">
 						<button class="weui-vcode-btn">获取验证码</button>
@@ -67,7 +68,7 @@
 				<div class="weui-cell">
 					<div class="weui-cell__hd"><label for="" class="weui-label">生日</label></div>
 					<div class="weui-cell__bd">
-						<input name="memberinfobird" class="weui-input" type="date" value="" />
+						<input name="memberinfobird" class="weui-input" type="date" value="1900-01-01" />
 					</div>
 				</div>
 
@@ -122,7 +123,7 @@
 					<p class="weui-footer__links">
 						<a href="javascript:;" class="weui-footer__link">关于我们</a>
 					</p>
-					<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+					<p class="weui-footer__text">Copyright &copy; 2007-2017 wecareCRM</p>
 				</div>
 			</div>
 
