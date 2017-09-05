@@ -56,6 +56,11 @@ public class MemberMgmtController {
 	}
 	
 	//into form
+	@RequestMapping(value="goindexmember", method = RequestMethod.GET)
+	public String redirectGoIndexMember(){		
+		return "indexmember";
+	}
+	
 	@RequestMapping(value="memberregister", method = RequestMethod.GET)
 	public String redirectMemberregister(){		
 		return "memberregister";

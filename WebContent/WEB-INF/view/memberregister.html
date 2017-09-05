@@ -19,8 +19,8 @@
 		<form id="memberinfo">
 		
 			<header class="ui-header ui-header-positive ui-border-b">
- 				<div class="ui-col ui-col-80"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="会员注册" /></h1></div>
-    			<div class="ui-col ui-col-20"><a href="javascript:gobackIndexQAOnline();"><div class="ui-badge-muted">回首页</div></a></div>		    			
+ 				<div class="ui-col ui-col-90"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="会员注册" /></h1></div>
+    			<div class="ui-col ui-col-10"><a href="javascript:gobackIndexMember();"><div class="ui-badge-muted">首页</div></a></div>		    			
     		</header>
 			<br />
 
@@ -114,17 +114,18 @@
 					<div class="page-btn-area">
 						<a class="page-btn page-btn_primary" href="javascript:setmemberinfo()">注册</a>
 						<input type="hidden" id="flid" name="followid" value="1" />
+						<input type="hidden" id="openid_id" name="openid_name" value="1" />
+						<input type="hidden" id="nick_id" name="nick_name" value="1" />						
 					</div>
 				</div>
 
-				<div class="weui-footer">
-					<br />
-					<br />
-					<p class="weui-footer__links">
-						<a href="javascript:;" class="weui-footer__link">关于我们</a>
-					</p>
-					<p class="weui-footer__text">Copyright &copy; 2007-2017 wecareCRM</p>
-				</div>
+			</div>
+			
+			<div class="weui-footer weui-footer_fixed-bottom">
+				<p class="weui-footer__links">
+					<a href="javascript:;" class="weui-footer__link">关于我们</a>
+				</p>
+				<p class="weui-footer__text">Copyright &copy; 2007-2017 wecareCRM</p>
 			</div>
 
 		</form>
@@ -173,6 +174,26 @@
 				//}
 			};
 			
+			function gobackIndexMember() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
+				
+				$.ajax({
+					type: 'get',
+					url: 'goindexmember',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'indexmember.html?openid='+openid+'&nickname='+nkid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+			
 			jQuery.getUrlParam = function (name) {
      			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
      			var r = window.location.search.substr(1).match(reg);
@@ -182,8 +203,9 @@
 
 			$(document).ready(function() {
 			    $("#flid").val($.getUrlParam('flid'));
+			    $("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
 			});
-
 
 		</script>
 	</body>

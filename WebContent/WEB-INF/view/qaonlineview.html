@@ -27,7 +27,6 @@
 
 				<div id="searchresult"></div>
 
-				<br />
 			
 			</div>
 
@@ -38,6 +37,13 @@
 					<input type="hidden" id="nick_id" name="nick_name" value="1" />
 				</div>
 			</div>
+			
+			<div class="weui-footer weui-footer_fixed-bottom">
+				<p class="weui-footer__links">
+					<a href="javascript:;" class="weui-footer__link">关于我们</a>
+				</p>
+				<p class="weui-footer__text">Copyright &copy; 2007-2017 wecareCRM</p>
+			</div>		
 
 		</form>
 		
@@ -71,99 +77,99 @@
 		</script>		
 
 		<script type="text/javascript">
-		$.fn.parseTemplate = function(data){ 
-			var str = (this).html(); 
-			var _tmplCache = {} 
-			var err = ""; 
-			try{ 
-				var func = _tmplCache[str]; 
-				if (!func){ 
-					var strFunc = 
-					"var p=[],print=function(){p.push.apply(p,arguments);};" + 
-					"with(obj){p.push('" + 
-					str.replace(/[\r\t\n]/g, " ") 
-					.replace(/'(?=[^#]*#>)/g, "\t") 
-					.split("'").join("\\'") 
-					.split("\t").join("'") 
-					.replace(/<#=(.+?)#>/g, "',$1,'") 
-					.split("<#").join("');") 
-					.split("#>").join("p.push('") 
-					+ "');}return p.join('');";
-					func = new Function("obj", strFunc); 
-					_tmplCache[str] = func; 
+			$.fn.parseTemplate = function(data){ 
+				var str = (this).html(); 
+				var _tmplCache = {} 
+				var err = ""; 
+				try{ 
+					var func = _tmplCache[str]; 
+					if (!func){ 
+						var strFunc = 
+						"var p=[],print=function(){p.push.apply(p,arguments);};" + 
+						"with(obj){p.push('" + 
+						str.replace(/[\r\t\n]/g, " ") 
+						.replace(/'(?=[^#]*#>)/g, "\t") 
+						.split("'").join("\\'") 
+						.split("\t").join("'") 
+						.replace(/<#=(.+?)#>/g, "',$1,'") 
+						.split("<#").join("');") 
+						.split("#>").join("p.push('") 
+						+ "');}return p.join('');";
+						func = new Function("obj", strFunc); 
+						_tmplCache[str] = func; 
+					} 
+						return func(data); 
+				} catch(e){
+					err = e.message; 
 				} 
-					return func(data); 
-			} catch(e){
-				err = e.message; 
-			} 
-				return "< # ERROR: " + err.toString() + " # >"; 
-		};
-		
-		function getqaonlineinfo() {
-			var qaid = document.getElementById('qaid_id').value;
-			var params = {
-				id: qaid
+					return "< # ERROR: " + err.toString() + " # >"; 
 			};
-
-			$.ajax({
-				type: 'get',
-				url: 'getqaonlineinfo',
-				cache: false,
-				dataType: 'json',
-				data: params,
-				　　　　　　contentType: 'application/json',
-				　　　　　　async: false,
-				success: function(data) {
-					//var result= JSON.stringify(data);
-					//alert('success:' + result);
-					var output = $('#template').parseTemplate(data);
-
-					$('#searchresult').html(output);
-
-				},
-				error: function(data) {
-					alert('failed:' + data.msg);
-				}
-			});
-		}
-		
-		//goback indexqaonline
-	    function gobackIndexQAOnline() {
-			var openid = document.getElementById('openid_id').value;
-			var nkid = document.getElementById('nick_id').value;
 			
-			$.ajax({
-				type: 'get',
-				url: 'goindexqaonline',
-				cache: false,
-				async: false,
-				dataType: 'json',
-				　　　　　　contentType: 'application/json',
-				success: function(data) {
-					window.location.href = 'indexqaonline.html?openid='+openid+'&nickname='+nkid;
-				},
-				error: function(data) {
-					alert(data.msg);
-				}
-			});
-		}
-		
-		//for open form	
-		jQuery.getUrlParam = function (name) {
-			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-			var r = window.location.search.substr(1).match(reg);
-			if (r != null) return unescape(r[2]); return null;
-		}
-           		
-		$(document).ready(function() {
-			$("#openid_id").val($.getUrlParam('openid'));
-			$("#nick_id").val($.getUrlParam('nickname'));
-		
-			$("#qaid_id").val($.getUrlParam('qaid'));
-
-			getqaonlineinfo();
+			function getqaonlineinfo() {
+				var qaid = document.getElementById('qaid_id').value;
+				var params = {
+					id: qaid
+				};
+	
+				$.ajax({
+					type: 'get',
+					url: 'getqaonlineinfo',
+					cache: false,
+					dataType: 'json',
+					data: params,
+					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+						//var result= JSON.stringify(data);
+						//alert('success:' + result);
+						var output = $('#template').parseTemplate(data);
+	
+						$('#searchresult').html(output);
+	
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+			}
 			
-		});
+			//goback indexqaonline
+		    function gobackIndexQAOnline() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
+				
+				$.ajax({
+					type: 'get',
+					url: 'goindexqaonline',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'indexqaonline.html?openid='+openid+'&nickname='+nkid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+			
+			//for open form	
+			jQuery.getUrlParam = function (name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null) return unescape(r[2]); return null;
+			}
+	           		
+			$(document).ready(function() {
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
+			
+				$("#qaid_id").val($.getUrlParam('qaid'));
+	
+				getqaonlineinfo();
+				
+			});
 		</script>
 	</body>
 

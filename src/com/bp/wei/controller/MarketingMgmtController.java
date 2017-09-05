@@ -29,11 +29,7 @@ public class MarketingMgmtController {
 	
 	@Autowired
 	CRMDBManageService  marktingService;
-	//营销活动入口
-	@RequestMapping(value="marketingentry", method = RequestMethod.GET)
-	public String redirectGomarketingentry(){		
-		return "marketingentry";
-	}	
+	
 	//活动首页
 	@RequestMapping(value="marketingindex", method = RequestMethod.GET)
 	public String redirectMarketingindex(){	
