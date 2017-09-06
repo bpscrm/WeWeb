@@ -99,23 +99,27 @@
 				var openid = document.getElementById('openid_id').value;
 				var nkid = document.getElementById('nick_id').value;	
 				
-				if(flid != ""){
-					$.ajax({
-						type: 'get',
-						url: 'memberregister',
-						cache: false,
-						async: false,
-						dataType: 'json',
-						　　　　　　contentType: 'application/json',
-						success: function(data) {
-							window.location.href = 'memberregister.html?flid=' + flid + '&openid='+ openid + '&nickname=' + nkid;
-						},
-						error: function(data) {
-							alert(data.msg);
-						}
-					});
+				if(mbid == "1"){
+					if(flid != ""){
+						$.ajax({
+							type: 'get',
+							url: 'memberregister',
+							cache: false,
+							async: false,
+							dataType: 'json',
+							　　　　　　contentType: 'application/json',
+							success: function(data) {
+								window.location.href = 'memberregister.html?flid=' + flid + '&openid='+ openid + '&nickname=' + nkid;
+							},
+							error: function(data) {
+								alert(data.msg);
+							}
+						});
+					} else {
+						alert("资料有误");
+					}
 				} else {
-					alert("资料有误");
+					alert("您已注册！");
 				}
 			}
 
@@ -209,26 +213,11 @@
 						$("#memberid_id").val(data.id);
 					},
 					error: function(data) {
+						$("#memberid_id").val('1');
 						//alert('failed:' + data.msg);
 					}
 				});
 			}
-						
-			jQuery.getUrlParam = function (name) {
-     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-     			var r = window.location.search.substr(1).match(reg);
-     			if (r != null) return unescape(r[2]); return null;
-			} 			
-			$(document).ready(function() {				
-
-				$("#openid_id").val($.getUrlParam('openid'));
-				$("#nick_id").val($.getUrlParam('nickname'));
-								
-				getFollowerIDForMemberMgmt();
-				getMemberIDForMemberMgmt();
-			});
-			
-			
 			//
 			$.fn.serializeObject = function() {
 				var o = {};
@@ -244,7 +233,22 @@
 					}
 				});
 				return o;
-			};
+			};			
+			
+			//			
+			jQuery.getUrlParam = function (name) {
+     			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     			var r = window.location.search.substr(1).match(reg);
+     			if (r != null) return unescape(r[2]); return null;
+			} 			
+			$(document).ready(function() {				
+
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
+								
+				getFollowerIDForMemberMgmt();
+				getMemberIDForMemberMgmt();
+			});
 			
 		</script>
 	</body>
