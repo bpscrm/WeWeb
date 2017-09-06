@@ -39,13 +39,13 @@
 					<input type="hidden" id="openid_id" name="openid_name" value="1" />
 					<input type="hidden" id="nick_id" name="nick_name" value="1" />					
 					<input type="hidden" id="followid" name="followid" value="1" />
-					<input type="hidden" id="memberid0_id" name="memberid0_name" value="2" />
+					<input type="hidden" id="memberid0_id" name="memberid0_name" value="1" />
 			</div>
 		</div>
 
 		<div class="weui-cells">
 			<a class="weui-cell weui-cell_access" href="javascript:childrenlist();">
-			    <div class="weui-cell__hd"><img src="./images/chd.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
+			    <div class="weui-cell__hd"><img src="./images/child1.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
 				<span class="weui-cell__bd">
 					<p>小孩资料</p>
 				</span>
@@ -53,7 +53,7 @@
 			</a>
 			
 			<a class="weui-cell weui-cell_access" href="javascript:purchaselist();">
-				<div class="weui-cell__hd"><img src="./images/buy.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
+				<div class="weui-cell__hd"><img src="./images/buy1.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
 				<span class="weui-cell__bd">
 					<p>购买记录</p>
 				</span>
@@ -295,6 +295,9 @@
 
 			
 			function childrenlist() {			
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
+				var flid = document.getElementById('followid').value;
 				var mbid = document.getElementById('memberid_id').value;
 
 				$.ajax({
@@ -305,7 +308,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'childrenlist.html?mbid=' + mbid;
+						window.location.href = 'childrenlist.html?flid=' + flid + '&mbid='+ mbid + '&openid='+ openid + '&nickname=' + nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -314,6 +317,8 @@
 			}
 
 			function purchaselist() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;			
 			    var mbid = document.getElementById('memberid_id').value;
 			    
 				$.ajax({
@@ -324,7 +329,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'purchaselist.html?mbid=' + mbid;
+						window.location.href = 'purchaselist.html?mbid=' + mbid + '&openid='+ openid + '&nickname=' + nkid;
 					},
 					error: function(data) {
 						alert(data.msg);

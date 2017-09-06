@@ -31,19 +31,19 @@
 				<input type="hidden" id="nick_id" name="nick_name" value="1" />	
 				
 				<a class="weui-cell weui-cell_access" href="javascript:myfollower();">
-					<div class="weui-cell__hd"><img src="./images/follower.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+					<div class="weui-cell__hd"><img src="./images/follower1.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
 					<div class="weui-cell__bd">
 						<p>我的粉丝</p>
 					</div>
-					<div class="weui-cell__ft">进入查看</div>
+					<div class="weui-cell__ft">查看</div>
 				</a>
 				<a class="weui-cell weui-cell_access" href="javascript:myqrcode();">
 					<input type="hidden" name="fromOpenId" value="okMyy0Tc0LrcXrKKc5O9GK21dxOg"/>
-					<div class="weui-cell__hd"><img src="./images/qrcode.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+					<div class="weui-cell__hd"><img src="./images/qrcode2.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
 					<div class="weui-cell__bd">
 						<p>面对面推广</p>
 					</div>
-					<div class="weui-cell__ft">推广页面</div>
+					<div class="weui-cell__ft">推广</div>
 				</a>
 			</div>
 
@@ -80,8 +80,8 @@
 			function myfollower() 
 			{
 			    var flid = document.getElementById('flid').value;
-
-			    //alert(flid);
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
 			    
 				$.ajax({
 					type: 'get',
@@ -91,7 +91,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'myfollower.html?flid=' + flid;
+						window.location.href = 'myfollower.html?flid=' + flid + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
