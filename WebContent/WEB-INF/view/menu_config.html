@@ -6,167 +6,25 @@
 		<title>菜单配置</title>
 		<link href="../../css/style.css" rel="stylesheet" />
 		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/weui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
 	</head>
 	<body>
 		<div class="page-hd">
 			<p class="page-title">菜单修改</p>
 		</div>
 		<form id="menuform">
-<!-- 			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">菜单一</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="buttons" class="page-input" type="text" placeholder="请输入主菜单一名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单一</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单一名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单二</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单二名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单三</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单三名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单四</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单四名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单五</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单五名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">菜单二</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="buttons" class="page-input" type="text" placeholder="请输入主菜单二名称"/>
-				</div>
-			</div>
-					<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单一</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单一名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单二</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单二名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单三</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单三名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单四</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单四名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单五</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单五名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">菜单三</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="buttons" class="page-input" type="text" placeholder="请输入主菜单三名称"/>
-				</div>
-			</div>
-					<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单一</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单一名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单二</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单二名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单三</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单三名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单四</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单四名称"/>
-				</div>
-			</div>
-			<div class="page-cell">
-				<div class="page-cell-hd">
-					<label class="page-cell-label">子菜单五</label>
-				</div>
-				<div class="page-cell-bd">
-					<input name="subButtons" class="page-input" type="text" placeholder="请输入子菜单五名称"/>
-				</div>
-			</div>-->
+
 			<div class="page-btn-area">
 				<a class="page-btn page-btn_primary" href="javascript:updatemenu();">确定</a>
 			</div>
+
 		</form>
 		<script type="text/javascript">
-		$(document).ready(function() {
-			alert('hi');
-			alert(window.location.href);
-		};
-		
-		function updatemenu(){
+	
+		function updatemenu() {
+
 			$.ajax({  
                 type: 'post',  
                 url: 'setMenu',
