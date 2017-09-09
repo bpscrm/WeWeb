@@ -41,25 +41,27 @@ public class MarketingMgmtController {
 		return "marketingsignup";
 	}
 	//签到
-	@RequestMapping(value="signinpage", method = RequestMethod.GET)
+	@RequestMapping(value="marketingsigninpage", method = RequestMethod.GET)
 	public String redirectSigninpage(){	
 		return "marketingsigninpage";
 	}
 	//调查反馈
-	@RequestMapping(value="feedbacksurvey", method = RequestMethod.GET)
+	@RequestMapping(value="marketingfeedbacksurvey", method = RequestMethod.GET)
 	public String redirectFeedbacksurvey(){	
 		return "marketingfeedbacksurvey";
 	}
 	//进入报名调查页面
-	@RequestMapping(value="signupsurvey", method = RequestMethod.GET)
+	@RequestMapping(value="marketingsignupsurvey", method = RequestMethod.GET)
 	public String redirectSignupsurvey(){	
 		return "marketingsignupsurvey";
 	}
 	//进入取消报名页面
-	@RequestMapping(value="signupcancel", method = RequestMethod.GET)
+	@RequestMapping(value="marketingsignupcancel", method = RequestMethod.GET)
 	public String redirectSignupcancel(){	
 		return "marketingsignupcancel";
 	}
+	
+	
 	//获得在用的营销活动
 	@RequestMapping(value="getMarketinglist", method = RequestMethod.GET)
 	public @ResponseBody Marketinginfo findMarketinglist(){
@@ -136,7 +138,6 @@ public class MarketingMgmtController {
 		
 	
 	}	
-		
 	
 	//search marketing info for 签到
 	@RequestMapping(value="getmarketingforsignin", method = RequestMethod.GET)
@@ -152,7 +153,11 @@ public class MarketingMgmtController {
 	}
 	//提交签到
 	@RequestMapping(value="submitSignin", method = RequestMethod.POST)
-	public ModelAndView submitSignin(HttpServletRequest request){	
+	public String submitSignin(HttpServletRequest request, RedirectAttributes attr){	
+		String openId = request.getParameter("openid_name");
+		String nickName = request.getParameter("nick_name");
+		String mkid = request.getParameter("mkname");		
+		
 		log.debug("submitSignin start...");
 		String marketingId = request.getParameter("mkname");
 		System.out.println("marketing................... id: " + marketingId);
@@ -166,9 +171,10 @@ public class MarketingMgmtController {
 		boolean blResult = marktingService.setParticipateData(request);
 		
 		
-		ModelAndView result = new ModelAndView();
-		result.setViewName("marketingentry");		
-		return result;
+		attr.addAttribute("openid", openId);
+		attr.addAttribute("nickname", nickName);
+		attr.addAttribute("mkid", mkid);
+		return "redirect:marketingindex";
 	}
 
 }

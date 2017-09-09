@@ -66,8 +66,9 @@
 					<div class="page__bd page__bd_spacing">
 						<div class="page-btn-area">
 							<a class="page-btn page-btn_primary" href="javascript:intoMarketingIndex();">返回营销活动首页</a>
-							<input type="hidden" id="mkid" value="1" />
 							<input type="hidden" id="mbid" value="2" />
+							
+							<input type="hidden" id="mkid" value="1" />
 							<input type="hidden" id="openid_id" name="openid_name" value="1" />
 							<input type="hidden" id="nick_id" name="nick_name" value="1" />
 						</div>
@@ -76,13 +77,11 @@
 				</article>
 			</div>
 	
-			<div class="weui-footer">
-				<br />
-				<br />
+			<div class="weui-footer weui-footer_fixed-bottom">
 				<p class="weui-footer__links">
 					<a href="javascript:;" class="weui-footer__link">关于我们</a>
 				</p>
-				<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+				<p class="weui-footer__text">Copyright &copy; 2007-2017 wecareCRM</p>
 			</div>
 		
 		</form>
@@ -175,13 +174,13 @@
 
 				$.ajax({
 					type: 'get',
-					url: 'signinpage',
+					url: 'marketingsigninpage',
 					cache: false,
 					async: false,
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'signinpage.html?mkid=' + mkid + '&openid='+openid+'&nickname='+nkid;
+						window.location.href = 'marketingsigninpage.html?mkid=' + mkid + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -190,16 +189,19 @@
 			}
 			//调查反馈
 			function feedbacksurvey() {
-
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;			
+				var mkid = document.getElementById('mkid').value;
+				
 				$.ajax({
 					type: 'get',
-					url: 'feedbacksurvey',
+					url: 'marketingfeedbacksurvey',
 					cache: false,
 					async: false,
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'feedbacksurvey';
+						window.location.href = 'marketingfeedbacksurvey.html?mkid=' + mkid + '&openid='+openid+'&nickname='+nkid;
 						
 					},
 					error: function(data) {

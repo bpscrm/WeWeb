@@ -4,13 +4,14 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>活动签到</title>
+		<title>英语培育蕴德中心</title>
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="css/weui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/frozen.css">
+		<link href="css/frozen.css" rel="stylesheet" />
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/weui.min.js"></script>
 		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
 	</head>
 
 	<body>
@@ -18,15 +19,9 @@
 		<form id="signinpage" method="post" action="submitSignin">
 		
 			<header class="ui-header ui-header-positive ui-border-b">
-
-				<i class="ui-icon-return" onclick="history.back()"></i>
-				
-				<div class="ui-row">
- 					<div class="ui-col ui-col-80"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="免费试听活动" /></h1></div>
-    				<div class="ui-col ui-col-20"><a href="javascript:intoMarketingIndex();"><div class="ui-badge-muted">回首页</div></a></div>			    			
-    			</div>
-
-			</header>
+ 				<div class="ui-col ui-col-90"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="放弃报名" /></h1></div>
+    			<div class="ui-col ui-col-10"><a href="javascript:intoMarketingIndex();"><div class="weui-cell__hd"><img src="./images/home.png"  alt="" style="width:20px;vertical-align:middle"></div></a></div>		    			
+    		</header>
 			<br />
 			<br />
 			<br />
@@ -82,19 +77,20 @@
 			//返回营销活动入口
 			function intoMarketingIndex() {
 				var openid = document.getElementById('openid_id').value;
-				var nkid = document.getElementById('nick_id').value;				
+				var nkid = document.getElementById('nick_id').value;
+				var mkid = document.getElementById('mkid').value;				
 				
 				if(openid != ""){
 					
 				$.ajax({
 					type: 'get',
-					url: 'indexmarketing',
+					url: 'marketingindex',
 					cache: false,
 					async: false,
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'indexmarketing.html?openid='+openid+'&nickname='+nkid;
+						window.location.href = 'marketingindex.html?mkid=' + mkid + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -122,7 +118,7 @@
 					　　　　　　async: false,
 					success: function(data) {
 					
-						$("#marketing_title").val(data.name + "签到");
+						$("#marketing_title").val(data.name + " - 签到");
 						$("#mkid").val(data.id);
 						$("#particid").val(data.assignedUserId);
 
@@ -144,7 +140,6 @@
 			
 				$("#openid_id").val($.getUrlParam('openid'));
 				$("#nick_id").val($.getUrlParam('nickname'));
-				
 				$("#mkid").val($.getUrlParam('mkid'));
 				
 				getmarketing();
