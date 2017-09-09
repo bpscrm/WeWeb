@@ -75,6 +75,14 @@ public class MenuManageController {
 		return "indexmarketing";
 	}		
 	
+	//打开联系我们
+	@RequestMapping(value="indexcontactus", method = RequestMethod.GET)
+	public String redirectintoContactusIndex(){		
+		
+		System.out.println( "[MenuMangerController][redirectintoContactusIndex]");
+		return "indexcontactus";
+	}	
+	
 	//////////////////////////////////////////////////////////////////////for 设定微信服务号菜单
 	@RequestMapping(value="menu", method = RequestMethod.GET)
 	public String redirectMenu(){

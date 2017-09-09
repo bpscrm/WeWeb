@@ -15,7 +15,7 @@
 	</head>
 
 	<body>
-	    <form id="qaonlineinfo" method="post">
+	    <form id="contactinfo" method="post">
 			<header class="ui-header ui-header-positive ui-border-b">
 				<h1>联系我们</h1>
 			</header>
@@ -23,126 +23,70 @@
 			<br />
 	
 			<div class="page__bd">
-			    <div class="weui-cells__title"><h4>请提出在学习英语中碰到的问题，我们将作出解答</h4></div>
+			    <div class="weui-cells__title"><h4>如留下联系方式，中心人员将会及时联系您</h4></div>
 	
-				<div class="page">
 					<div class="weui-cell">
-						<div class="weui-cell__hd"><label class="weui-label">选择问题类别</label></div>
+						<div class="weui-cell__hd"><label class="weui-label">联系电话</label></div>
 						<div class="weui-cell__bd">
-							<select name="select_type_name" id="select_type_id" class="weui-select" style= "background:#FFFFFF;">
-	    						<option value="英文学习">英文学习</option>
-								<option value="营销活动">营销活动</option>
-								<option value="课程询问">课程询问</option>
-	    					</select>
+							<input name="phonenum_name" id="phonenum_id" class="weui-input" type="number" pattern="[0-9]*" placeholder="联系电话" />
 						</div>
 					</div>
 					
 					<div class="weui-cell">
-						<div class="weui-cell__hd"><label class="weui-label">输入问题描述</label></div>
+						<div class="weui-cell__hd"><label class="weui-label">电子邮件</label></div>
 						<div class="weui-cell__bd">
-							<textarea name="question_name" id="question_id" style="background:#FFFFFF" ></textarea>
+							<input name="email_name" id="email_id" class="weui-input" type="text"  placeholder="电子邮件" />
 						</div>
-					</div>				
-				</div>
+					</div>					
+					
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label">留言内容</label></div>
+						<div class="weui-cell__bd">
+							<textarea class="weui-textarea" name="contact_name" id="contact_id" style="background:#FCFCFC;border:none;display:table-cell;vertical-align:middle;"></textarea>
+						</div>
+					</div>
+									
+			</div>
 				
-				<div class="page-btn-area">
-					<a class="page-btn page-btn_primary" href="javascript:setQAOnlineinfo();">新增</a>
-					<input type="hidden" id="openid_id" name="openid_name" value="1" />
-					<input type="hidden" id="nick_id" name="nick_name" value="1" />
-					<input type="hidden" id="followid_id" name="followid_name" value="1" />
-				</div>			
-	
-			</div>
+			<div class="page-btn-area">
+				<a class="page-btn page-btn_primary" href="javascript:setContactinfo();">存储</a>
+				<input type="hidden" id="openid_id" name="openid_name" value="1" />
+				<input type="hidden" id="nick_id" name="nick_name" value="1" />
+				<input type="hidden" id="followid_id" name="followid_name" value="1" />
+				<input type="hidden" id="memberid_id" name="memberid_name" value="1" />
+				<input type="hidden" id="contactid_id" name="contactid_name" value="1" />
+			</div>			
 			
-			<div class="page__bd">
-				<br />
-				<div class="weui-cells__title"><h4>历史提问：</h4></div>
-				<div id="searchresult"> 
-	       		</div>
-			</div>
-	
-			<div class="weui-footer">
-				<br />
-				<br />
+			<div class="weui-footer weui-footer_fixed-bottom">
 				<p class="weui-footer__links">
 					<a href="javascript:;" class="weui-footer__link">关于我们</a>
 				</p>
-				<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+				<p class="weui-footer__text">Copyright &copy; 2007-2017 wecareCRM</p>
 			</div>
 		
 		</form>
-
-        <script id="qaonlineList-template" type="text/html">
-			 <a class="weui-cell weui-cell_access" href="javascript:QAOnlineView('<#= id #>');">
-	                <div class="weui-cell__hd"><img src="./images/Users_favico.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
-	                <div class="weui-cell__bd">
-	                    <p><#= name #> (<#= questionDt #>)</p>
-	                </div>
-	                <div class="weui-cell__ft">查看详细资料</div>
-	         </a>			
-		</script>		
 		
-		<script type="text/javascript">
-			//获取Follower ID
-			function getFollowerID() {
-				var purid = document.getElementById('openid_id').value;
-				var params = {id: purid};
-
-				$.ajax({
-					type: 'get',
-					url: 'getFollowerInfo',
-					cache: false,
-					dataType: 'json',
-					data: params,
-					　　　　　　contentType: 'application/json',
-					　　　　　　async: false,
-					success: function(data) {
-						$("#followid_id").val(data.id);
-						//alert(data.id);
-					},
-					error: function(data) {
-						alert('failed:' + data.msg);
-					}
-				});
-			}			
 		
-			//获取历史记录
-			function getFollowerQAOnlineList(){
-				var followerid = document.getElementById('followid_id').value;
-				var params = {id: followerid};
-				$.ajax({  
-			        type: 'get',  
-			        url: 'getFollowerQAOnlineList',
-			        cache: false,
-			        dataType : 'json',
-			        data: params,
-			　　　　　　 	contentType : 'application/json', 
-			　　　　　　 	async: false,
-			        success: function (data) { 	
-			        	var result= JSON.stringify(data);
-			        	var htmllist = '';
-			        	data.qaonline.forEach(function(object) {			        			        		
-			        		var output = $('#qaonlineList-template').parseTemplate(object);			        		
-			        		htmllist += output;
-			        	});
-			        	
-			        	$('#searchresult').html(htmllist); 
-			        				        	
-			        },  
-			        error: function (data) { 		        	
-			        	//alert('failed:' + data.msg);
-			        }  
-			    });
-			}
+		<script type="text/javascript">	
+			//保存联络记录
+			function setContactinfo() {
+				var contactid = document.getElementById('contactid_id').value;
+				
+				if(contactid == '1'){
+					insertContactinfo()
+				}else {
+					updateContactinfo()
+				}
 			
-			//保存你问我答		
-			function setQAOnlineinfo() {
-				var formdata = $('#qaonlineinfo').serializeObject();
+			}			
+			//新增联络记录		
+			function insertContactinfo() {
+				var formdata = $('#contactinfo').serializeObject();
 				//alert(formdata);					
 						
 				$.ajax({
 					type: 'post',
-					url: 'setQAOnlineinfo',
+					url: 'insertContactinfo',
 					cache: false,
 					dataType: 'json',
 					data: JSON.stringify(formdata),
@@ -157,30 +101,96 @@
 					}
 				});
 				
-				getFollowerQAOnlineList();
 			}
-			
-			//进入历史记录页面
-		    function QAOnlineView(id) {
-				var openid = document.getElementById('openid_id').value;
-				var nkid = document.getElementById('nick_id').value;
-				
+			//更新联络记录		
+			function updateContactinfo() {
+				var formdata = $('#contactinfo').serializeObject();
+				//alert(formdata);					
+						
 				$.ajax({
-					type: 'get',
-					url: 'qaonlineview',
+					type: 'post',
+					url: 'updateContactinfo',
 					cache: false,
-					async: false,
 					dataType: 'json',
-					　　　　　　contentType: 'application/json',
+					data: JSON.stringify(formdata),
+					contentType: 'application/json',
+					　　　　　　async: false,
 					success: function(data) {
-						window.location.href = 'qaonlineview.html?qaid=' + id  + '&openid='+openid+'&nickname='+nkid;
+						var result = JSON.stringify(data);
+						alert('success:' + result);
 					},
 					error: function(data) {
-						alert(data.msg);
+						alert('failed:' + data.msg);
+					}
+				});
+				
+			}
+				
+			//////////////// init form
+			function getFollowerIDForMemberMgmt() {
+				var openid = document.getElementById('openid_id').value;
+				var params = {id: openid};
+
+				$.ajax({
+					type: 'get',
+					url: 'getFollowerIDForMemberMgmt',
+					cache: false,
+					dataType: 'json',
+					data: params,
+					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+						$("#followid_id").val(data.id);
+					},
+					error: function(data) {
+						//alert('failed:' + data.msg);
 					}
 				});
 			}
-		
+			function getMemberIDForMemberMgmt() {
+				var flid = document.getElementById('followid_id').value;
+				var params = {id: flid};
+				
+				$.ajax({
+					type: 'get',
+					url: 'getMemberIDForMemberMgmt',
+					cache: false,
+					dataType: 'json',
+					data: params,
+					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+						$("#memberid_id").val(data.id);
+					},
+					error: function(data) {
+						$("#memberid_id").val('1');
+						alert('请先注册成为会员，在填写联络记录！');
+					}
+				});
+			}
+			//获取联络记录		
+			function getContactinfo() {
+				var formdata = $('#contactinfo').serializeObject();
+				//alert(formdata);					
+						
+				$.ajax({
+					type: 'post',
+					url: 'getContactinfo',
+					cache: false,
+					dataType: 'json',
+					data: JSON.stringify(formdata),
+					contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+						var result = JSON.stringify(data);
+						alert('success:' + result);
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+				
+			}			
 			
 			//form 初始化			
 			jQuery.getUrlParam = function (name) {
@@ -193,11 +203,10 @@
 				$("#openid_id").val($.getUrlParam('openid'));
 				$("#nick_id").val($.getUrlParam('nickname'));
 				
-				//获取Follower ID
-				getFollowerID();				
+				getFollowerIDForMemberMgmt();
+				getMemberIDForMemberMgmt();			
+				//getContactinfo()	
 				
-				//获取历史记录
-				getFollowerQAOnlineList();
 			});
 		</script>
 	</body>

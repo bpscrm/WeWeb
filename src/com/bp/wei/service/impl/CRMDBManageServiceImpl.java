@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.bp.wei.dao.ChildToMemberDao;
 import com.bp.wei.dao.ChildinfoDao;
+import com.bp.wei.dao.ContactUSDao;
+import com.bp.wei.dao.ContactUSToMemberDao;
 import com.bp.wei.dao.FeedbackDao;
 import com.bp.wei.dao.FeedbackToPurchaseDao;
 import com.bp.wei.dao.InteracDataToInteracAnswerDao;
@@ -32,6 +34,8 @@ import com.bp.wei.dao.PurchaseinfoDao;
 import com.bp.wei.dao.QAOnlineDao;
 import com.bp.wei.dao.QAOnlineToFollowerDao;
 import com.bp.wei.dao.QuestionnaireDao;
+import com.bp.wei.crm.model.ContactUS;
+import com.bp.wei.crm.model.ContactUSToMember;
 import com.bp.wei.crm.model.Followerinfo;
 import com.bp.wei.crm.model.Member;
 import com.bp.wei.crm.model.MemberToFollower;
@@ -138,6 +142,12 @@ public class CRMDBManageServiceImpl implements CRMDBManageService {
 	
 	@Resource
 	private MemberToParticipateDao mbTpcDao;
+	
+	//联络记录
+	@Resource
+	private ContactUSDao cusDao;
+	@Resource
+	private ContactUSToMemberDao cusTombDao;
 	
 	////////////////for follower
 	//my follower
@@ -479,7 +489,23 @@ public class CRMDBManageServiceImpl implements CRMDBManageService {
 		return true;
 	}
 		
+	/////////////////////////////////////////////////////////////////for 联络我们
+	public int insertContactinfo(ContactUS record, String memberid) {
+		//insert QA Online
 		
+		System.out.println("#################*********************" + record.getName());
+		int result = cusDao.insertContactUSInfo(record);
+		
+		//insert relation to follower
+		ContactUSToMember cusTomb = new ContactUSToMember();
+		cusTomb.setEc1ContactusEc1Memberec1MemberIda(memberid);
+		cusTomb.setEc1ContactusEc1Memberec1ContactusIdb(record.getId());
+		
+		result = cusTombDao.insertContactUSToMember(cusTomb);
+		
+		return result;
+	}
+	
 	/////////////////////////////////////////////////////////////////////for examples
 	@Resource
 	private MemberDao dao;

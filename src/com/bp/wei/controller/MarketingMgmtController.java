@@ -121,7 +121,6 @@ public class MarketingMgmtController {
 	@RequestMapping(value="submitSurvey", method = RequestMethod.POST)
 	public String submitSurvey(HttpServletRequest request, RedirectAttributes attr){	
 		log.debug("setSurveryResult start...");
-		String surveryId = request.getParameter("sid");
 		String openId = request.getParameter("openid_name");
 		String nickName = request.getParameter("nick_name");
 		String mkid = request.getParameter("mkname");

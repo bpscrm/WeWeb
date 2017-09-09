@@ -42,7 +42,7 @@
 					<br />
 					<a class="page-btn page-btn_primary" href="javascript:intoMarketingIndex();">营销活动</a>
 					<br />
-					<a class="page-btn page-btn_primary" href="javascript:setQAOnlineinfo();">联系我们</a>
+					<a class="page-btn page-btn_primary" href="javascript:intoContactUSIndex();">联系我们</a>
 					<input type="hidden" id="openid_id" name="openid_name" value="1" />
 					<input type="hidden" id="nick_id" name="nick_name" value="1" />
 				</div>			
@@ -151,6 +151,33 @@
 					alert("资料有误");
 				}
 			}	
+			
+			//进入 联系我们
+			function intoContactUSIndex() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;				
+				
+				if(openid != ""){
+					
+				$.ajax({
+					type: 'get',
+					url: 'indexcontactus',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'indexcontactus.html?openid='+openid+'&nickname='+nkid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+					
+				} else {
+					alert("资料有误");
+				}
+			}			
 			
 			//open form
 			jQuery.getUrlParam = function (name) {

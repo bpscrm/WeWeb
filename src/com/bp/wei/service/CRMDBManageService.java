@@ -3,6 +3,7 @@ package com.bp.wei.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.bp.wei.crm.model.ContactUS;
 import com.bp.wei.crm.model.Followerinfo;
 import com.bp.wei.crm.model.Member;
 import com.bp.wei.crm.model.Memberinfo;
@@ -83,8 +84,9 @@ public interface CRMDBManageService {
 	
 	MarketinginfoWithBLOBs getMarketingForSignin(String id);
 	
-	
-	
+
+	/////////////////////////////////////////////////////////////////for 联络我们
+	int insertContactinfo(ContactUS record, String memberid);
 	
 	
 	

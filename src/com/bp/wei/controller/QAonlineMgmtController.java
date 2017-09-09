@@ -5,7 +5,9 @@ package com.bp.wei.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bp.wei.crm.model.ContactUS;
 import com.bp.wei.crm.model.Followerinfo;
 import com.bp.wei.crm.model.QAOnlineWithBLOBs;
 import com.bp.wei.service.CRMDBManageService;
@@ -93,6 +96,35 @@ public class QAonlineMgmtController {
 	}	
 	
 	//联系我们
-	
+	@RequestMapping(value="insertContactinfo", method = RequestMethod.POST)
+	public @ResponseBody int insertContactinfo(@RequestBody JSONObject strContactinfo){
+		
+		log.debug("Start to set Contactinfo...");
+		if(strContactinfo == null){
+			log.error("Failed to get contactus info from UI: " + strContactinfo);
+			return -1;
+		}
+		
+		System.out.println("#################*********************" + strContactinfo.toString());
+		
+		ContactUS contactus = new ContactUS();
+		
+		String cname = strContactinfo.getString("phonenum_name");
+		if(cname != null && cname.length() > 0){
+			contactus.setName(cname);
+		}
+		
+		String email = strContactinfo.getString("email_name");
+		if(email != null && email.length() > 0){
+			contactus.setContactEmail(email);
+		}
+		
+		System.out.println("#################*********************" + contactus.getName());
+		
+		int result = crmdbSrv.insertContactinfo(contactus, strContactinfo.getString("memberid_name"));
+		
+		System.out.println("@@@@@@@@@@@@@@result: " + result);
+		return result;		
+	}
 	
 }

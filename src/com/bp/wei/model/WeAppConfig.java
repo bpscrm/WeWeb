@@ -1,7 +1,5 @@
 package com.bp.wei.model;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 //@Component("weAppConfig")
 public class WeAppConfig {
