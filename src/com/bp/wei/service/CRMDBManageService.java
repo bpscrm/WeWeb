@@ -75,7 +75,7 @@ public interface CRMDBManageService {
 	
 	MarketinginfoWithBLOBs getMarketing(String id);
 	
-	Questionnaire getQuestionnaireById(String id);
+	Questionnaire getQuestionnaireById(String id, String Lv);
 	
 	boolean setInteractionData(HttpServletRequest request);
 	

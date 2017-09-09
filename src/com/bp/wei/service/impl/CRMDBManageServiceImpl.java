@@ -326,12 +326,22 @@ public class CRMDBManageServiceImpl implements CRMDBManageService {
 		return marketing;
 	}
 	@Override
-	public Questionnaire getQuestionnaireById(String id) {
+	public Questionnaire getQuestionnaireById(String id, String Lv) {
 		if(id == null || id.length() <= 0){
 			log.error("Invalid questionnaire id： " + id);
 			return null;
 		}
-		Questionnaire questionnaire = qDao.selectByPrimaryKeyWithQA(id);
+		
+		Questionnaire questionnaire;
+		
+		if(Lv == "L1"){
+			questionnaire = qDao.selectByPrimaryKeyWithQAL1(id);
+
+		}else{
+			questionnaire = qDao.selectByPrimaryKeyWithQAL2(id);
+
+		}
+		
 		if(questionnaire == null){
 			log.error("Questionnaire with id :" + id + " does not exist.");
 		}

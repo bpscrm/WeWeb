@@ -17,5 +17,7 @@ public interface QuestionnaireDao {
 
     int updateByPrimaryKey(Questionnaire record);
     
-    Questionnaire selectByPrimaryKeyWithQA(String id);
+    Questionnaire selectByPrimaryKeyWithQAL1(String id);
+    
+    Questionnaire selectByPrimaryKeyWithQAL2(String id);
 }

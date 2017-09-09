@@ -220,12 +220,12 @@
 			
 			//初始化页面
 			function getSurvey(){
-				var surveyid = document.getElementById('surveyid').value;
-				var params = {id: surveyid};
+				var mkid = document.getElementById('mkid').value;
+				var params = {id: mkid};
 				
 				$.ajax({  
 			        type: 'get',  
-			        url: 'getQuestionnaire',
+			        url: 'getQuestionnaireL1',
 			        cache: false,
 			        dataType : 'json',
 			        data: params,
@@ -236,7 +236,7 @@
 			        	$('#searchresult').html(htmllist);			        				        	
 			        },  
 			        error: function (data) { 		        	
-			        	alert('failed:' + data.msg);
+			        	//alert('failed:' + data.msg);
 			        }  
 			    });
 			}

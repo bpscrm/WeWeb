@@ -61,7 +61,6 @@ public class MarketingMgmtController {
 		return "marketingsignupcancel";
 	}
 	
-	
 	//获得在用的营销活动
 	@RequestMapping(value="getMarketinglist", method = RequestMethod.GET)
 	public @ResponseBody Marketinginfo findMarketinglist(){
@@ -72,6 +71,7 @@ public class MarketingMgmtController {
 		
 		return result;
 	}
+	
 	//search marketing info
 	@RequestMapping(value="getmarketing", method = RequestMethod.GET)
 	public @ResponseBody MarketinginfoWithBLOBs findMarketing(String id){
@@ -84,14 +84,15 @@ public class MarketingMgmtController {
 		log.debug("###########" + marketing.getName());
 		return marketing;
 	}	
-	//获取问题列表
-	@RequestMapping(value="getQuestionnaire", method = RequestMethod.GET)
-	public @ResponseBody Questionnaire getQuestionnaire(String id){
+	
+	//获取问题列表 报名问卷=L1
+	@RequestMapping(value="getQuestionnaireL1", method = RequestMethod.GET)
+	public @ResponseBody Questionnaire getQuestionnaireL1(String id){
 		if(id == null || id.length() <= 0){
 			log.error("Invalid questionnaire id from UI.");
 			return null;
 		}
-		Questionnaire result = marktingService.getQuestionnaireById(id);
+		Questionnaire result = marktingService.getQuestionnaireById(id, "L1");
 		if(result == null){
 			log.error("No questionnaire definition.");
 			return null;
@@ -99,6 +100,23 @@ public class MarketingMgmtController {
 		System.out.println("@@@@@@@@@@@result: " + result.toString());
 		return result;
 	}
+	
+	//获取问题列表 feedback = L2
+	@RequestMapping(value="getQuestionnaireL2", method = RequestMethod.GET)
+	public @ResponseBody Questionnaire getQuestionnaireL2(String id){
+		if(id == null || id.length() <= 0){
+			log.error("Invalid questionnaire id from UI.");
+			return null;
+		}
+		Questionnaire result = marktingService.getQuestionnaireById(id, "L2");
+		if(result == null){
+			log.error("No questionnaire definition.");
+			return null;
+		}
+		System.out.println("@@@@@@@@@@@result: " + result.toString());
+		return result;
+	}
+	
 	//提交答案
 	@RequestMapping(value="submitSurvey", method = RequestMethod.POST)
 	public String submitSurvey(HttpServletRequest request, RedirectAttributes attr){	
