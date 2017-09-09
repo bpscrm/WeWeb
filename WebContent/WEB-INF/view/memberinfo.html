@@ -4,20 +4,23 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>我的资料</title>
+		<title>英语培育蕴德中心</title>
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="css/weui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/frozen.css">
+		<link href="css/frozen.css" rel="stylesheet" />
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/weui.min.js"></script>
 		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
 	</head>
 
 	<body>
 		<form id="memberinfo" method="post">
+
 			<header class="ui-header ui-header-positive ui-border-b">
-				<h1>我的资料</h1><button class="ui-btn" onclick="history.back()">回首页</button>
-			</header>
+ 				<div class="ui-col ui-col-90"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="我的资料" /></h1></div>
+    			<div class="ui-col ui-col-10"><a href="javascript:gobackIndexMember();"><div class="weui-cell__hd"><img src="./images/home.png"  alt="" style="width:20px;vertical-align:middle"></div></a></div>		    			
+    		</header>
 			<br />
 			<br />
 
@@ -36,25 +39,26 @@
 					<input type="hidden" id="openid_id" name="openid_name" value="1" />
 					<input type="hidden" id="nick_id" name="nick_name" value="1" />					
 					<input type="hidden" id="followid" name="followid" value="1" />
-					<input type="hidden" id="memberid0_id" name="memberid0_name" value="2" />
+					<input type="hidden" id="memberid0_id" name="memberid0_name" value="1" />
 			</div>
 		</div>
 
-		<div class="weui-cells__title">通过下面的连接可以查看资料</div>
 		<div class="weui-cells">
 			<a class="weui-cell weui-cell_access" href="javascript:childrenlist();">
+			    <div class="weui-cell__hd"><img src="./images/child1.png"  alt="" style="width:30px;margin-right:5px;display:block"></div>
 				<span class="weui-cell__bd">
 					<p>小孩资料</p>
 				</span>
-				<span class="weui-cell__ft">点击进入</span>
+				<span class="weui-cell__ft">进入</span>
 			</a>
+			
 			<a class="weui-cell weui-cell_access" href="javascript:purchaselist();">
+				<div class="weui-cell__hd"><img src="./images/buy1.png"  alt="" style="width:30px;margin-right:5px;display:block"></div>
 				<span class="weui-cell__bd">
 					<p>购买记录</p>
 				</span>
-				<span class="weui-cell__ft">点击进入</span>
+				<span class="weui-cell__ft">进入</span>
 			</a>
-
 		</div>
 
 		<div class="weui-footer">
@@ -63,7 +67,7 @@
 			<p class="weui-footer__links">
 				<a href="javascript:;" class="weui-footer__link">关于我们</a>
 			</p>
-			<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+			<p class="weui-footer__text">Copyright &copy; 2007-2017 wecareCRM</p>
 		</div>
 
 		<script id="template" type="text/html">
@@ -291,6 +295,9 @@
 
 			
 			function childrenlist() {			
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
+				var flid = document.getElementById('followid').value;
 				var mbid = document.getElementById('memberid_id').value;
 
 				$.ajax({
@@ -301,7 +308,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'childrenlist.html?mbid=' + mbid;
+						window.location.href = 'childrenlist.html?flid=' + flid + '&mbid='+ mbid + '&openid='+ openid + '&nickname=' + nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -310,6 +317,8 @@
 			}
 
 			function purchaselist() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;			
 			    var mbid = document.getElementById('memberid_id').value;
 			    
 				$.ajax({
@@ -320,13 +329,33 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'purchaselist.html?mbid=' + mbid;
+						window.location.href = 'purchaselist.html?mbid=' + mbid + '&openid='+ openid + '&nickname=' + nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
 					}
 				});
 			};
+			
+			function gobackIndexMember() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
+				
+				$.ajax({
+					type: 'get',
+					url: 'goindexmember',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'indexmember.html?openid='+openid+'&nickname='+nkid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
 			
 			////////////////////////for open page
 			jQuery.getUrlParam = function (name) {

@@ -17,6 +17,8 @@
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bp.wei.crm.model.Questionnaire">
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
   </resultMap>
+  
+  
   <!-- 问卷调查的例子 start-->
   <resultMap type="com.bp.wei.crm.model.Questionnaire" id="ResultMapWithQA">
   	<id column="id" jdbcType="CHAR" property="id" />
@@ -30,25 +32,54 @@
   		</collection>
   	</collection>
   </resultMap>
-  <select id="selectByPrimaryKeyWithQA" parameterType="java.lang.String" resultMap="ResultMapWithQA">
-  	select qu.id, qu.name, q.id as qid, q.name as qname, o.id as oid, o.name as oname
-  	from ec1_interaction qu,
+  <select id="selectByPrimaryKeyWithQAL1" parameterType="java.lang.String" resultMap="ResultMapWithQA">    
+  	SELECT qu.id, qu.name, q.id AS qid, q.name AS qname, o.id AS oid, o.name AS oname
+  	FROM ec1_interaction qu,
   		 ec1_interaction_type q,
   		 ec1_interaction_ask o,
   		 ec1_interaction_ec1_interaction_type_c qc,
-  		 ec1_interaction_type_ec1_interaction_ask_c oc
-    where qc.ec1_interaction_ec1_interaction_typeec1_interaction_ida = qu.id
-    and qc.ec1_interaction_ec1_interaction_typeec1_interaction_type_idb = q.id
-    and  oc.ec1_interaction_type_ec1_interaction_askec1_interaction_type_ida = q.id
-    and oc.ec1_interaction_type_ec1_interaction_askec1_interaction_ask_idb = o.id
-    and qu.deleted = false 
-    and q.deleted = false 
-    and o.deleted = false 
-    and qc.deleted = false 
-    and oc.deleted = false
-    and qu.id = #{id,jdbcType=CHAR}    
+  		 ec1_interaction_type_ec1_interaction_ask_c oc, 
+  		 ec1_marketing_ec1_interaction_c mi
+    WHERE qc.ec1_interaction_ec1_interaction_typeec1_interaction_ida = qu.id
+    AND qc.ec1_interaction_ec1_interaction_typeec1_interaction_type_idb = q.id
+    AND  oc.ec1_interaction_type_ec1_interaction_askec1_interaction_type_ida = q.id
+    AND oc.ec1_interaction_type_ec1_interaction_askec1_interaction_ask_idb = o.id
+    AND qu.deleted = FALSE 
+    AND q.deleted = FALSE 
+    AND o.deleted = FALSE 
+    AND qc.deleted = FALSE 
+    AND oc.deleted = FALSE
+    AND qu.id = mi.ec1_marketing_ec1_interactionec1_interaction_idb
+    AND qu.interaction_type = 'L1'
+    AND mi.ec1_marketing_ec1_interactionec1_marketing_ida = #{id,jdbcType=CHAR}
+    ORDER BY qname, oname     
   </select>
+  
+  <select id="selectByPrimaryKeyWithQAL2" parameterType="java.lang.String" resultMap="ResultMapWithQA">    
+  	SELECT qu.id, qu.name, q.id AS qid, q.name AS qname, o.id AS oid, o.name AS oname
+  	FROM ec1_interaction qu,
+  		 ec1_interaction_type q,
+  		 ec1_interaction_ask o,
+  		 ec1_interaction_ec1_interaction_type_c qc,
+  		 ec1_interaction_type_ec1_interaction_ask_c oc, 
+  		 ec1_marketing_ec1_interaction_c mi
+    WHERE qc.ec1_interaction_ec1_interaction_typeec1_interaction_ida = qu.id
+    AND qc.ec1_interaction_ec1_interaction_typeec1_interaction_type_idb = q.id
+    AND  oc.ec1_interaction_type_ec1_interaction_askec1_interaction_type_ida = q.id
+    AND oc.ec1_interaction_type_ec1_interaction_askec1_interaction_ask_idb = o.id
+    AND qu.deleted = FALSE 
+    AND q.deleted = FALSE 
+    AND o.deleted = FALSE 
+    AND qc.deleted = FALSE 
+    AND oc.deleted = FALSE
+    AND qu.id = mi.ec1_marketing_ec1_interactionec1_interaction_idb
+    AND qu.interaction_type = 'L2'
+    AND mi.ec1_marketing_ec1_interactionec1_marketing_ida = #{id,jdbcType=CHAR}
+    ORDER BY qname, oname     
+  </select>  
    <!-- 问卷调查的例子 end-->
+   
+   
   <sql id="Base_Column_List">
     id, name, date_entered, date_modified, modified_user_id, created_by, deleted, assigned_user_id, 
     int_st_dt, int_ed_dt, int_st

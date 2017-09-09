@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>你问我答</title>
+		<title>英语培育蕴德中心</title>
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="css/weui.min.css" rel="stylesheet" />
 		<link href="css/frozen.css" rel="stylesheet" />
@@ -17,19 +17,17 @@
 	<body>
 	    <form id="qaonlineinfo" method="post">
 			<header class="ui-header ui-header-positive ui-border-b">
-				<h1>欢迎使用你问我答</h1>
+				<h1>欢迎提问</h1>
 			</header>
 			<br />
 			<br />
 	
 			<div class="page__bd">
-			    <div class="weui-cells__title"><h4>请提出在学习英语中碰到的问题，我们将作出解答</h4></div>
-	
-				<div class="page">
-					<div class="weui-cell">
-						<div class="weui-cell__hd"><label class="weui-label">选择问题类别</label></div>
+				<div class="weui-cells">
+					<div class="weui-cell weui-cell_select weui-cell_select-after">
+						<div class="weui-cell__hd"><label class="weui-label">选择类别</label></div>
 						<div class="weui-cell__bd">
-							<select name="select_type_name" id="select_type_id" class="weui-select" style= "background:#FFFFFF;">
+							<select name="select_type_name" id="select_type_id" class="weui-select" style="background:#FFFFFF;">
 	    						<option value="英文学习">英文学习</option>
 								<option value="营销活动">营销活动</option>
 								<option value="课程询问">课程询问</option>
@@ -38,9 +36,9 @@
 					</div>
 					
 					<div class="weui-cell">
-						<div class="weui-cell__hd"><label class="weui-label">输入问题描述</label></div>
+						<div class="weui-cell__hd"><label class="weui-label">输入提问</label></div>
 						<div class="weui-cell__bd">
-							<textarea name="question_name" id="question_id" style="background:#FFFFFF" ></textarea>
+							<textarea class="weui-textarea" name="question_name" id="question_id" style="background:#FFFFFF;border:none;display:table-cell;vertical-align:middle;"></textarea>
 						</div>
 					</div>				
 				</div>
@@ -51,12 +49,11 @@
 					<input type="hidden" id="nick_id" name="nick_name" value="1" />
 					<input type="hidden" id="followid_id" name="followid_name" value="1" />
 				</div>			
-	
 			</div>
 			
+			<br />
+			
 			<div class="page__bd">
-				<br />
-				<div class="weui-cells__title"><h4>历史提问：</h4></div>
 				<div id="searchresult"> 
 	       		</div>
 			</div>
@@ -67,18 +64,18 @@
 				<p class="weui-footer__links">
 					<a href="javascript:;" class="weui-footer__link">关于我们</a>
 				</p>
-				<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+				<p class="weui-footer__text">Copyright &copy; 2007-2017 wecareCRM</p>
 			</div>
 		
 		</form>
 
         <script id="qaonlineList-template" type="text/html">
 			 <a class="weui-cell weui-cell_access" href="javascript:QAOnlineView('<#= id #>');">
-	                <div class="weui-cell__hd"><img src="./images/Users_favico.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
+	                <div class="weui-cell__hd"><img src="./images/qaonline_icon.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
 	                <div class="weui-cell__bd">
 	                    <p><#= name #> (<#= questionDt #>)</p>
 	                </div>
-	                <div class="weui-cell__ft">查看详细资料</div>
+	                <div class="weui-cell__ft">查看</div>
 	         </a>			
 		</script>		
 		
@@ -138,24 +135,30 @@
 			//保存你问我答		
 			function setQAOnlineinfo() {
 				var formdata = $('#qaonlineinfo').serializeObject();
-				//alert(formdata);					
-						
-				$.ajax({
-					type: 'post',
-					url: 'setQAOnlineinfo',
-					cache: false,
-					dataType: 'json',
-					data: JSON.stringify(formdata),
-					contentType: 'application/json',
-					　　　　　　async: false,
-					success: function(data) {
-						var result = JSON.stringify(data);
-						alert('success:' + result);
-					},
-					error: function(data) {
-						alert('failed:' + data.msg);
-					}
-				});
+				var question_id = document.getElementById('question_id').value;
+									
+				if(question_id != '')		
+					$.ajax({
+						type: 'post',
+						url: 'setQAOnlineinfo',
+						cache: false,
+						dataType: 'json',
+						data: JSON.stringify(formdata),
+						contentType: 'application/json',
+						　　　　　　async: false,
+						success: function(data) {
+							var result = JSON.stringify(data);
+							alert('保存成功，多谢你的提问！');
+							$("#question_id").val('');
+							
+						},
+						error: function(data) {
+							alert('failed:' + data.msg);
+						}
+					});
+				else{
+					alert('请先输入你需要提问的内容！');								
+				}
 				
 				getFollowerQAOnlineList();
 			}

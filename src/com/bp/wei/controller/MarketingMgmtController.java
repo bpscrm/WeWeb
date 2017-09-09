@@ -29,11 +29,7 @@ public class MarketingMgmtController {
 	
 	@Autowired
 	CRMDBManageService  marktingService;
-	//营销活动入口
-	@RequestMapping(value="marketingentry", method = RequestMethod.GET)
-	public String redirectGomarketingentry(){		
-		return "marketingentry";
-	}	
+	
 	//活动首页
 	@RequestMapping(value="marketingindex", method = RequestMethod.GET)
 	public String redirectMarketingindex(){	
@@ -45,25 +41,26 @@ public class MarketingMgmtController {
 		return "marketingsignup";
 	}
 	//签到
-	@RequestMapping(value="signinpage", method = RequestMethod.GET)
+	@RequestMapping(value="marketingsigninpage", method = RequestMethod.GET)
 	public String redirectSigninpage(){	
-		return "signinpage";
+		return "marketingsigninpage";
 	}
 	//调查反馈
-	@RequestMapping(value="feedbacksurvey", method = RequestMethod.GET)
+	@RequestMapping(value="marketingfeedbacksurvey", method = RequestMethod.GET)
 	public String redirectFeedbacksurvey(){	
-		return "feedbacksurvey";
+		return "marketingfeedbacksurvey";
 	}
 	//进入报名调查页面
-	@RequestMapping(value="signupsurvey", method = RequestMethod.GET)
+	@RequestMapping(value="marketingsignupsurvey", method = RequestMethod.GET)
 	public String redirectSignupsurvey(){	
-		return "signupsurvey";
+		return "marketingsignupsurvey";
 	}
 	//进入取消报名页面
-	@RequestMapping(value="signupcancel", method = RequestMethod.GET)
+	@RequestMapping(value="marketingsignupcancel", method = RequestMethod.GET)
 	public String redirectSignupcancel(){	
-		return "signupcancel";
+		return "marketingsignupcancel";
 	}
+	
 	//获得在用的营销活动
 	@RequestMapping(value="getMarketinglist", method = RequestMethod.GET)
 	public @ResponseBody Marketinginfo findMarketinglist(){
@@ -74,6 +71,7 @@ public class MarketingMgmtController {
 		
 		return result;
 	}
+	
 	//search marketing info
 	@RequestMapping(value="getmarketing", method = RequestMethod.GET)
 	public @ResponseBody MarketinginfoWithBLOBs findMarketing(String id){
@@ -86,14 +84,15 @@ public class MarketingMgmtController {
 		log.debug("###########" + marketing.getName());
 		return marketing;
 	}	
-	//获取问题列表
-	@RequestMapping(value="getQuestionnaire", method = RequestMethod.GET)
-	public @ResponseBody Questionnaire getQuestionnaire(String id){
+	
+	//获取问题列表 报名问卷=L1
+	@RequestMapping(value="getQuestionnaireL1", method = RequestMethod.GET)
+	public @ResponseBody Questionnaire getQuestionnaireL1(String id){
 		if(id == null || id.length() <= 0){
 			log.error("Invalid questionnaire id from UI.");
 			return null;
 		}
-		Questionnaire result = marktingService.getQuestionnaireById(id);
+		Questionnaire result = marktingService.getQuestionnaireById(id, "L1");
 		if(result == null){
 			log.error("No questionnaire definition.");
 			return null;
@@ -101,6 +100,23 @@ public class MarketingMgmtController {
 		System.out.println("@@@@@@@@@@@result: " + result.toString());
 		return result;
 	}
+	
+	//获取问题列表 feedback = L2
+	@RequestMapping(value="getQuestionnaireL2", method = RequestMethod.GET)
+	public @ResponseBody Questionnaire getQuestionnaireL2(String id){
+		if(id == null || id.length() <= 0){
+			log.error("Invalid questionnaire id from UI.");
+			return null;
+		}
+		Questionnaire result = marktingService.getQuestionnaireById(id, "L2");
+		if(result == null){
+			log.error("No questionnaire definition.");
+			return null;
+		}
+		System.out.println("@@@@@@@@@@@result: " + result.toString());
+		return result;
+	}
+	
 	//提交答案
 	@RequestMapping(value="submitSurvey", method = RequestMethod.POST)
 	public String submitSurvey(HttpServletRequest request, RedirectAttributes attr){	
@@ -140,7 +156,6 @@ public class MarketingMgmtController {
 		
 	
 	}	
-		
 	
 	//search marketing info for 签到
 	@RequestMapping(value="getmarketingforsignin", method = RequestMethod.GET)
@@ -156,7 +171,11 @@ public class MarketingMgmtController {
 	}
 	//提交签到
 	@RequestMapping(value="submitSignin", method = RequestMethod.POST)
-	public ModelAndView submitSignin(HttpServletRequest request){	
+	public String submitSignin(HttpServletRequest request, RedirectAttributes attr){	
+		String openId = request.getParameter("openid_name");
+		String nickName = request.getParameter("nick_name");
+		String mkid = request.getParameter("mkname");		
+		
 		log.debug("submitSignin start...");
 		String marketingId = request.getParameter("mkname");
 		System.out.println("marketing................... id: " + marketingId);
@@ -170,9 +189,10 @@ public class MarketingMgmtController {
 		boolean blResult = marktingService.setParticipateData(request);
 		
 		
-		ModelAndView result = new ModelAndView();
-		result.setViewName("marketingentry");		
-		return result;
+		attr.addAttribute("openid", openId);
+		attr.addAttribute("nickname", nickName);
+		attr.addAttribute("mkid", mkid);
+		return "redirect:marketingindex";
 	}
 
 }

@@ -81,11 +81,12 @@
   </select>  
   
   <select id="selectMyFollowerListByKey" parameterType="java.lang.String" resultMap="ResultMapWithMyFollower">
-	SELECT fl.id flid, fl.name flname, myfl.id myflid, myfl.name myflname, myfl.follow_dt myflfldt
+	SELECT fl.id flid, fl.name flname, myfl.id myflid, myfl.name myflname, DATE_FORMAT(myfl.follow_dt,'%Y-%m-%d %H:%i:%S') myflfldt
       FROM ec1_follower fl, ec1_follower myfl, ec1_follower_ec1_follower_c fltomyfl
      WHERE fl.id = fltomyfl.ec1_follower_ec1_followerec1_follower_idb
        AND myfl.id = fltomyfl.ec1_follower_ec1_followerec1_follower_ida
        AND fl.id = #{id,jdbcType=CHAR}
+      Order by myfl.follow_dt desc
   </select>
   
   <select id="selectByPrimaryOpenid" parameterType="java.lang.String" resultType="String">

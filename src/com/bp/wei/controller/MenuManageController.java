@@ -214,6 +214,7 @@ public class MenuManageController {
 	}
 	
 	//////////////////////////////////////////////////////////////////////for 营销活动
+	//活动列表
 	@RequestMapping(value="MarketingIndex", method = RequestMethod.GET)
 	public String redirectMarketingIndex(){
 		
@@ -221,6 +222,103 @@ public class MenuManageController {
 		return "indexmarketing";
 	}
 	
+	//活动主页
+	@RequestMapping(value="MarketingIndexHD", method = RequestMethod.GET)
+	public String redirectMarketingIndexHD(){
+		
+		System.out.println( "[MenuMangerController][MarketingIndexHD]");
+		return "marketingindex";
+	}	
+	
+	//for 培训中心活动测试
+	@RequestMapping(value="redirectMarketingHD1", method = RequestMethod.GET)
+	public void redirectMarketingMgmtHD1(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		String url = WeUtil.getRedirectUrl();
+		url = url.replace("REDIRECT_URI", "http://www.wecarecrm.cn/EnglishCenterZHH/oauthMarketingHD1");
+		log.debug("Redirect to: " + url);
+		response.sendRedirect(url);
+	}
+	@RequestMapping(value = "oauthMarketingHD1", method = RequestMethod.GET)
+	public void authAndRedirectMarketingHD1(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		request.setCharacterEncoding("UTF-8");  
+        response.setCharacterEncoding("UTF-8"); 
+        // 用户同意授权后，能获取到code
+        String code = request.getParameter("code");
+        String state = request.getParameter("state");
+        log.info("Enter redirectMarketing and got the code as:" + code + ", state:" + state);
+
+        if(!"authdeny".equals(code)){
+        	User user = userSrv.getUser(code);
+        	
+        	if(user == null){
+        		log.error("Failed to get User Info from wechat!");
+        	}else{
+        		log.info("Got user info:" + user.toString());
+        		String url = getRedirectMarketingUrlHD1(user);
+        		response.sendRedirect(url);
+        	}
+        }		
+	}
+	private String getRedirectMarketingUrlHD1(User user){
+		StringBuffer sb = new StringBuffer("http://www.wecarecrm.cn/EnglishCenterZHH/MarketingIndexHD");
+		sb.append("?");
+		if(user.getOpenId() != null){
+			sb.append("openid=" + user.getOpenId());
+			sb.append("&");
+		}
+		if(user.getNickname()!=null){
+			sb.append("nickname="+user.getNickname());
+		}
+		sb.append("&mkid=6bc7c34d-592d-e3fc-90a2-59b36eeca07c");
+		
+		return sb.toString();
+	}
+	
+	//for 培训中心活动测试
+	@RequestMapping(value="redirectMarketingHD2", method = RequestMethod.GET)
+	public void redirectMarketingMgmtHD2(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		String url = WeUtil.getRedirectUrl();
+		url = url.replace("REDIRECT_URI", "http://www.wecarecrm.cn/EnglishCenterZHH/oauthMarketingHD2");
+		log.debug("Redirect to: " + url);
+		response.sendRedirect(url);
+	}
+	@RequestMapping(value = "oauthMarketingHD2", method = RequestMethod.GET)
+	public void authAndRedirectMarketingHD2(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		request.setCharacterEncoding("UTF-8");  
+        response.setCharacterEncoding("UTF-8"); 
+        // 用户同意授权后，能获取到code
+        String code = request.getParameter("code");
+        String state = request.getParameter("state");
+        log.info("Enter redirectMarketing and got the code as:" + code + ", state:" + state);
+
+        if(!"authdeny".equals(code)){
+        	User user = userSrv.getUser(code);
+        	
+        	if(user == null){
+        		log.error("Failed to get User Info from wechat!");
+        	}else{
+        		log.info("Got user info:" + user.toString());
+        		String url = getRedirectMarketingUrlHD2(user);
+        		response.sendRedirect(url);
+        	}
+        }		
+	}
+	private String getRedirectMarketingUrlHD2(User user){
+		StringBuffer sb = new StringBuffer("http://www.wecarecrm.cn/EnglishCenterZHH/MarketingIndexHD");
+		sb.append("?");
+		if(user.getOpenId() != null){
+			sb.append("openid=" + user.getOpenId());
+			sb.append("&");
+		}
+		if(user.getNickname()!=null){
+			sb.append("nickname="+user.getNickname());
+		}
+		sb.append("&mkid=33d583fa-0e88-ff03-7df0-59a972b5b3e7");
+		
+		return sb.toString();
+	}
+	
+	//全部活动
 	@RequestMapping(value="redirectMarketing", method = RequestMethod.GET)
 	public void redirectMarketingMgmt(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
 		String url = WeUtil.getRedirectUrl();
@@ -228,7 +326,6 @@ public class MenuManageController {
 		log.debug("Redirect to: " + url);
 		response.sendRedirect(url);
 	}
-	
 	@RequestMapping(value = "oauthMarketing", method = RequestMethod.GET)
 	public void authAndRedirectMarketing(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
 		request.setCharacterEncoding("UTF-8");  
@@ -250,7 +347,6 @@ public class MenuManageController {
         	}
         }		
 	}
-	
 	private String getRedirectMarketingUrl(User user){
 		StringBuffer sb = new StringBuffer("http://www.wecarecrm.cn/EnglishCenterZHH/MarketingIndex");
 		sb.append("?");
@@ -263,7 +359,7 @@ public class MenuManageController {
 		}
 		return sb.toString();
 	}
-	
+		
 	//////////////////////////////////////////////////////////////////////for 联系我们
 	@RequestMapping(value="ContactUSIndex", method = RequestMethod.GET)
 	public String redirectContactUSIndex(){

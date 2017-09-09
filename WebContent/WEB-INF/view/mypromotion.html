@@ -3,13 +3,14 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>我的推广</title>
+		<title>英语培育蕴德中心</title>
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="css/weui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/frozen.css">
+		<link href="css/frozen.css" rel="stylesheet" />
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/weui.min.js"></script>
 		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
 	</head>
 
 	<body>
@@ -17,29 +18,34 @@
 		<form id="mypromotion" action= "myqrcode" method="post">
 			
 			<header class="ui-header ui-header-positive ui-border-b">
-				<h1>我的推广</h1><button class="ui-btn" onclick="history.back()">回上页</button>
-			</header>
+ 				<div class="ui-col ui-col-90"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="我的推广" /></h1></div>
+    			<div class="ui-col ui-col-10"><a href="javascript:gobackIndexMember();"><div class="weui-cell__hd"><img src="./images/home.png"  alt="" style="width:20px;vertical-align:middle"></div></a></div>		    			
+    		</header>
 			<br />
 			<br />
 
 			<div class="weui-cells">
 
 				<input type="hidden" id="flid" value="1" />
+				<input type="hidden" id="openid_id" name="openid_name" value="1" />
+				<input type="hidden" id="nick_id" name="nick_name" value="1" />	
 				
 				<a class="weui-cell weui-cell_access" href="javascript:myfollower();">
-					<div class="weui-cell__hd"><img src="./images/Projects_favico.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+					<div class="weui-cell__hd"><img src="./images/follower1.png" alt="" style="width:30px;margin-right:5px;display:block"></div>
 					<div class="weui-cell__bd">
 						<p>我的粉丝</p>
 					</div>
-					<div class="weui-cell__ft">进入查看</div>
+					<div class="weui-cell__ft">进入</div>
 				</a>
 				<a class="weui-cell weui-cell_access" href="javascript:myqrcode();">
 					<input type="hidden" name="fromOpenId" value="okMyy0Tc0LrcXrKKc5O9GK21dxOg"/>
-					<div class="weui-cell__hd"><img src="./images/Projects_favico.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+
+					<div class="weui-cell__hd"><img src="./images/qrcode2.png" alt="" style="width:30px;margin-right:5px;display:block"></div>
+
 					<div class="weui-cell__bd">
 						<p>面对面推广</p>
 					</div>
-					<div class="weui-cell__ft">推广页面</div>
+					<div class="weui-cell__ft">进入</div>
 				</a>
 			</div>
 
@@ -47,7 +53,7 @@
 				<p class="weui-footer__links">
 					<a href="javascript:;" class="weui-footer__link">关于我们</a>
 				</p>
-				<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+				<p class="weui-footer__text">Copyright &copy; 2007-2017 wecareCRM</p>
 			</div>
 
 		</form>
@@ -76,8 +82,8 @@
 			function myfollower() 
 			{
 			    var flid = document.getElementById('flid').value;
-
-			    //alert(flid);
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
 			    
 				$.ajax({
 					type: 'get',
@@ -87,7 +93,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'myfollower.html?flid=' + flid;
+						window.location.href = 'myfollower.html?flid=' + flid + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -128,6 +134,26 @@
 				*/
 			}
 
+			function gobackIndexMember() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
+				
+				$.ajax({
+					type: 'get',
+					url: 'goindexmember',
+					cache: false,
+					async: false,
+					dataType: 'json',
+					　　　　　　contentType: 'application/json',
+					success: function(data) {
+						window.location.href = 'indexmember.html?openid='+openid+'&nickname='+nkid;
+					},
+					error: function(data) {
+						alert(data.msg);
+					}
+				});
+			}
+			
 			jQuery.getUrlParam = function (name) 
 			{
      			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -137,9 +163,9 @@
 			
 			$(document).ready(function() 
 			{
-				
 				$("#flid").val($.getUrlParam('flid'));
-				//alert($.getUrlParam('flid'));
+			    $("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));
 			});				
 		</script>
 

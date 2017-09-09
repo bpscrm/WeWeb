@@ -4,10 +4,10 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>购买产品详细资料</title>
+		<title>英语培育蕴德中心</title>
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="css/weui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/frozen.css">
+		<link href="css/frozen.css" rel="stylesheet" />
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/weui.min.js"></script>
 		<script src="js/zepto.min.js"></script>
@@ -16,91 +16,77 @@
 
 	<body>
 
-		<form id="feedbacklist" method="post">
+		<form id="feedbackinfo" method="post">
+
 			<header class="ui-header ui-header-positive ui-border-b">
-				<h1>已购产品信息</h1><button class="ui-btn" onclick="history.back()">回首页</button>
-			</header>
+ 				<div class="ui-col ui-col-90"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="查看产品意见反馈" /></h1></div>
+    			<div class="ui-col ui-col-10"><a href="javascript:gobackIndexMember();"><div class="weui-cell__hd"><img src="./images/home.png"  alt="" style="width:20px;vertical-align:middle"></div></a></div>		    			
+    		</header>
 			<br />
 			<br />
 
-			<div class="page__bd">
-				<article class="weui-article">
-					<section>
-						<div id="searchresultpurchase"></div>
+			<div class="weui-cells weui-cells_form">
+				<div id="searchresult"></div>
 
-						<br />
-					</section>
-				</article>
-			</div>
-
-			<div class="weui-cells__title">点选查看对此产品提出的建议和反馈</div>
-			<div class="weui-cells">
-				<div id="searchresultfeedback"></div>
-
+				<br />
 				<br />
 			</div>
 
 			<div class="page__bd page__bd_spacing">
-				<div class="button-sp-area">
-						<a class="page-btn page-btn_primary" href="javascript:feedbackinfoadd();">新增意见反馈</a>
-						<input type="hidden" id="purchaseid" value="1" />
+				<div class="page-btn-area">
+					<a class="page-btn page-btn_primary" href="javascript:updatefeedbackinfo();">修改</a>
+					<input type="hidden" id="feedbackid" value="1" />
+					<input type="hidden" id="openid_id" name="openid_name" value="1" />
+					<input type="hidden" id="nick_id" name="nick_name" value="1" />						
 				</div>
 			</div>
 
-			<div class="weui-footer">
-				<br />
-				<br />
+			<div class="weui-footer weui-footer_fixed-bottom">
 				<p class="weui-footer__links">
 					<a href="javascript:;" class="weui-footer__link">关于我们</a>
 				</p>
-				<p class="weui-footer__text">Copyright &copy; 2007-2017 XXXXX</p>
+				<p class="weui-footer__text">Copyright &copy; 2007-2017 wecareCRM</p>
 			</div>
+		
 		</form>
 
 		<script id="template" type="text/html">
 			<div>
 
-				<div class="weui-cell">
-					<div class="weui-cell__hd"><label class="weui-label">产品名称</label></div>
-					<div class="weui-cell__bd">
-						<input class="weui-input" name="purchasename" type="text" value=<#= name #> />
-					</div>
-				</div>
+				<input type="hidden" name="feedbackid" value=<#= id #> />
 
-				<div class="weui-cell">
+				<div class="weui-cell weui-cell_vcode">
 					<div class="weui-cell__hd">
-						<label class="weui-label">购买价格</label>
+						<label class="weui-label">标题</label>
 					</div>
 					<div class="weui-cell__bd">
-						<input class="weui-input" name="purchasenprice" type="number" value=<#= purchasePrice #> />
+						<input name="feedbackname" class="weui-input" type="text" value=<#= name #> />
 					</div>
 				</div>
 
 				<div class="weui-cell">
-					<div class="weui-cell__hd"><label for="" class="weui-label">开始时间</label></div>
+					<div class="weui-cell__hd"><label class="weui-label">内容</label></div>
 					<div class="weui-cell__bd">
-						<input class="weui-input" name="purchasenstdt" type="text" value=<#= purchaseStDt #> />
+						<input name="feedbackcontent" class="weui-input" type="text" value=<#= description #> />
 					</div>
 				</div>
 
 				<div class="weui-cell">
-					<div class="weui-cell__hd"><label for="" class="weui-label">结束时间</label></div>
+					<div class="weui-cell__hd"><label for="" class="weui-label">提出时间</label></div>
 					<div class="weui-cell__bd">
-						<input class="weui-input" name="purchaseneddt" type="text" value=<#= purchaseEdDt #> />
+						<input name="feedbacktime" class="weui-input" type="date" value=<#= fdDt #> />
 					</div>
 				</div>
+
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">回复内容</label></div>
+					<div class="weui-cell__bd">
+						<input name="feedbackask" class="weui-input" type="text" value=<#= fdAsk #> />
+					</div>
+				</div>
+
 			</div>
 
-		</script>
-		
-		<script id="feedbacklist-template" type="text/html">
-			 <a class="weui-cell weui-cell_access" href="javascript:feedbackinfoupdate('<#= id #>');">
-	                <div class="weui-cell__hd"><img src="./images/Projects_favico.png"  alt="" style="width:20px;margin-right:5px;display:block"></div>
-	                <div class="weui-cell__bd">
-	                    <p><#= name #></p>
-	                </div>
-	                <div class="weui-cell__ft">查看详细资料</div>
-	         </a>			
 		</script>
 
 		<script type="text/javascript">
@@ -133,15 +119,16 @@
 				return "< # ERROR: " + err.toString() + " # >";
 			};
 
-			function getPurchaseinfo() {
-				var purid = document.getElementById('purchaseid').value;
+			function getfeedbackinfo() {
+				var fbid = document.getElementById('feedbackid').value;
 				var params = {
-					id: purid
+					id: fbid
 				};
+				//alert('fbid:' + fbid);
 
 				$.ajax({
 					type: 'get',
-					url: 'getPurchaseinfo',
+					url: 'getfeedbackinfo',
 					cache: false,
 					dataType: 'json',
 					data: params,
@@ -152,7 +139,7 @@
 						//alert('success:' + result);
 						var output = $('#template').parseTemplate(data);
 
-						$('#searchresultpurchase').html(output);
+						$('#searchresult').html(output);
 
 					},
 					error: function(data) {
@@ -202,74 +189,67 @@
 					}
 				});
 			});
-		
-        	function getFeedbacklist(){
-				var purid = document.getElementById('purchaseid').value;
-				var params = {id: purid};
-				
-				$.ajax({  
-			        type: 'get',  
-			        url: 'getFeedbacklist',
-			        cache: false,
-			        dataType : 'json',
-			        data: params,
-			　　　　　　 	contentType : 'application/json', 
-			　　　　　　 	async: false,
-			        success: function (data) { 	
-			        	var result= JSON.stringify(data);
-			        	
-			        	var htmllist = '';
-			        	data.feedback.forEach(function(object) {			        		
-			        		var output = $('#feedbacklist-template').parseTemplate(object);			        		
-			        		htmllist += output;
-			        	});
-			        	
-			        	$('#searchresultfeedback').html(htmllist); 
-			        			        				        	
-			        },  
-			        error: function (data) { 		        	
-			        	//alert('failed:' + data.msg);
-			        }  
-			    });
-			}		
-		
-			function feedbackinfoupdate(id) {
 
+
+			//for update data
+			$.fn.serializeObject = function() {
+				var o = {};
+				var a = this.serializeArray();
+				$.each(a, function() {
+					if(o[this.name]) {
+						if(!o[this.name].push) {
+							o[this.name] = [o[this.name]];
+						}
+						o[this.name].push(this.value || '');
+					} else {
+						o[this.name] = this.value || '';
+					}
+				});
+				return o;
+			};
+
+			function updatefeedbackinfo() {
+
+				var formdata = $('#feedbackinfo').serializeObject();
+				//alert(formdata);							
 				$.ajax({
-					type: 'get',
-					url: 'feedbackinfoupdate',
+					type: 'post',
+					url: 'updatefeedbackinfo',
 					cache: false,
-					async: false,
 					dataType: 'json',
-					　　　　　　contentType: 'application/json',
+					data: JSON.stringify(formdata),
+					contentType: 'application/json',
+					　　　　　　async: false,
 					success: function(data) {
-						window.location.href = 'feedbackinfoupdate.html?fbid=' + id;
+						var result = JSON.stringify(data);
+						alert('success:' + result);
 					},
 					error: function(data) {
-						alert(data.msg);
+						alert('failed:' + data.msg);
 					}
 				});
 			}
 			
-			function feedbackinfoadd() {
-				var purid = document.getElementById('purchaseid').value;
+			function gobackIndexMember() {
+				var openid = document.getElementById('openid_id').value;
+				var nkid = document.getElementById('nick_id').value;
 				
 				$.ajax({
 					type: 'get',
-					url: 'feedbackinfoadd',
+					url: 'goindexmember',
 					cache: false,
 					async: false,
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'feedbackinfoadd.html?purid=' + purid;
+						window.location.href = 'indexmember.html?openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
 					}
 				});
 			}
-			
+						
 			jQuery.getUrlParam = function (name) {
      			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
      			var r = window.location.search.substr(1).match(reg);
@@ -277,16 +257,15 @@
 			}  
 			
 			$(document).ready(function() {
+				$("#openid_id").val($.getUrlParam('openid'));
+				$("#nick_id").val($.getUrlParam('nickname'));					
+				$("#feedbackid").val($.getUrlParam('fbid'));
 				
-				$("#purchaseid").val($.getUrlParam('purid'));
-
-				getPurchaseinfo();
-				
-				getFeedbacklist();
+				getfeedbackinfo();
 				
 			});				
-		</script>
 
+		</script>
 	</body>
 
 </html>

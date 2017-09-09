@@ -4,29 +4,24 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>取消活动报名</title>
+		<title>英语培育蕴德中心</title>
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="css/weui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/frozen.css">
+		<link href="css/frozen.css" rel="stylesheet" />
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/weui.min.js"></script>
 		<script src="js/zepto.min.js"></script>
+		<script src="js/func.js"></script>
 	</head>
 
 	<body>
 
-		<form id="signinpage">
+		<form id="signinpage" method="post" action="submitSignin">
 		
 			<header class="ui-header ui-header-positive ui-border-b">
-
-				<i class="ui-icon-return" onclick="history.back()"></i>
-				
-				<div class="ui-row">
- 					<div class="ui-col ui-col-80"><h1>取消活动报名</h1></div>
-    				<div class="ui-col ui-col-20"><a href="javascript:intoMarketingIndex();"><div class="ui-badge-muted">回首页</div></a></div>		    			
-    			</div>
-
-			</header>
+ 				<div class="ui-col ui-col-90"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="放弃报名" /></h1></div>
+    			<div class="ui-col ui-col-10"><a href="javascript:intoMarketingIndex();"><div class="weui-cell__hd"><img src="./images/home.png"  alt="" style="width:20px;vertical-align:middle"></div></a></div>		    			
+    		</header>
 			<br />
 			<br />
 			<br />
@@ -37,12 +32,12 @@
 
 				<div class="page__bd page__bd_spacing">
 					<div class="page-btn-area">
-						<a class="page-btn page-btn_primary" href="javascript:intoMarketingIndex()">确认取消</a>
-						<input type="hidden" id="followid" name="followid" value="1" />
-						<input type="hidden" id="membertel" name="membertel" value="2" />
-											
+						<a class="page-btn page-btn_primary" href="javascript:submitSignin()">签                      到</a>
+						<input type="hidden" id="mbid" name="mbname" value="8e795f1f-7980-11e7-9bd6-201a06c68160" />
+						<input type="hidden" id="mkid" name="mkname" value="2" />
+						<input type="hidden" id="particid" name="particname" value="2" />
 						<input type="hidden" id="openid_id" name="openid_name" value="1" />
-						<input type="hidden" id="nick_id" name="nick_name" value="1" />
+						<input type="hidden" id="nick_id" name="nick_name" value="1" />						
 					</div>
 				</div>
 
@@ -62,8 +57,7 @@
 			
 			//提交问卷后，返回本次活动首页
 			function gobackmarktingindex() {
-				var openid = document.getElementById('openid_id').value;
-				var nkid = document.getElementById('nick_id').value;
+
 				$.ajax({
 					type: 'get',
 					url: 'marketingindex',
@@ -72,29 +66,31 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'marketingindex?openid='+openid+'&nickname='+nkid;
+						window.location.href = 'marketingentry';
 					},
 					error: function(data) {
 						alert(data.msg);
 					}
 				});
 			}	
+			
 			//返回营销活动入口
 			function intoMarketingIndex() {
 				var openid = document.getElementById('openid_id').value;
-				var nkid = document.getElementById('nick_id').value;				
+				var nkid = document.getElementById('nick_id').value;
+				var mkid = document.getElementById('mkid').value;				
 				
 				if(openid != ""){
 					
 				$.ajax({
 					type: 'get',
-					url: 'indexmarketing',
+					url: 'marketingindex',
 					cache: false,
 					async: false,
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'indexmarketing.html?openid='+openid+'&nickname='+nkid;
+						window.location.href = 'marketingindex.html?mkid=' + mkid + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -106,17 +102,56 @@
 				}
 			}
 			
+			function getmarketing() {
+				var marketingid = document.getElementById('mkid').value;
+				var params = {
+					id: marketingid
+				};
+
+				$.ajax({
+					type: 'get',
+					url: 'getmarketingforsignin',
+					cache: false,
+					dataType: 'json',
+					data: params,
+					　　　　　　contentType: 'application/json',
+					　　　　　　async: false,
+					success: function(data) {
+					
+						$("#marketing_title").val(data.name + " - 签到");
+						$("#mkid").val(data.id);
+						$("#particid").val(data.assignedUserId);
+
+
+					},
+					error: function(data) {
+						alert('failed:' + data.msg);
+					}
+				});
+			}			
+			
+			//for open form
 			jQuery.getUrlParam = function (name) {
      			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
      			var r = window.location.search.substr(1).match(reg);
      			if (r != null) return unescape(r[2]); return null;
-			}  			
+			}			
 			$(document).ready(function() {
-				
+			
 				$("#openid_id").val($.getUrlParam('openid'));
 				$("#nick_id").val($.getUrlParam('nickname'));
+				$("#mkid").val($.getUrlParam('mkid'));
+				
+				getmarketing();
 
-			});
+				//getSurvey();
+			});				
+
+			//签到处理
+			function submitSignin(){
+				
+				$('#signinpage').submit();
+			}
 
 		</script>
 	</body>

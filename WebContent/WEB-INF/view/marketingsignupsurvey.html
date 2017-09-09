@@ -4,10 +4,10 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>报名调查</title>
+		<title>英语培育蕴德中心</title>
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="css/weui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/frozen.css">
+		<link href="css/frozen.css" rel="stylesheet" />
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/weui.min.js"></script>
 		<script src="js/zepto.min.js"></script>
@@ -16,16 +16,11 @@
 
 	<body>
 		<form id="survey" method="post" action="submitSurvey">
+			
 			<header class="ui-header ui-header-positive ui-border-b">
-				
-				<i class="ui-icon-return" onclick="history.back()"></i>
-				
-				<div class="ui-row">
- 					<div class="ui-col ui-col-80"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="免费试听活动" /></h1></div>
-    				<div class="ui-col ui-col-20"><a href="javascript:intoMarketingIndex();"><div class="ui-badge-muted">回首页</div></a></div>		    			
-    			</div>
-
-			</header>
+ 				<div class="ui-col ui-col-90"><h1><input readonly="readonly" id="marketing_title" style="border:0; background:none; color:#FFFFFF; text-align:center" value="XXXXX活动" /></h1></div>
+    			<div class="ui-col ui-col-10"><a href="javascript:intoMarketingIndex();"><div class="weui-cell__hd"><img src="./images/home.png"  alt="" style="width:20px;vertical-align:middle"></div></a></div>		    			
+    		</header>
 			<br />
 
 			<div class="page__bd">
@@ -33,14 +28,11 @@
 				<article class="weui-article">
 	
 					<div class="weui-cells weui-cells_form">
-
 						<div class="ui-row">
-							
-							<a class="page-btn weui-btn_default" href="javascript:gobackmarktingindex();">放弃</a>
+							<!--
 							<textarea id="descsignup_id" name="descsignup_nm" cols="70" rows="4" readonly="readonly" style= "background:transparent;border-style:none; resize: none;"></textarea>
-						
+    					    -->
     					</div>
-
 					</div>
 					
 					<input type="hidden" id="surveyid" value="a8623f48-5642-7273-fa8a-5987da775c2d"/>		
@@ -80,10 +72,10 @@
 		
 		</script>
 		<script type="text/html" id="question-list">
-
+			<ul class="ui-list ui-list-pure ui-border-tb">
 				<p><#= name #></p>
 				<input type="hidden" name="<#= qtag #>" value = "<#= id #>"/>
-
+			</ul>
 		</script>
 		<script type="text/html" id="option-list">
 
@@ -96,7 +88,7 @@
                     	<span class="weui-icon-checked"></span>
                 	</div>
             	</label>            
-
+		
 		</script>
 
 		<script type="text/javascript">
@@ -201,19 +193,20 @@
 			//返回营销活动入口
 			function intoMarketingIndex() {
 				var openid = document.getElementById('openid_id').value;
-				var nkid = document.getElementById('nick_id').value;				
+				var nkid = document.getElementById('nick_id').value;	
+				var mkid = document.getElementById('mkid').value;			
 				
 				if(openid != ""){
 					
 				$.ajax({
 					type: 'get',
-					url: 'indexmarketing',
+					url: 'marketingindex',
 					cache: false,
 					async: false,
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'indexmarketing.html?openid='+openid+'&nickname='+nkid;
+						window.location.href = 'marketingindex.html?mkid=' + mkid + '&openid='+openid+'&nickname='+nkid;
 					},
 					error: function(data) {
 						alert(data.msg);
@@ -227,12 +220,12 @@
 			
 			//初始化页面
 			function getSurvey(){
-				var surveyid = document.getElementById('surveyid').value;
-				var params = {id: surveyid};
+				var mkid = document.getElementById('mkid').value;
+				var params = {id: mkid};
 				
 				$.ajax({  
 			        type: 'get',  
-			        url: 'getQuestionnaire',
+			        url: 'getQuestionnaireL1',
 			        cache: false,
 			        dataType : 'json',
 			        data: params,
@@ -243,7 +236,7 @@
 			        	$('#searchresult').html(htmllist);			        				        	
 			        },  
 			        error: function (data) { 		        	
-			        	alert('failed:' + data.msg);
+			        	//alert('failed:' + data.msg);
 			        }  
 			    });
 			}
