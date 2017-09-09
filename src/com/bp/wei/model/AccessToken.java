@@ -11,7 +11,7 @@ public class AccessToken {
 	//weixin返回的凭证
 	private String token;
 	//有效的时间 单位：秒
-	private int expiresIn;
+	private long expiresIn;
 	
 	public String getToken() {
 		return token;
@@ -19,10 +19,10 @@ public class AccessToken {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	public int getExpiresIn() {
+	public long getExpiresIn() {
 		return expiresIn;
 	}
-	public void setExpiresIn(int expiresIn) {
+	public void setExpiresIn(long expiresIn) {
 		this.expiresIn = expiresIn;
 	}
 	@Override

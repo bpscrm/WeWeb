@@ -23,6 +23,7 @@ import com.bp.wei.model.User;
 import com.bp.wei.model.message.response.TextMessage;
 import com.bp.wei.service.UserService;
 import com.bp.wei.service.WeService;
+import com.bp.wei.util.ConfigUtil;
 import com.bp.wei.util.MessageUtil;
 import com.bp.wei.util.WeUtil;
 
@@ -58,7 +59,7 @@ public class WeServiceImpl implements WeService {
 		log.info("Processing event :" + eventType + ", from user openid:" + fromUserName);
 		
 		if(MessageUtil.EVENT_TYPE_SUBSCRIBE.equalsIgnoreCase(eventType)){	
-			AccessToken accessToken = WeUtil.getAccessToken();
+			AccessToken accessToken = ConfigUtil.getCachedAccessToken();//WeUtil.getAccessToken();
 			User user = this.userSrv.getUser(accessToken.getToken(), fromUserName);
 			TextMessage text = new TextMessage();
 			String Nickname = "粉丝昵称";

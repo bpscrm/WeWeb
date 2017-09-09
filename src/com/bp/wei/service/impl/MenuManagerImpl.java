@@ -10,6 +10,7 @@ import com.bp.wei.model.ComboButton;
 import com.bp.wei.model.CommonButton;
 import com.bp.wei.model.Menu;
 import com.bp.wei.service.MenuManager;
+import com.bp.wei.util.ConfigUtil;
 import com.bp.wei.util.MenuUtil;
 import com.bp.wei.util.WeUtil;
 import net.sf.json.JSONObject;
@@ -24,7 +25,7 @@ public class MenuManagerImpl implements MenuManager {
 		
 		System.err.print( "[MenuManagerImpl][createMenu]");
 		int result = 0;
-		AccessToken accessToken = WeUtil.getAccessToken();
+		AccessToken accessToken = ConfigUtil.getCachedAccessToken();//WeUtil.getAccessToken();
 		if(accessToken == null){
 			log.error("Failed to get access token from WeChat");
 			return -1;

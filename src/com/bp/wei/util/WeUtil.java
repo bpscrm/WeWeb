@@ -101,17 +101,19 @@ public class WeUtil {
 	 * @param appsecret 密钥 
 	 * @return 
 	 */  
-	public static AccessToken getAccessToken() {  
+	public static synchronized AccessToken getAccessToken() {  
 	    AccessToken accessToken = null;  
 	  
 	    String requestUrl = access_token_url.replace("APPID", APPID).replace("APPSECRET", APPSECRET);  
 	    JSONObject jsonObject = httpRequest(requestUrl, "GET", null);  
 	    // 如果请求成功  
 	    if (null != jsonObject) {  
+	    	long now = System.currentTimeMillis();
 	        try {  
 	            accessToken = new AccessToken();  
-	            accessToken.setToken(jsonObject.getString("access_token"));  
-	            accessToken.setExpiresIn(jsonObject.getInt("expires_in"));  
+	            accessToken.setToken(jsonObject.getString("access_token")); 
+	            int expiredIn = jsonObject.getInt("expires_in");
+	            accessToken.setExpiresIn(now + expiredIn*1000);  
 	        } catch (Exception e) {  
 	            accessToken = null;  
 	            // 获取token失败  
@@ -152,7 +154,7 @@ public class WeUtil {
 	}
 	
 	public static QRCodeTicket createQRCodeTicket(QRCode code){
-		AccessToken token = getAccessToken();
+		AccessToken token = ConfigUtil.getCachedAccessToken();
 		if(token == null || token.getToken() == null){
 			log.error("Failed to get the access token");
 			return null;

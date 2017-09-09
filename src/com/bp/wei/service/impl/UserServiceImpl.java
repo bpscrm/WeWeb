@@ -8,6 +8,7 @@ import com.bp.wei.model.AccessToken;
 import com.bp.wei.model.Oauth2AccessToken;
 import com.bp.wei.model.User;
 import com.bp.wei.service.UserService;
+import com.bp.wei.util.ConfigUtil;
 import com.bp.wei.util.WeUtil;
 
 import net.sf.json.JSONObject;
@@ -19,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUser(String accessToken, String openId) {
-		AccessToken token = WeUtil.getAccessToken();
+		AccessToken token = ConfigUtil.getCachedAccessToken();//WeUtil.getAccessToken();
 		String requestUrl = UserService.requestUrl.replace("ACCESS_TOKEN", token.getToken()).replace("OPENID", openId);
 		
 		JSONObject respJson = WeUtil.httpRequest(requestUrl, "GET", null);
