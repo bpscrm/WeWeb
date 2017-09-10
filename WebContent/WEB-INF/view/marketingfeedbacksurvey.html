@@ -236,7 +236,8 @@
 			        	$('#searchresult').html(htmllist);			        				        	
 			        },  
 			        error: function (data) { 		        	
-			        	//alert('failed:' + data.msg);
+			        	alert('调查问卷未提供，请稍后再试');
+			        	intoMarketingIndex();
 			        }  
 			    });
 			}

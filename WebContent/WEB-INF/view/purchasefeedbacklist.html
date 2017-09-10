@@ -237,6 +237,7 @@
 			function feedbackinfoupdate(id) {
 				var openid = document.getElementById('openid_id').value;
 				var nkid = document.getElementById('nick_id').value;
+				var purid = document.getElementById('purchaseid').value;
 				
 				$.ajax({
 					type: 'get',
@@ -246,7 +247,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'feedbackinfoupdate.html?fbid=' + id + '&openid='+openid+'&nickname='+nkid;
+						window.location.href = 'feedbackinfoupdate.html?fbid=' + id + '&openid='+openid+'&nickname='+nkid+'&purid=' + purid;
 					},
 					error: function(data) {
 						alert(data.msg);

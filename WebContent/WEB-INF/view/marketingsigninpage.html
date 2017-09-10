@@ -125,7 +125,8 @@
 
 					},
 					error: function(data) {
-						alert('failed:' + data.msg);
+						alert('活动还没开始，请于活动当天到现场进行签到处理！');
+						intoMarketingIndex();
 					}
 				});
 			}			

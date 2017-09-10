@@ -110,28 +110,38 @@ public class WeServiceImpl implements WeService {
 			}			
 						
         } 
+		else if (eventType.equalsIgnoreCase(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
+			String FollowerID = fldao.selectByPrimaryOpenid(fromUserName);
+			Followerinfo followInfo = fldao.selectByPrimaryKey(FollowerID);
+			followInfo.setFollowType("L3");
+			fldao.updateByFollowerID(followInfo);
+		}
         // TODO 取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息
         else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
         	respXML = "";
+        }else if(eventType.equalsIgnoreCase(MessageUtil.EVENT_TYPE_CLICK)){
         	//TO-DO
         }else if(eventType.equals(MessageUtil.EVENT_TYPE_CLICK)){        	
         	
         	if (eventKey.equals("1_1")) { 
             	TextMessage text = new TextMessage();
             	
-            	text.setContent("中心从珠海芝麻街购买课程，取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息，取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息");
+            	text.setContent("中心从珠海芝麻街购买课程，为你提供优质服务");
 	            text.setToUserName(fromUserName);
 	            text.setFromUserName(toUserName);
     			text.setCreateTime(new Date().getTime());
                 text.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
     			respXML = MessageUtil.messageToXml(text);
         	}        	
+        }else if(eventType.equalsIgnoreCase(MessageUtil.EVENT_TYPE_CLICK)){
 
         }else if(eventType.equals(MessageUtil.EVENT_TYPE_VIEW)){
         	String url = requestMap.get("EventKey");
         	log.debug("Got url callback request:" + url);
         	respXML = "";
         	//TO-DO
+        }else if(eventType.equalsIgnoreCase(MessageUtil.EVENT_TYPE_SCAN)){ 
+        	
         }else if(eventType.equals(MessageUtil.EVENT_TYPE_SCAN)){        	
         	respXML = "";
         	//TO-DO

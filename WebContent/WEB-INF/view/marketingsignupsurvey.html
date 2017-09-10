@@ -236,7 +236,8 @@
 			        	$('#searchresult').html(htmllist);			        				        	
 			        },  
 			        error: function (data) { 		        	
-			        	//alert('failed:' + data.msg);
+			        	alert('活动报名还未开始，请稍后再试');
+			        	intoMarketingIndex();
 			        }  
 			    });
 			}

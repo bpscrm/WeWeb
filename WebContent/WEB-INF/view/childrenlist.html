@@ -57,7 +57,7 @@
         	function getMemberchild(){
 				var memberid = document.getElementById('memberid').value;
 				var params = {id: memberid};
-				
+							
 				$.ajax({  
 			        type: 'get',  
 			        url: 'getMemberchild',
@@ -87,6 +87,7 @@
        	  	function childinfoupdate(id) {
 				var openid = document.getElementById('openid_id').value;
 				var nkid = document.getElementById('nick_id').value;
+				var memberid = document.getElementById('memberid').value;
 				
 				$.ajax({
 					type: 'get',
@@ -96,7 +97,7 @@
 					dataType: 'json',
 					　　　　　　contentType: 'application/json',
 					success: function(data) {
-						window.location.href = 'childinfoupdate.html?cdid=' + id  + '&openid='+openid+'&nickname='+nkid;;
+						window.location.href = 'childinfoupdate.html?cdid=' + id  + '&openid='+openid+'&nickname='+nkid+'&mbid='+memberid;
 					},
 					error: function(data) {
 						alert(data.msg);

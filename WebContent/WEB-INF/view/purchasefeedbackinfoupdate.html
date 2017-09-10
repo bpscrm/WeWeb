@@ -36,6 +36,7 @@
 				<div class="page-btn-area">
 					<a class="page-btn page-btn_primary" href="javascript:updatefeedbackinfo();">修改</a>
 					<input type="hidden" id="feedbackid" value="1" />
+					<input type="hidden" id="purchaseid1" name="purchaseid" value="1" />
 					<input type="hidden" id="openid_id" name="openid_name" value="1" />
 					<input type="hidden" id="nick_id" name="nick_name" value="1" />						
 				</div>
@@ -223,6 +224,7 @@
 					success: function(data) {
 						var result = JSON.stringify(data);
 						alert('success:' + result);
+						$(window).attr('location', 'feedbacklist.html?openid='+$("#openid_id").val() +'&nickname='+$("#nick_id").val() +"&purid="+$("#purchaseid1").val());
 					},
 					error: function(data) {
 						alert('failed:' + data.msg);
@@ -258,7 +260,8 @@
 			
 			$(document).ready(function() {
 				$("#openid_id").val($.getUrlParam('openid'));
-				$("#nick_id").val($.getUrlParam('nickname'));					
+				$("#nick_id").val($.getUrlParam('nickname'));		
+				$("#purchaseid1").val($.getUrlParam('purid'));			
 				$("#feedbackid").val($.getUrlParam('fbid'));
 				
 				getfeedbackinfo();

@@ -19,7 +19,7 @@ public class Task {
 	/*@Autowired
 	WeAppConfig config;*/
 	
-	@Scheduled(fixedRate = 60000000)
+	@Scheduled(fixedRate = 3600000)
 	public void updateAccessToken(){
 		log.info("Scheduled job to get the access token from Wechat.");
 		AccessToken accessToken = WeUtil.getAccessToken();

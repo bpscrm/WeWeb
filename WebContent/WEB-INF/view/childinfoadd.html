@@ -114,6 +114,8 @@
 					success: function(data) {
 						var result = JSON.stringify(data);
 						alert('success:' + result);
+						$(window).attr('location', 'childrenlist.html?openid='+$("#openid_id").val() +'&nickname='+$("#nick_id").val() +"&mbid="+$("#memberid").val());
+						
 					},
 					error: function(data) {
 						alert('failed:' + data.msg);
