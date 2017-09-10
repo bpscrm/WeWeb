@@ -38,7 +38,7 @@
 					<div class="weui-cell__ft">进入</div>
 				</a>
 				<a class="weui-cell weui-cell_access" href="javascript:myqrcode();">
-					<input type="hidden" name="fromOpenId" value="okMyy0Tc0LrcXrKKc5O9GK21dxOg"/>
+					<input type="hidden" name="fromOpenId" id="fromOpenId" value="okMyy0Tc0LrcXrKKc5O9GK21dxOg"/>
 
 					<div class="weui-cell__hd"><img src="./images/qrcode2.png" alt="" style="width:30px;margin-right:5px;display:block"></div>
 
@@ -104,10 +104,7 @@
 			function myqrcode() 
 			{
 				//alert(ws_location);				
-				
-				var query_string = location.search;
-				var parsed_qs = parse_query_string("openid");
-				$('#fromOpenId').val(parsed_qs);
+				$("#fromOpenId").val($.getUrlParam('openid')); 
 				$('#mypromotion').submit();
 				/*
 				$.ajax({
